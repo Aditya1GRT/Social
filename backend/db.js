@@ -1,7 +1,9 @@
 const Datastore = require('@seald-io/nedb');
 const path = require('path');
+const fs = require('fs');
 
 const dbDir = path.join(__dirname, 'data');
+if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 
 const users = new Datastore({ filename: path.join(dbDir, 'users.db'), autoload: true });
 const posts = new Datastore({ filename: path.join(dbDir, 'posts.db'), autoload: true });
