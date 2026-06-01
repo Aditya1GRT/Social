@@ -63,7 +63,8 @@ bash start.sh
 | `PORT` | `5000` | Port to listen on |
 | `JWT_SECRET` | dev fallback | Secret for signing tokens — **set this in production** |
 | `JWT_EXPIRES_IN` | `7d` | Token lifetime |
-| `PUBLIC_URL` | auto | Base URL used to build uploaded-file links |
+| `PUBLIC_URL` | auto | Base URL used to build local uploaded-file links |
+| `CLOUDINARY_URL` | – | If set, uploads go to Cloudinary instead of local disk (durable) |
 
 **Frontend** (`TheSocialScoop-master/TheSocialScoop-master/.env`):
 
@@ -90,8 +91,10 @@ The blueprint builds the frontend with `REACT_APP_API_URL=/api/` and an empty
 `REACT_APP_SOCKET_URL` (same origin), then runs `node backend/server.js`, which serves
 `build/` plus the API.
 
-> **Note on uploads:** the free tier filesystem is ephemeral, so uploaded media is lost on
-> restart. For durable storage, attach a Render disk or switch uploads to an object store (e.g. S3).
+> **Durable uploads:** the free tier filesystem is ephemeral, so locally-stored media is lost on
+> restart. Set `CLOUDINARY_URL` (free [Cloudinary](https://cloudinary.com) account) in the Render
+> dashboard and uploads automatically go there instead — no code change needed. Without it, uploads
+> fall back to the local `./uploads` folder, which is fine for local development.
 
 ### Two services (alternative)
 

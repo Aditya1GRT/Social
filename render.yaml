@@ -24,3 +24,8 @@ services:
         value: 7d
       - key: NODE_VERSION
         value: "22"
+      # Durable uploads: set this in the Render dashboard to keep media across
+      # restarts (the free tier filesystem is ephemeral). Get it from Cloudinary.
+      # Format: cloudinary://<api_key>:<api_secret>@<cloud_name>
+      - key: CLOUDINARY_URL
+        sync: false

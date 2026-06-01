@@ -1,32 +1,26 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { saveFile } = require('../services/storage');
 
-const uploadDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadDir),
-  filename: (req, file, cb) => {
-    const safe = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '_');
-    cb(null, `${Date.now()}-${safe}`);
-  },
-});
-
+// Keep the file in memory so it can be sent to either local disk or Cloudinary.
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: 25 * 1024 * 1024 }, // 25 MB
 });
 
-// POST /api/upload — accepts a single file under the field name "file"
-// Returns an absolute URL the frontend can store and render.
-router.post('/', upload.single('file'), (req, res) => {
+// POST /api/upload — accepts a single file under the field name "file".
+// Public on purpose: profile pictures are uploaded during signup, before a
+// user has an auth token. Returns a URL the frontend can store and render.
+router.post('/', upload.single('file'), async (req, res) => {
   if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
-  const base = process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`;
-  const url = `${base}/uploads/${req.file.filename}`;
-  res.status(201).json({ url });
+  try {
+    const url = await saveFile(req.file, req);
+    res.status(201).json({ url });
+  } catch (err) {
+    console.error('Upload error:', err);
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;
