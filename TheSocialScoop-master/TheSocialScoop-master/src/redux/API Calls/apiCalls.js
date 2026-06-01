@@ -26,6 +26,7 @@ export const login = async (dispatch, user) => {
   }
 };
 export const refresh = async (dispatch, user) => {
+  if (!user) return;
   dispatch(userStart());
   try {
     const res = await publicRequest.get(`/users/user/${user.username}`);
