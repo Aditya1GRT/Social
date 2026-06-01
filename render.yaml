@@ -10,13 +10,14 @@ services:
     name: social-scoop
     runtime: node
     plan: free
-    # Install backend + frontend deps, then build the React app pointed at
-    # the same-origin API (/api/) and same-origin Socket.io (empty URL).
-    buildCommand: >
-      cd backend && npm install &&
-      cd ../TheSocialScoop-master/TheSocialScoop-master && npm install &&
-      REACT_APP_API_URL=/api/ REACT_APP_SOCKET_URL= npm run build
+    # The React app is PRE-BUILT and committed (TheSocialScoop-master/.../build),
+    # so the free tier (512 MB) never runs the React build — it peaks ~1 GB and
+    # gets OOM-killed during deploy. We only install the lightweight backend here.
+    # To change the UI: run ./rebuild-frontend.sh and commit the updated build.
+    buildCommand: cd backend && npm install
     startCommand: node backend/server.js
+    # Render polls this until it returns 200, then marks the deploy live.
+    healthCheckPath: /api/health
     envVars:
       - key: JWT_SECRET
         generateValue: true
