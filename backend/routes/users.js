@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { users } = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 const sanitize = (user) => {
   if (!user) return null;
@@ -63,7 +64,7 @@ router.post('/users-details', async (req, res) => {
 });
 
 // PUT change theme preference
-router.put('/theme/:userId', async (req, res) => {
+router.put('/theme/:userId', verifyToken, async (req, res) => {
   try {
     await users.updateAsync({ _id: req.params.userId }, { $set: { prefersDarkTheme: req.body.prefersDarkTheme } });
     res.status(200).json({ message: 'Theme updated' });
@@ -73,7 +74,7 @@ router.put('/theme/:userId', async (req, res) => {
 });
 
 // PUT send follow request — :id = target, body.userId = sender
-router.put('/follow-request/:id', async (req, res) => {
+router.put('/follow-request/:id', verifyToken, async (req, res) => {
   try {
     const { id: targetId } = req.params;
     const { userId: senderId } = req.body;
@@ -86,7 +87,7 @@ router.put('/follow-request/:id', async (req, res) => {
 });
 
 // PUT unsend follow request
-router.put('/unsend-follow-request/:id', async (req, res) => {
+router.put('/unsend-follow-request/:id', verifyToken, async (req, res) => {
   try {
     const { id: targetId } = req.params;
     const { userId: senderId } = req.body;
@@ -99,7 +100,7 @@ router.put('/unsend-follow-request/:id', async (req, res) => {
 });
 
 // PUT approve follow request — :id = requester, body.userId = approver
-router.put('/approve-follow-request/:id', async (req, res) => {
+router.put('/approve-follow-request/:id', verifyToken, async (req, res) => {
   try {
     const requesterId = req.params.id;
     const { userId: approverId } = req.body;
@@ -113,7 +114,7 @@ router.put('/approve-follow-request/:id', async (req, res) => {
 });
 
 // PUT reject follow request
-router.put('/reject-follow-request/:id', async (req, res) => {
+router.put('/reject-follow-request/:id', verifyToken, async (req, res) => {
   try {
     const requesterId = req.params.id;
     const { userId: rejecterId } = req.body;
@@ -126,7 +127,7 @@ router.put('/reject-follow-request/:id', async (req, res) => {
 });
 
 // PUT unfollow — :id = target, body.userId = unfollower
-router.put('/unfollow/:id', async (req, res) => {
+router.put('/unfollow/:id', verifyToken, async (req, res) => {
   try {
     const targetId = req.params.id;
     const { userId } = req.body;
@@ -139,7 +140,7 @@ router.put('/unfollow/:id', async (req, res) => {
 });
 
 // PUT update user profile — :id = userId
-router.put('/:id', async (req, res) => {
+router.put('/:id', verifyToken, async (req, res) => {
   try {
     const { password, _id, ...updateData } = req.body;
     if (password) {
@@ -155,7 +156,7 @@ router.put('/:id', async (req, res) => {
 });
 
 // DELETE user account
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', verifyToken, async (req, res) => {
   try {
     await users.removeAsync({ _id: req.params.id }, {});
     res.status(200).json({ message: 'User deleted' });

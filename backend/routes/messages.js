@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { messages } = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 // GET messages in a conversation
 router.get('/:conversationId', async (req, res) => {
@@ -14,7 +15,7 @@ router.get('/:conversationId', async (req, res) => {
 });
 
 // POST send a message
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
   try {
     const { conversationId, senderId, message } = req.body;
     const newMsg = { conversationId, senderId, message, createdAt: new Date() };

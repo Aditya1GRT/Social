@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { posts, users } = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 // Helper: enrich posts with author profile info
 const enrichPost = async (post) => {
@@ -42,7 +43,7 @@ router.get('/:userId', async (req, res) => {
 });
 
 // POST create a new post
-router.post('/create-post', async (req, res) => {
+router.post('/create-post', verifyToken, async (req, res) => {
   try {
     const { userId, description, postMedia, mediaType } = req.body;
     const author = await users.findOneAsync({ _id: userId });
@@ -68,7 +69,7 @@ router.post('/create-post', async (req, res) => {
 });
 
 // PUT react (like/unlike) a post
-router.put('/reactions/:postId', async (req, res) => {
+router.put('/reactions/:postId', verifyToken, async (req, res) => {
   try {
     const { userId } = req.body;
     const post = await posts.findOneAsync({ _id: req.params.postId });
@@ -87,7 +88,7 @@ router.put('/reactions/:postId', async (req, res) => {
 });
 
 // PUT add comment to post
-router.put('/comment/:postId', async (req, res) => {
+router.put('/comment/:postId', verifyToken, async (req, res) => {
   try {
     const { commentData } = req.body;
     const comment = { ...commentData, id: Date.now().toString() };
@@ -99,7 +100,7 @@ router.put('/comment/:postId', async (req, res) => {
 });
 
 // PUT delete a comment from post
-router.put('/delete-comment/:postId', async (req, res) => {
+router.put('/delete-comment/:postId', verifyToken, async (req, res) => {
   try {
     const { commentId } = req.body;
     const post = await posts.findOneAsync({ _id: req.params.postId });
@@ -114,7 +115,7 @@ router.put('/delete-comment/:postId', async (req, res) => {
 });
 
 // DELETE a post
-router.delete('/delete-post/:postId', async (req, res) => {
+router.delete('/delete-post/:postId', verifyToken, async (req, res) => {
   try {
     await posts.removeAsync({ _id: req.params.postId }, {});
     res.status(200).json({ message: 'Post deleted' });

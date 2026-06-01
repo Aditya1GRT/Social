@@ -1,5 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const http = require('http');
+const path = require('path');
+const fs = require('fs');
 const { Server } = require('socket.io');
 const cors = require('cors');
 
@@ -8,6 +11,7 @@ const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
 const conversationRoutes = require('./routes/conversations');
 const messageRoutes = require('./routes/messages');
+const uploadRoutes = require('./routes/upload');
 
 const app = express();
 const server = http.createServer(app);
@@ -19,14 +23,25 @@ const io = new Server(server, {
   },
 });
 
+// Trust the platform proxy (Render/Heroku/etc.) so req.protocol reflects HTTPS,
+// which keeps generated upload URLs on https and avoids mixed-content blocking.
+app.set('trust proxy', true);
+
 app.use(cors());
 app.use(express.json());
+
+// Serve uploaded media statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Health check
+app.get('/api/health', (req, res) => res.json({ status: 'ok', service: 'social-scoop-backend' }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/conversations', conversationRoutes);
 app.use('/api/message', messageRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Socket.io real-time messaging
 const activeUsers = [];
@@ -62,6 +77,15 @@ io.on('connection', (socket) => {
     io.emit('getUsers', activeUsers);
   });
 });
+
+// In a single-service deployment, serve the built React frontend.
+// Only activates when a production build exists, so local two-server dev is unaffected.
+const buildPath = path.join(__dirname, '..', 'TheSocialScoop-master', 'TheSocialScoop-master', 'build');
+if (fs.existsSync(buildPath)) {
+  app.use(express.static(buildPath));
+  app.get('*', (req, res) => res.sendFile(path.join(buildPath, 'index.html')));
+  console.log('Serving frontend build from', buildPath);
+}
 
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {

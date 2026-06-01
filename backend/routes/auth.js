@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { users } = require('../db');
+const { signToken } = require('../middleware/auth');
 
 const sanitize = (user) => {
   if (!user) return null;
@@ -35,7 +36,7 @@ router.post('/signup', async (req, res) => {
     };
 
     const created = await users.insertAsync(newUser);
-    res.status(201).json(sanitize(created));
+    res.status(201).json({ ...sanitize(created), accessToken: signToken(created) });
   } catch (err) {
     console.error('Signup error:', err);
     res.status(500).json({ message: err.message });
@@ -51,7 +52,7 @@ router.post('/login', async (req, res) => {
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(400).json({ message: 'Invalid password' });
 
-    res.status(200).json(sanitize(user));
+    res.status(200).json({ ...sanitize(user), accessToken: signToken(user) });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ message: err.message });

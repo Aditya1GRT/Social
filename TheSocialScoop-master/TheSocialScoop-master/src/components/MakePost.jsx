@@ -7,13 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import app from "../firebase";
+import { uploadFile } from "../utils/upload";
 import { postStart } from "../redux/postSlice";
 import { createPosts } from "../redux/API Calls/postApiCalls";
 
@@ -155,60 +149,16 @@ const MakePost = ({ themeCurrent, setPostMod }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(postStart());
-    // ||||||||||||||||||||||||||||||||||||||||||||||||||
 
     try {
       if (file.name) {
-        const fileName = new Date().getTime() + file.name;
-
-        const storage = getStorage(app);
-        const storageRef = ref(storage, fileName);
-
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
-        await uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress = Math.round(
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-            );
-            setProgress(`Upload is ${progress}% done`);
-            // console.log("Upload is " + progress + "% done");
-            switch (snapshot.state) {
-              case "paused":
-                console.log("Upload is paused");
-                break;
-              case "running":
-                console.log("Upload is running");
-                break;
-              default:
-                console.log("default");
-            }
-          },
-          (error) => {
-            // Handle unsuccessful uploads
-            console.log(error.message);
-          },
-          () => {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
-                console.log("File available at", downloadURL);
-
-                setPostData((p) => ({
-                  ...p,
-                  postMedia: downloadURL,
-                  mediaType,
-                }));
-              }
-            );
-          }
+        const downloadURL = await uploadFile(file, (pct) =>
+          setProgress(`Upload is ${pct}% done`)
         );
+        setPostData((p) => ({ ...p, postMedia: downloadURL, mediaType }));
       } else {
         setPostData((p) => ({ ...p, postMedia: "null", mediaType }));
       }
-      // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     } catch (error) {
       console.log(error.message);
     }
