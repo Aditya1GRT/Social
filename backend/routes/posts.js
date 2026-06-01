@@ -1,0 +1,126 @@
+const express = require('express');
+const router = express.Router();
+const { posts, users } = require('../db');
+
+// Helper: enrich posts with author profile info
+const enrichPost = async (post) => {
+  const author = await users.findOneAsync({ _id: post.userId });
+  return {
+    ...post,
+    username: author ? author.username : 'deleted',
+    name: author ? author.name : 'Deleted User',
+    profilePicture: author ? author.profilePicture : null,
+  };
+};
+
+// GET feed posts for a user (own posts + posts from people they follow)
+// NOTE: /profile/:userId must be defined before /:userId
+router.get('/profile/:userId', async (req, res) => {
+  try {
+    const userPosts = await posts.findAsync({ userId: req.params.userId });
+    userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    res.status(200).json(userPosts);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+router.get('/:userId', async (req, res) => {
+  try {
+    const user = await users.findOneAsync({ _id: req.params.userId });
+    if (!user) return res.status(200).json([]);
+
+    const followingIds = [...(user.following || []), req.params.userId];
+    const feedPosts = await posts.findAsync({ userId: { $in: followingIds } });
+    feedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    const enriched = await Promise.all(feedPosts.map(enrichPost));
+    res.status(200).json(enriched);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// POST create a new post
+router.post('/create-post', async (req, res) => {
+  try {
+    const { userId, description, postMedia, mediaType } = req.body;
+    const author = await users.findOneAsync({ _id: userId });
+
+    const newPost = {
+      userId,
+      description: description || '',
+      postMedia: postMedia || 'null',
+      mediaType: mediaType || '',
+      likes: [],
+      comments: [],
+      username: author ? author.username : '',
+      name: author ? author.name : '',
+      profilePicture: author ? author.profilePicture : null,
+      createdAt: new Date(),
+    };
+
+    const created = await posts.insertAsync(newPost);
+    res.status(201).json(created);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// PUT react (like/unlike) a post
+router.put('/reactions/:postId', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const post = await posts.findOneAsync({ _id: req.params.postId });
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+
+    const liked = post.likes.includes(userId);
+    if (liked) {
+      await posts.updateAsync({ _id: req.params.postId }, { $pull: { likes: userId } });
+    } else {
+      await posts.updateAsync({ _id: req.params.postId }, { $push: { likes: userId } });
+    }
+    res.status(200).json({ message: liked ? 'Unliked' : 'Liked' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// PUT add comment to post
+router.put('/comment/:postId', async (req, res) => {
+  try {
+    const { commentData } = req.body;
+    const comment = { ...commentData, id: Date.now().toString() };
+    await posts.updateAsync({ _id: req.params.postId }, { $push: { comments: comment } });
+    res.status(200).json({ message: 'Comment added' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// PUT delete a comment from post
+router.put('/delete-comment/:postId', async (req, res) => {
+  try {
+    const { commentId } = req.body;
+    const post = await posts.findOneAsync({ _id: req.params.postId });
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+
+    const updatedComments = post.comments.filter(c => c.id !== commentId);
+    await posts.updateAsync({ _id: req.params.postId }, { $set: { comments: updatedComments } });
+    res.status(200).json({ message: 'Comment deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// DELETE a post
+router.delete('/delete-post/:postId', async (req, res) => {
+  try {
+    await posts.removeAsync({ _id: req.params.postId }, {});
+    res.status(200).json({ message: 'Post deleted' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+module.exports = router;

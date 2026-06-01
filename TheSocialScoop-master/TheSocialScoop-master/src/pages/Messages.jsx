@@ -14,7 +14,7 @@ const Messages = ({ themeCurrent }) => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("https://social-scoop-socket-server.onrender.com", {
+    socket.current = io("http://localhost:5000", {
       transports: ["websocket"],
     });
 
