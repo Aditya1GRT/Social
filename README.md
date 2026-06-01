@@ -84,12 +84,20 @@ server also serves the built React app, so there is a single URL and no CORS to 
 
 1. Push this repo to GitHub.
 2. On [Render](https://render.com), choose **New → Blueprint** and pick this repo.
-3. Render reads `render.yaml`, builds the frontend, and starts the backend serving both.
+3. Render reads `render.yaml`, installs the backend, and starts it serving both the API
+   and the (already-built) React app.
 4. A strong `JWT_SECRET` is generated automatically.
 
-The blueprint builds the frontend with `REACT_APP_API_URL=/api/` and an empty
-`REACT_APP_SOCKET_URL` (same origin), then runs `node backend/server.js`, which serves
-`build/` plus the API.
+> **Why the build is committed:** Render's free tier gives a build only 512 MB of RAM,
+> but a Create React App production build peaks near 1 GB and gets OOM-killed (the deploy
+> fails with `Killed` / exit 137). To avoid that, the frontend is **pre-built and committed**
+> (`TheSocialScoop-master/.../build`), so the free tier only runs the lightweight backend.
+> The bundle is baked with `REACT_APP_API_URL=/api/` and an empty `REACT_APP_SOCKET_URL`
+> (same origin), so it is portable to any host.
+>
+> **Changing the UI:** rebuild and commit the bundle with `./rebuild-frontend.sh`. (On a
+> paid plan with ≥2 GB build RAM you could instead let Render build it — set `buildCommand`
+> back to `cd backend && npm install && cd ../TheSocialScoop-master/TheSocialScoop-master && npm install && REACT_APP_API_URL=/api/ REACT_APP_SOCKET_URL= npm run build`.)
 
 > **Durable uploads:** the free tier filesystem is ephemeral, so locally-stored media is lost on
 > restart. Set `CLOUDINARY_URL` (free [Cloudinary](https://cloudinary.com) account) in the Render

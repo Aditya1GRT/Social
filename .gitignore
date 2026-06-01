@@ -2,7 +2,10 @@ node_modules/
 backend/data/*.db
 backend/uploads/*
 !backend/uploads/.gitkeep
-TheSocialScoop-master/TheSocialScoop-master/build/
+# The production frontend build is committed so Render's free tier (512 MB)
+# never has to run the memory-heavy React build (it peaks ~1 GB and gets OOM-killed).
+# Source maps stay out to keep the committed build lean.
+TheSocialScoop-master/TheSocialScoop-master/build/**/*.map
 .env
 .env.local
 *.log
