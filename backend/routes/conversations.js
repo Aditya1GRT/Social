@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { conversations } = require('../db');
+const { verifyToken } = require('../middleware/auth');
 
 // GET all conversations for a user
 router.get('/:userId', async (req, res) => {
@@ -13,7 +14,7 @@ router.get('/:userId', async (req, res) => {
 });
 
 // POST create a new conversation (or return existing)
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, async (req, res) => {
   try {
     const { senderId, receiverId } = req.body;
     const existing = await conversations.findOneAsync({

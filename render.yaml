@@ -1,0 +1,31 @@
+# Render Blueprint — deploys the whole app as ONE service.
+# The Express backend serves both the API and the built React frontend,
+# so there is a single URL, no CORS setup, and no cross-service config.
+#
+# Docs: https://render.com/docs/blueprint-spec
+# After connecting this repo on Render, it provisions the service below.
+
+services:
+  - type: web
+    name: social-scoop
+    runtime: node
+    plan: free
+    # Install backend + frontend deps, then build the React app pointed at
+    # the same-origin API (/api/) and same-origin Socket.io (empty URL).
+    buildCommand: >
+      cd backend && npm install &&
+      cd ../TheSocialScoop-master/TheSocialScoop-master && npm install &&
+      REACT_APP_API_URL=/api/ REACT_APP_SOCKET_URL= npm run build
+    startCommand: node backend/server.js
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: NODE_VERSION
+        value: "22"
+      # Durable uploads: set this in the Render dashboard to keep media across
+      # restarts (the free tier filesystem is ephemeral). Get it from Cloudinary.
+      # Format: cloudinary://<api_key>:<api_secret>@<cloud_name>
+      - key: CLOUDINARY_URL
+        sync: false
