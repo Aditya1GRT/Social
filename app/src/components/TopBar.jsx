@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
-import { changeTheme } from '../redux/actions';
 import logoLight from '../assets/logoLight.png';
 import logoDark from '../assets/logoDark.png';
 
@@ -156,25 +155,15 @@ const AvatarPlaceholder = styled.div`
   font-size: 15px;
 `;
 
-export default function TopBar() {
+export default function TopBar({ isDark, onToggleTheme }) {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const currentUser = useSelector(s => s.user?.currentUser);
   const [query, setQuery] = useState('');
-
-  const isDark = currentUser?.prefersDarkTheme ??
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   const handleSearch = (e) => {
     e.preventDefault();
     const q = query.trim();
     if (q) navigate(`/search/${encodeURIComponent(q)}`);
-  };
-
-  const handleThemeToggle = () => {
-    if (currentUser) {
-      changeTheme(dispatch, currentUser._id, !isDark);
-    }
   };
 
   return (
@@ -196,7 +185,7 @@ export default function TopBar() {
       </SearchWrapper>
 
       <RightSection>
-        <ThemeToggle onClick={handleThemeToggle} title="Toggle theme">
+        <ThemeToggle onClick={onToggleTheme} title="Toggle theme">
           <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
         </ThemeToggle>
 
