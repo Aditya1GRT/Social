@@ -271,6 +271,33 @@ const DeleteConfirmBtn = styled.button`
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 `;
 
+const TermsContent = styled.div`
+  padding: 16px 20px 20px;
+  font-size: 13px;
+  line-height: 1.75;
+  color: ${({ theme }) => theme.main};
+
+  p, li { color: ${({ theme }) => theme.main}; }
+
+  strong, b {
+    font-weight: 700;
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 4px;
+    font-size: 13.5px;
+    color: ${({ theme }) => theme.main};
+  }
+
+  ul {
+    padding-left: 20px;
+    margin-top: 6px;
+  }
+
+  li {
+    margin-bottom: 3px;
+  }
+`;
+
 export default function Settings() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -399,33 +426,25 @@ export default function Settings() {
         </SectionHeader>
 
         {showTerms && (
-          <div style={{ padding: '16px 20px', fontSize: '13px', lineHeight: '1.7', color: 'inherit', opacity: 0.8 }}>
-            <p>Welcome to The Social Scoop!</p>
-            <br />
-            <p>These terms and conditions outline the rules and regulations for the use of The Social Scoop's Website. By accessing this website we assume you accept these terms and conditions.</p>
-            <br />
-            <p style={{ fontWeight: 700, marginBottom: 6 }}>Cookies</p>
+          <TermsContent>
+            <p>Welcome to The Social Scoop! These terms and conditions outline the rules and regulations for the use of The Social Scoop's Website. By accessing this website we assume you accept these terms and conditions.</p>
+            <b>Cookies</b>
             <p>We employ the use of cookies. By accessing The Social Scoop, you agreed to use cookies in agreement with The Social Scoop's Privacy Policy. Cookies are used by our website to enable the functionality of certain areas and to make it easier for people visiting our website.</p>
-            <br />
-            <p style={{ fontWeight: 700, marginBottom: 6 }}>License</p>
+            <b>License</b>
             <p>Unless otherwise stated, The Social Scoop and/or its licensors own the intellectual property rights for all material on The Social Scoop. All intellectual property rights are reserved. You may access this for your own personal use subjected to restrictions set in these terms and conditions.</p>
-            <br />
             <p>You must not:</p>
-            <ul style={{ paddingLeft: 20, marginTop: 6 }}>
+            <ul>
               <li>Republish material from The Social Scoop</li>
               <li>Sell, rent or sub-license material from The Social Scoop</li>
               <li>Reproduce, duplicate or copy material from The Social Scoop</li>
               <li>Redistribute content from The Social Scoop</li>
             </ul>
-            <br />
-            <p style={{ fontWeight: 700, marginBottom: 6 }}>Comments &amp; User Content</p>
+            <b>Comments &amp; User Content</b>
             <p>The Social Scoop does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of The Social Scoop, its agents and/or affiliates. The Social Scoop reserves the right to monitor all Comments and to remove any Comments which can be considered inappropriate, offensive or causes breach of these Terms and Conditions.</p>
-            <br />
-            <p style={{ fontWeight: 700, marginBottom: 6 }}>Disclaimer</p>
+            <b>Disclaimer</b>
             <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will limit or exclude our or your liability for death or personal injury, limit or exclude our or your liability for fraud or fraudulent misrepresentation, or limit any of our or your liabilities in any way that is not permitted under applicable law.</p>
-            <br />
-            <p style={{ opacity: 0.6, fontSize: 12 }}>Effective Date: May 24, 2022</p>
-          </div>
+            <p style={{ opacity: 0.55, fontSize: 12, marginTop: 14 }}>Effective Date: May 24, 2022</p>
+          </TermsContent>
         )}
       </SettingsCard>
 
