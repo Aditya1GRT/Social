@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { lightTheme, darkTheme } from './themes';
-import { refresh } from './redux/actions';
+import { refresh, changeTheme } from './redux/actions';
 
 import TopBar from './components/TopBar';
 import NavBar from './components/NavBar';
