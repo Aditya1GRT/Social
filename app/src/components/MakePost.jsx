@@ -23,6 +23,13 @@ const Card = styled.div`
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
   position: relative;
   z-index: 2;
+  width: 100%;
+  min-width: 0;
+
+  @media (max-width: 480px) {
+    padding: 14px;
+    border-radius: 14px;
+  }
 `;
 
 const Header = styled.div`
@@ -54,6 +61,7 @@ const AvatarImg = styled.img`
 
 const TextArea = styled.textarea`
   flex: 1;
+  min-width: 0;
   padding: 10px 14px;
   border-radius: 14px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
@@ -66,8 +74,14 @@ const TextArea = styled.textarea`
   outline: none;
   transition: border-color 0.2s;
   line-height: 1.5;
+  width: 100%;
   &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.6; }
   &:focus { border-color: ${({ theme }) => theme.accent}; }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    min-height: 70px;
+  }
 `;
 
 const Footer = styled.div`
@@ -77,6 +91,10 @@ const Footer = styled.div`
   margin-top: 12px;
   flex-wrap: wrap;
   gap: 10px;
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
 `;
 
 const MediaActions = styled.div`
@@ -84,6 +102,10 @@ const MediaActions = styled.div`
   gap: 8px;
   align-items: center;
   flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    gap: 6px;
+  }
 `;
 
 const MediaBtn = styled.label`
@@ -91,6 +113,7 @@ const MediaBtn = styled.label`
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
+  min-height: 44px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
@@ -99,9 +122,15 @@ const MediaBtn = styled.label`
   cursor: pointer;
   transition: all 0.2s;
   font-family: ${({ theme }) => theme.fontFamily};
+  white-space: nowrap;
   &:hover {
     border-color: ${({ theme }) => theme.accent};
     color: ${({ theme }) => theme.accent};
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 7px 10px;
   }
 `;
 
@@ -146,6 +175,7 @@ const RemoveMediaBtn = styled.button`
 
 const SubmitBtn = styled.button`
   padding: 8px 22px;
+  min-height: 44px;
   border-radius: 20px;
   border: none;
   background: ${({ theme }) => theme.accent};
@@ -158,6 +188,8 @@ const SubmitBtn = styled.button`
   align-items: center;
   gap: 8px;
   transition: opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
   &:hover { opacity: 0.88; }
   &:disabled { opacity: 0.55; cursor: not-allowed; }
 `;
@@ -167,6 +199,7 @@ const EmojiToggleBtn = styled.button`
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
+  min-height: 44px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
@@ -175,9 +208,15 @@ const EmojiToggleBtn = styled.button`
   cursor: pointer;
   transition: all 0.2s;
   font-family: ${({ theme }) => theme.fontFamily};
+  white-space: nowrap;
   &:hover {
     border-color: ${({ theme }) => theme.accent};
     color: ${({ theme }) => theme.accent};
+  }
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    padding: 7px 10px;
   }
 `;
 

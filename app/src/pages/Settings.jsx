@@ -25,6 +25,10 @@ const PageWrapper = styled.div`
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 const PageTitle = styled.h2`
@@ -80,7 +84,13 @@ const SettingRow = styled.div`
   justify-content: space-between;
   padding: 16px 20px;
   border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.06);
+  gap: 12px;
+  flex-wrap: wrap;
   &:last-child { border-bottom: none; }
+
+  @media (max-width: 480px) {
+    padding: 14px 16px;
+  }
 `;
 
 const SettingInfo = styled.div``;
@@ -108,6 +118,9 @@ const Toggle = styled.button`
   position: relative;
   background: ${({ $on, theme }) => $on ? theme.accent : 'rgba(0,0,0,0.15)'};
   flex-shrink: 0;
+  /* Expand tap target without changing visual size */
+  padding: 8px 0;
+  margin: -8px 0;
   &:hover { opacity: 0.9; }
 `;
 
@@ -141,6 +154,7 @@ const LogoutBtn = styled.button`
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
+  min-height: 44px;
   border-radius: 12px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
@@ -150,6 +164,8 @@ const LogoutBtn = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
   &:hover {
     border-color: ${({ theme }) => theme.accent};
     color: ${({ theme }) => theme.accent};
@@ -161,6 +177,7 @@ const DangerBtn = styled.button`
   align-items: center;
   gap: 8px;
   padding: 10px 18px;
+  min-height: 44px;
   border-radius: 12px;
   border: 1px solid rgba(231, 76, 60, 0.3);
   background: rgba(231, 76, 60, 0.08);
@@ -170,6 +187,8 @@ const DangerBtn = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
   &:hover {
     background: rgba(231, 76, 60, 0.16);
     border-color: #e74c3c;

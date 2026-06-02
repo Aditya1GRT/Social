@@ -99,7 +99,13 @@ const DeleteBtn = styled.button`
   opacity: 0.5;
   font-size: 14px;
   padding: 6px;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s;
+  flex-shrink: 0;
   &:hover { opacity: 1; color: #e74c3c; }
 `;
 
@@ -152,6 +158,11 @@ const Actions = styled.div`
   gap: 4px;
   padding: 10px 16px;
   border-top: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.08);
+  flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    padding: 8px 12px;
+  }
 `;
 
 const ActionBtn = styled.button`
@@ -175,11 +186,21 @@ const ActionBtn = styled.button`
   }
 
   &.liked { color: #e74c3c; }
+
+  @media (max-width: 480px) {
+    padding: 7px 10px;
+    font-size: 13px;
+  }
 `;
 
 const CommentSection = styled(motion.div)`
   padding: 12px 16px;
   border-top: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.08);
+  overflow: hidden;
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+  }
 `;
 
 const CommentList = styled.div`

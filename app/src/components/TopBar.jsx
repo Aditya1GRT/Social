@@ -56,8 +56,13 @@ const SearchWrapper = styled.div`
   min-width: 0;
 
   @media (max-width: 480px) {
-    max-width: 160px;
-    margin: 0 8px;
+    max-width: 140px;
+    margin: 0 6px;
+  }
+
+  @media (max-width: 360px) {
+    max-width: 100px;
+    margin: 0 4px;
   }
 `;
 
@@ -75,6 +80,7 @@ const SearchInput = styled.input`
   outline: none;
   transition: all 0.2s;
   width: 100%;
+  min-height: 44px;
 
   &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.7; }
   &:focus {
@@ -86,14 +92,19 @@ const SearchInput = styled.input`
     font-size: 13px;
     padding: 8px 10px;
   }
+
+  @media (max-width: 360px) {
+    font-size: 12px;
+    padding: 8px 8px;
+  }
 `;
 
 const SearchBtn = styled.button`
   background: ${({ theme }) => theme.accent};
   border: none;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -103,11 +114,6 @@ const SearchBtn = styled.button`
   flex-shrink: 0;
 
   &:hover { opacity: 0.85; }
-
-  @media (max-width: 480px) {
-    width: 44px;
-    height: 44px;
-  }
 `;
 
 const RightSection = styled.div`
@@ -125,8 +131,8 @@ const ThemeToggle = styled.button`
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -139,28 +145,18 @@ const ThemeToggle = styled.button`
     background: rgba(${({ theme }) => theme.mainRgba}, 0.1);
     border-color: ${({ theme }) => theme.accent};
   }
-
-  @media (max-width: 480px) {
-    width: 44px;
-    height: 44px;
-  }
 `;
 
 const Avatar = styled(Link)`
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   overflow: hidden;
   border: 2px solid ${({ theme }) => theme.accent};
   flex-shrink: 0;
   transition: transform 0.2s;
   &:hover { transform: scale(1.05); }
-
-  @media (max-width: 480px) {
-    width: 40px;
-    height: 40px;
-  }
 `;
 
 const AvatarImg = styled.img`

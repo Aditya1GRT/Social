@@ -18,6 +18,10 @@ const PageWrapper = styled.div`
   max-width: 640px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 const PageTitle = styled.h2`
@@ -68,6 +72,13 @@ const UserCard = styled(motion.div)`
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  flex-wrap: nowrap;
+  min-width: 0;
+
+  @media (max-width: 480px) {
+    padding: 12px 14px;
+    gap: 10px;
+  }
 `;
 
 const Avatar = styled(Link)`
@@ -124,6 +135,10 @@ const Actions = styled.div`
   display: flex;
   gap: 8px;
   flex-shrink: 0;
+
+  @media (max-width: 400px) {
+    gap: 6px;
+  }
 `;
 
 const Btn = styled.button`
@@ -131,6 +146,7 @@ const Btn = styled.button`
   align-items: center;
   gap: 5px;
   padding: 7px 12px;
+  min-height: 44px;
   border-radius: 16px;
   border: none;
   font-family: ${({ theme }) => theme.fontFamily};
@@ -138,6 +154,8 @@ const Btn = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
 
   background: ${({ $variant, theme }) =>
     $variant === 'approve'
@@ -155,6 +173,11 @@ const Btn = styled.button`
 
   &:hover { opacity: 0.82; }
   &:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  @media (max-width: 400px) {
+    font-size: 12px;
+    padding: 6px 9px;
+  }
 `;
 
 const EmptySection = styled.div`

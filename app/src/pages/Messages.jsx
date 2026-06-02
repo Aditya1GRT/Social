@@ -20,6 +20,7 @@ const PageWrapper = styled.div`
   @media (max-width: 768px) {
     height: calc(100vh - 116px);
     flex-direction: column;
+    overflow: hidden;
   }
 `;
 
@@ -35,10 +36,13 @@ const ConvoList = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 200px;
+    max-height: 180px;
+    min-height: 80px;
+    flex-shrink: 0;
     border-right: none;
     border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
-    flex-direction: column;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 `;
 
@@ -49,6 +53,11 @@ const ConvoListHeader = styled.div`
   color: ${({ theme }) => theme.main};
   border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.08);
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    padding: 12px 16px 8px;
+    font-size: 15px;
+  }
 `;
 
 const ConvoItem = styled.div`
@@ -62,9 +71,14 @@ const ConvoItem = styled.div`
     $active ? `rgba(${theme.mainRgba}, 0.08)` : 'transparent'};
   border-left: 3px solid ${({ $active, theme }) =>
     $active ? theme.accent : 'transparent'};
+  min-height: 44px;
 
   &:hover {
     background: rgba(${({ theme }) => theme.mainRgba}, 0.06);
+  }
+
+  @media (max-width: 768px) {
+    padding: 8px 12px;
   }
 `;
 
@@ -121,6 +135,7 @@ const ChatArea = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
 `;
 
 const EmptyChat = styled.div`
@@ -180,6 +195,12 @@ const MessagesContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  -webkit-overflow-scrolling: touch;
+
+  @media (max-width: 480px) {
+    padding: 12px;
+    gap: 6px;
+  }
 `;
 
 const MessageBubble = styled(motion.div)`
@@ -195,8 +216,15 @@ const MessageBubble = styled(motion.div)`
   font-size: 14px;
   line-height: 1.45;
   word-break: break-word;
+  overflow-wrap: break-word;
   backdrop-filter: blur(8px);
   border: ${({ $own }) => $own ? 'none' : '1px solid rgba(0,0,0,0.06)'};
+
+  @media (max-width: 480px) {
+    max-width: 82%;
+    font-size: 13px;
+    padding: 8px 12px;
+  }
 `;
 
 const MessageTime = styled.div`
@@ -215,11 +243,18 @@ const InputArea = styled.form`
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
   backdrop-filter: blur(12px);
   flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+    gap: 8px;
+  }
 `;
 
 const MessageInput = styled.input`
   flex: 1;
+  min-width: 0;
   padding: 10px 16px;
+  min-height: 44px;
   border-radius: 22px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.35);
@@ -236,8 +271,8 @@ const SendBtn = styled.button`
   background: ${({ theme }) => theme.accent};
   border: none;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -254,14 +289,14 @@ const NewChatBtn = styled.button`
   background: ${({ theme }) => theme.accent};
   border: none;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   color: ${({ theme }) => theme.body};
-  font-size: 13px;
+  font-size: 14px;
   flex-shrink: 0;
   transition: opacity 0.2s;
   &:hover { opacity: 0.85; }

@@ -7,6 +7,8 @@ const HomeWrapper = styled.div`
   justify-content: center;
   width: 100%;
   padding: 0;
+  min-width: 0;
+  overflow-x: hidden;
 `;
 
 export default function Home() {
