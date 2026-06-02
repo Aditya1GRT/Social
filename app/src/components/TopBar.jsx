@@ -168,7 +168,7 @@ export default function TopBar({ isDark, onToggleTheme }) {
 
   return (
     <Bar>
-      <LogoLink to={currentUser ? '/' : '/login'}>
+      <LogoLink to={currentUser ? '/' : '/login'} reloadDocument>
         <LogoImg src={isDark ? logoDark : logoLight} alt="The Social Scoop" />
       </LogoLink>
 
