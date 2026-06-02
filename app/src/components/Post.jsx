@@ -223,16 +223,21 @@ export default function Post({ post }) {
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState(post.comments || []);
+  const [likes, setLikes] = useState(post.likes || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const userId = currentUser?._id;
-  const liked = post.reactions?.includes(userId);
-  const likeCount = post.reactions?.length || 0;
+  const liked = likes.includes(userId);
+  const likeCount = likes.length;
   const isOwn = post.userId === userId;
 
   const handleLike = () => {
     if (!userId) return;
-    reactPost(dispatch, post, userId);
+    const nowLiked = !liked;
+    setLikes(nowLiked ? [...likes, userId] : likes.filter(id => id !== userId));
+    reactPost(dispatch, post, userId).catch(() => {
+      setLikes(liked ? [...likes, userId] : likes.filter(id => id !== userId));
+    });
   };
 
   const handleDelete = () => {
@@ -247,12 +252,14 @@ export default function Post({ post }) {
     const text = commentText.trim();
     if (!text || !userId || isSubmitting) return;
     setIsSubmitting(true);
+    const tempId = 'temp_' + Date.now();
+    const tempComment = { _id: tempId, userId, comment: text, username: currentUser.username };
+    setComments(prev => [...prev, tempComment]);
+    setCommentText('');
     try {
-      const commentData = { userId, comment: text, username: currentUser.username };
-      const updated = await addComment(post._id, commentData);
-      setComments(updated.comments || []);
-      setCommentText('');
+      await addComment(post._id, { userId, comment: text, username: currentUser.username });
     } catch (err) {
+      setComments(prev => prev.filter(c => c._id !== tempId));
       console.error(err);
     } finally {
       setIsSubmitting(false);
@@ -260,9 +267,9 @@ export default function Post({ post }) {
   };
 
   const handleDeleteComment = async (commentId) => {
+    setComments(prev => prev.filter(c => c._id !== commentId));
     try {
-      const updated = await deleteComment(post._id, commentId);
-      setComments(updated.comments || []);
+      await deleteComment(post._id, commentId);
     } catch (err) {
       console.error(err);
     }

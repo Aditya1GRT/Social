@@ -7,7 +7,9 @@ import { faCircleNodes, faPaperPlane, faMessage } from '@fortawesome/free-solid-
 import io from 'socket.io-client';
 import { getConversations, getMessages, sendMessage, getUsersDetails } from '../redux/actions';
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
+// undefined → Socket.io connects to the current page origin (correct in production).
+// In local dev the Vite proxy forwards /socket.io to localhost:5000.
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || undefined;
 
 const PageWrapper = styled.div`
   display: flex;
