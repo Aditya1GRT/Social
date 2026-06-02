@@ -80,13 +80,13 @@ const NameLink = styled(Link)`
 const Username = styled.span`
   font-size: 12px;
   color: ${({ theme }) => theme.text};
-  opacity: 0.7;
+  opacity: 0.9;
 `;
 
 const Time = styled.span`
   font-size: 11px;
   color: ${({ theme }) => theme.text};
-  opacity: 0.5;
+  opacity: 0.75;
 `;
 
 const DeleteBtn = styled.button`

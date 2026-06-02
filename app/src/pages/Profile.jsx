@@ -94,7 +94,7 @@ const DisplayName = styled.h2`
 const Username = styled.p`
   font-size: 14px;
   color: ${({ theme }) => theme.text};
-  opacity: 0.7;
+  opacity: 0.9;
   margin-bottom: 10px;
 `;
 
@@ -125,7 +125,7 @@ const StatNum = styled.div`
 const StatLabel = styled.div`
   font-size: 12px;
   color: ${({ theme }) => theme.text};
-  opacity: 0.7;
+  opacity: 0.9;
 `;
 
 const ActionRow = styled.div`
