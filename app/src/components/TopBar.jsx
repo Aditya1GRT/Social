@@ -75,11 +75,6 @@ const ThemeToggle = styled.button`
     background: rgba(${({ theme }) => theme.mainRgba}, 0.1);
     border-color: ${({ theme }) => theme.accent};
   }
-
-  @media (max-width: 480px) {
-    width: 44px;
-    height: 44px;
-  }
 `;
 
 const Avatar = styled(Link)`
@@ -92,11 +87,6 @@ const Avatar = styled(Link)`
   flex-shrink: 0;
   transition: transform 0.2s;
   &:hover { transform: scale(1.05); }
-
-  @media (max-width: 480px) {
-    width: 40px;
-    height: 40px;
-  }
 `;
 
 const AvatarImg = styled.img`
