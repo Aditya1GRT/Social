@@ -388,6 +388,7 @@ export default function Post({ post }) {
                   </button>
                   {showCommentEmoji && (
                     <EmojiPicker
+                      align="right"
                       onSelect={emoji => { setCommentText(t => t + emoji); setShowCommentEmoji(false); }}
                       onClose={() => setShowCommentEmoji(false)}
                     />
