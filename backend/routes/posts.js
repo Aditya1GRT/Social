@@ -20,7 +20,8 @@ router.get('/profile/:userId', async (req, res) => {
   try {
     const userPosts = await posts.findAsync({ userId: req.params.userId });
     userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    res.status(200).json(userPosts);
+    const enriched = await Promise.all(userPosts.map(enrichPost));
+    res.status(200).json(enriched);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
