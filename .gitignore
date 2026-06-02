@@ -9,3 +9,4 @@ TheSocialScoop-master/TheSocialScoop-master/build/**/*.map
 .env
 .env.local
 *.log
+.claude/
