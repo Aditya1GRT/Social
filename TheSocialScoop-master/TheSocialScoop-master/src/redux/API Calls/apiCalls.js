@@ -7,6 +7,7 @@ import {
   getUsersSuccess,
   userStart,
   loginSuccess,
+  logOut,
   unFollowSuccess,
   changeThemeSuccess,
   unSendFollowRequestSuccess,
@@ -32,7 +33,12 @@ export const refresh = async (dispatch, user) => {
     const res = await publicRequest.get(`/users/user/${user.username}`);
     dispatch(refreshSuccess({ ...user, ...res.data }));
   } catch (error) {
-    dispatch(userFailure());
+    if (error.response?.status === 404) {
+      // Account no longer exists (e.g. DB was wiped on restart) — clear stale session
+      dispatch(logOut());
+    } else {
+      dispatch(userFailure());
+    }
   }
 };
 
