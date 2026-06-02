@@ -43,15 +43,17 @@ const BottomNav = styled.nav`
     left: 0;
     right: 0;
     height: 60px;
+    min-height: 60px;
     z-index: 999;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+    background: rgba(${({ theme }) => theme.bodyRgba}, 0.95);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
-    padding: 0 8px;
+    padding: 0 4px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 `;
 
@@ -80,8 +82,11 @@ const NavItem = styled(NavLink)`
   @media (max-width: 768px) {
     width: 44px;
     height: 44px;
+    min-height: 44px;
     font-size: 20px;
     border-radius: 12px;
+    flex: 1;
+    max-width: 64px;
   }
 `;
 

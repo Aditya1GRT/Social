@@ -12,10 +12,15 @@ const FeedWrapper = styled.div`
   max-width: 620px;
   width: 100%;
   padding: 20px 16px;
+  min-width: 0;
 
   @media (max-width: 768px) {
     max-width: 100%;
     padding: 16px 12px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 8px;
   }
 `;
 

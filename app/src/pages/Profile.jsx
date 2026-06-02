@@ -27,6 +27,10 @@ const PageWrapper = styled.div`
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 const ProfileCard = styled(motion.div)`
@@ -38,13 +42,22 @@ const ProfileCard = styled(motion.div)`
   padding: 30px;
   margin-bottom: 24px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+
+  @media (max-width: 480px) {
+    padding: 18px;
+    border-radius: 18px;
+  }
 `;
 
 const ProfileHeader = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 24px;
+  gap: 20px;
   flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    gap: 14px;
+  }
 `;
 
 const Avatar = styled.div`
@@ -81,7 +94,12 @@ const AvatarPlaceholder = styled.div`
 
 const ProfileInfo = styled.div`
   flex: 1;
-  min-width: 180px;
+  min-width: 160px;
+
+  @media (max-width: 480px) {
+    min-width: 0;
+    width: 100%;
+  }
 `;
 
 const DisplayName = styled.h2`
@@ -89,6 +107,11 @@ const DisplayName = styled.h2`
   font-weight: 700;
   color: ${({ theme }) => theme.main};
   margin-bottom: 2px;
+  word-break: break-word;
+
+  @media (max-width: 480px) {
+    font-size: 19px;
+  }
 `;
 
 const Username = styled.p`
@@ -110,6 +133,10 @@ const Stats = styled.div`
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    gap: 14px;
+  }
 `;
 
 const StatItem = styled.div`
@@ -140,6 +167,7 @@ const ActionBtn = styled.button`
   align-items: center;
   gap: 8px;
   padding: 9px 20px;
+  min-height: 44px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: ${({ $primary, theme }) =>
@@ -161,6 +189,7 @@ const EditLink = styled(Link)`
   align-items: center;
   gap: 8px;
   padding: 9px 20px;
+  min-height: 44px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);

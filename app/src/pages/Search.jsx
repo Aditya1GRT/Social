@@ -18,6 +18,10 @@ const PageWrapper = styled.div`
   max-width: 640px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 const SearchForm = styled.form`
@@ -28,7 +32,9 @@ const SearchForm = styled.form`
 
 const SearchInput = styled.input`
   flex: 1;
+  min-width: 0;
   padding: 12px 18px;
+  min-height: 44px;
   border-radius: 22px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
@@ -40,10 +46,16 @@ const SearchInput = styled.input`
   transition: all 0.2s;
   &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.6; }
   &:focus { border-color: ${({ theme }) => theme.accent}; background: rgba(${({ theme }) => theme.bodyRgba}, 0.45); }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
 `;
 
 const SearchBtn = styled.button`
   padding: 12px 20px;
+  min-height: 44px;
   border-radius: 22px;
   border: none;
   background: ${({ theme }) => theme.accent};
@@ -56,7 +68,14 @@ const SearchBtn = styled.button`
   align-items: center;
   gap: 8px;
   transition: opacity 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
   &:hover { opacity: 0.88; }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+    padding: 10px 14px;
+  }
 `;
 
 const ResultsWrapper = styled.div`
@@ -77,7 +96,14 @@ const UserCard = styled(motion.div)`
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   transition: transform 0.15s;
+  flex-wrap: nowrap;
+  min-width: 0;
   &:hover { transform: translateY(-1px); }
+
+  @media (max-width: 480px) {
+    padding: 12px 14px;
+    gap: 10px;
+  }
 `;
 
 const Avatar = styled(Link)`
@@ -135,6 +161,7 @@ const ActionBtn = styled.button`
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
+  min-height: 44px;
   border-radius: 18px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: ${({ $primary, theme }) =>
@@ -149,6 +176,11 @@ const ActionBtn = styled.button`
   flex-shrink: 0;
   &:hover { opacity: 0.85; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  @media (max-width: 480px) {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 `;
 
 const EmptyState = styled.div`

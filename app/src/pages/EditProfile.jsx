@@ -13,6 +13,10 @@ const PageWrapper = styled.div`
   max-width: 600px;
   margin: 0 auto;
   width: 100%;
+
+  @media (max-width: 480px) {
+    padding: 16px;
+  }
 `;
 
 const BackBtn = styled.button`
@@ -26,6 +30,7 @@ const BackBtn = styled.button`
   font-size: 14px;
   cursor: pointer;
   padding: 8px 0;
+  min-height: 44px;
   margin-bottom: 16px;
   opacity: 0.75;
   transition: opacity 0.2s;
@@ -40,6 +45,11 @@ const Card = styled(motion.div)`
   border-radius: 24px;
   padding: 32px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+
+  @media (max-width: 480px) {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
 `;
 
 const Title = styled.h2`
@@ -126,6 +136,7 @@ const Label = styled.label`
 const Input = styled.input`
   width: 100%;
   padding: 11px 14px;
+  min-height: 44px;
   border-radius: 12px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.35);
@@ -136,6 +147,10 @@ const Input = styled.input`
   transition: border-color 0.2s;
   &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.55; }
   &:focus { border-color: ${({ theme }) => theme.accent}; }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const TextArea = styled.textarea`
@@ -153,6 +168,10 @@ const TextArea = styled.textarea`
   transition: border-color 0.2s;
   &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.55; }
   &:focus { border-color: ${({ theme }) => theme.accent}; }
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const BtnRow = styled.div`
@@ -166,6 +185,7 @@ const SaveBtn = styled.button`
   flex: 1;
   min-width: 120px;
   padding: 12px;
+  min-height: 44px;
   border-radius: 14px;
   border: none;
   background: ${({ theme }) => theme.accent};
@@ -185,6 +205,7 @@ const SaveBtn = styled.button`
 
 const CancelBtn = styled.button`
   padding: 12px 22px;
+  min-height: 44px;
   border-radius: 14px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
