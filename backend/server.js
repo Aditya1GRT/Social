@@ -90,18 +90,26 @@ if (fs.existsSync(buildPath)) {
 
 const PORT = process.env.PORT || 5000;
 
-async function start() {
-  if (process.env.MONGODB_URI) {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to MongoDB (durable storage)');
-  } else {
-    console.warn('MONGODB_URI not set — using NeDB file storage (data is lost on process restart)');
-    console.warn('Set MONGODB_URI to a free MongoDB Atlas cluster for persistent storage.');
-  }
-  server.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));
-}
+// Start listening immediately so the platform health check passes even while
+// the database is still connecting (or is misconfigured). A DB problem should
+// degrade the app, not take the whole service down on deploy.
+server.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));
 
-start().catch((err) => {
-  console.error('Failed to start server:', err.message);
-  process.exit(1);
-});
+// Connect to MongoDB when configured. Mongoose buffers queries until the
+// connection is ready, so the app recovers automatically once the URI / Atlas
+// network access is correct — no redeploy needed for a network-access change.
+if (process.env.MONGODB_URI) {
+  const connect = () =>
+    mongoose
+      .connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 })
+      .then(() => console.log('Connected to MongoDB (durable storage)'))
+      .catch((err) => {
+        console.error('MongoDB connection failed:', err.message);
+        console.error('Check MONGODB_URI is correct and that Atlas Network Access allows 0.0.0.0/0. Retrying in 5s...');
+        setTimeout(connect, 5000);
+      });
+  connect();
+} else {
+  console.warn('MONGODB_URI not set — using NeDB file storage (data is lost on process restart)');
+  console.warn('Set MONGODB_URI to a free MongoDB Atlas cluster for persistent storage.');
+}
