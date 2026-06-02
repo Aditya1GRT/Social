@@ -21,6 +21,8 @@ const Card = styled.div`
   padding: 18px;
   margin-bottom: 20px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 2;
 `;
 
 const Header = styled.div`
