@@ -113,7 +113,7 @@ const ConvoName = styled.div`
 const ConvoUsername = styled.div`
   font-size: 12px;
   color: ${({ theme }) => theme.text};
-  opacity: 0.65;
+  opacity: 0.9;
 `;
 
 const ChatArea = styled.div`
@@ -130,7 +130,7 @@ const EmptyChat = styled.div`
   align-items: center;
   justify-content: center;
   color: ${({ theme }) => theme.text};
-  opacity: 0.5;
+  opacity: 0.85;
   gap: 12px;
   font-size: 15px;
 `;
@@ -200,7 +200,7 @@ const MessageBubble = styled(motion.div)`
 
 const MessageTime = styled.div`
   font-size: 10px;
-  opacity: 0.55;
+  opacity: 0.75;
   text-align: ${({ $own }) => $own ? 'right' : 'left'};
   margin-top: 2px;
   padding: ${({ $own }) => $own ? '0 4px 0 0' : '0 0 0 4px'};
@@ -567,7 +567,7 @@ export default function Messages() {
         {isFetching && conversations.length === 0 ? (
           <LoadingSpinner><FontAwesomeIcon icon={faCircleNodes} spin /></LoadingSpinner>
         ) : conversations.length === 0 ? (
-          <div style={{ padding: '20px', textAlign: 'center', opacity: 0.5, fontSize: '13px' }}>
+          <div style={{ padding: '20px', textAlign: 'center', opacity: 0.85, fontSize: '13px', color: 'inherit' }}>
             No conversations yet.
           </div>
         ) : (
@@ -631,7 +631,7 @@ export default function Messages() {
               {loadingMsgs ? (
                 <LoadingSpinner><FontAwesomeIcon icon={faCircleNodes} spin /></LoadingSpinner>
               ) : messages.length === 0 ? (
-                <div style={{ textAlign: 'center', opacity: 0.45, padding: '40px', fontSize: '14px' }}>
+                <div style={{ textAlign: 'center', opacity: 0.85, padding: '40px', fontSize: '14px', color: 'inherit' }}>
                   No messages yet. Say hello!
                 </div>
               ) : (
@@ -708,10 +708,10 @@ export default function Messages() {
               </ModalUserItem>
             ))}
             {!searching && searchQuery && searchResults.length === 0 && (
-              <div style={{ textAlign: 'center', opacity: 0.5, padding: '16px', fontSize: '13px' }}>No users found</div>
+              <div style={{ textAlign: 'center', opacity: 0.8, padding: '16px', fontSize: '13px', color: 'inherit' }}>No users found</div>
             )}
             {!searchQuery && (
-              <div style={{ textAlign: 'center', opacity: 0.45, padding: '16px', fontSize: '13px' }}>
+              <div style={{ textAlign: 'center', opacity: 0.75, padding: '16px', fontSize: '13px', color: 'inherit' }}>
                 <FontAwesomeIcon icon={faMagnifyingGlass} style={{ marginRight: 6 }} />
                 Type a name or username to search
               </div>
