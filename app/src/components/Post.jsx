@@ -10,10 +10,12 @@ import {
   faComment,
   faPaperPlane,
   faCircleNodes,
+  faFaceSmile,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { reactPost, deletePost, addComment, deleteComment } from '../redux/actions';
 import Comment from './Comment';
+import EmojiPicker from './EmojiPicker';
 
 const Card = styled(motion.div)`
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.25);
@@ -222,6 +224,7 @@ export default function Post({ post }) {
   const currentUser = useSelector(s => s.user?.currentUser);
   const [showComments, setShowComments] = useState(false);
   const [commentText, setCommentText] = useState('');
+  const [showCommentEmoji, setShowCommentEmoji] = useState(false);
   const [comments, setComments] = useState(post.comments || []);
   const [likes, setLikes] = useState(post.likes || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -308,7 +311,7 @@ export default function Post({ post }) {
 
       {post.description && <PostText>{post.description}</PostText>}
 
-      {post.postMedia && (
+      {post.postMedia && post.postMedia !== 'null' && post.postMedia !== '' && (
         <MediaWrapper>
           {post.mediaType === 'video' ? (
             <PostVideo controls src={post.postMedia}>
@@ -371,6 +374,25 @@ export default function Post({ post }) {
                   value={commentText}
                   onChange={e => setCommentText(e.target.value)}
                 />
+                <div style={{ position: 'relative', flexShrink: 0 }}>
+                  <button
+                    type="button"
+                    onClick={() => setShowCommentEmoji(v => !v)}
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      fontSize: '18px', padding: '4px', opacity: 0.6,
+                      color: 'inherit',
+                    }}
+                  >
+                    😊
+                  </button>
+                  {showCommentEmoji && (
+                    <EmojiPicker
+                      onSelect={emoji => { setCommentText(t => t + emoji); setShowCommentEmoji(false); }}
+                      onClose={() => setShowCommentEmoji(false)}
+                    />
+                  )}
+                </div>
                 <SendBtn type="submit" disabled={isSubmitting || !commentText.trim()}>
                   {isSubmitting ? (
                     <FontAwesomeIcon icon={faCircleNodes} spin />
