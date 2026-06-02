@@ -285,6 +285,7 @@ export default function MakePost() {
               </EmojiToggleBtn>
               {showEmoji && (
                 <EmojiPicker
+                  direction="down"
                   onSelect={emoji => { setText(t => t + emoji); setShowEmoji(false); }}
                   onClose={() => setShowEmoji(false)}
                 />
