@@ -10,7 +10,7 @@ export const lightTheme = {
 
 export const darkTheme = {
   body: "#001D0C",
-  text: "#a5a5a5",
+  text: "#c2d4cc",
   main: "#D3EFDF",
   accent: "#38ffb3",
   fontFamily: "'Source Sans Pro', sans-serif",
