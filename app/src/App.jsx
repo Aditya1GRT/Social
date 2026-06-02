@@ -70,9 +70,15 @@ const MainArea = styled.main`
   flex-direction: column;
   overflow-y: auto;
   min-height: calc(100vh - 64px);
+  min-width: 0;
+  width: 100%;
 
   @media (max-width: 768px) {
     min-height: calc(100vh - 116px);
+  }
+
+  @media (max-width: 480px) {
+    padding-bottom: 0;
   }
 `;
 
