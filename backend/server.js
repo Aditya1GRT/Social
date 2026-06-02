@@ -83,9 +83,9 @@ io.on('connection', (socket) => {
   });
 });
 
-// In a single-service deployment, serve the built React frontend.
+// In a single-service deployment, serve the built Vite frontend.
 // Only activates when a production build exists, so local two-server dev is unaffected.
-const buildPath = path.join(__dirname, '..', 'TheSocialScoop-master', 'TheSocialScoop-master', 'build');
+const buildPath = path.join(__dirname, '..', 'app', 'dist');
 if (fs.existsSync(buildPath)) {
   app.use(express.static(buildPath));
   app.get('*', (req, res) => res.sendFile(path.join(buildPath, 'index.html')));

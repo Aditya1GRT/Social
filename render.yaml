@@ -1,22 +1,18 @@
 # Render Blueprint — deploys the whole app as ONE service.
-# The Express backend serves both the API and the built React frontend,
-# so there is a single URL, no CORS setup, and no cross-service config.
+# Express backend serves both the API and the Vite-built React frontend
+# from a single URL — no CORS setup needed.
 #
 # Docs: https://render.com/docs/blueprint-spec
-# After connecting this repo on Render, it provisions the service below.
 
 services:
   - type: web
     name: social-scoop
     runtime: node
     plan: free
-    # The React app is PRE-BUILT and committed (TheSocialScoop-master/.../build),
-    # so the free tier (512 MB) never runs the React build — it peaks ~1 GB and
-    # gets OOM-killed during deploy. We only install the lightweight backend here.
-    # To change the UI: run ./rebuild-frontend.sh and commit the updated build.
-    buildCommand: cd backend && npm install
+    # Vite builds are lightweight (~150 MB peak) — well within the 512 MB free tier.
+    # The built output lands in app/dist and is served statically by Express.
+    buildCommand: cd backend && npm install && cd ../app && npm install && npm run build
     startCommand: node backend/server.js
-    # Render polls this until it returns 200, then marks the deploy live.
     healthCheckPath: /api/health
     envVars:
       - key: JWT_SECRET
@@ -26,12 +22,10 @@ services:
       - key: NODE_VERSION
         value: "22"
       # REQUIRED for persistent data: MongoDB Atlas free tier (M0).
-      # Get a free cluster at https://cloud.mongodb.com
       # Format: mongodb+srv://user:pass@cluster.mongodb.net/social-scoop?retryWrites=true&w=majority
       - key: MONGODB_URI
         sync: false
       # Optional: durable file uploads via Cloudinary (free tier).
-      # Without this, uploaded files are lost on restart.
       # Format: cloudinary://<api_key>:<api_secret>@<cloud_name>
       - key: CLOUDINARY_URL
         sync: false
