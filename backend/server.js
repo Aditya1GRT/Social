@@ -7,6 +7,10 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
+// Fail buffered DB operations after 8 s so API requests return 503 quickly
+// instead of hanging forever when MongoDB is slow to connect or misconfigured.
+mongoose.set('bufferTimeoutMS', 8000);
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');

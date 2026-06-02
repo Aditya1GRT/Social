@@ -18,6 +18,7 @@ export const getToken = () => {
 
 export const publicRequest = axios.create({
   baseURL: BASE_URL,
+  timeout: 15000,
 });
 
 // Attach the auth token (when present) to every request automatically.
@@ -29,6 +30,7 @@ publicRequest.interceptors.request.use((config) => {
 
 export const userRequest = axios.create({
   baseURL: BASE_URL,
+  timeout: 15000,
 });
 
 userRequest.interceptors.request.use((config) => {
