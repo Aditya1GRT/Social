@@ -129,10 +129,11 @@ const EmptyChat = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.text};
-  opacity: 0.85;
+  color: ${({ theme }) => theme.main};
   gap: 12px;
   font-size: 15px;
+  font-weight: 600;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
 `;
 
 const ChatHeader = styled.div`
@@ -567,7 +568,7 @@ export default function Messages() {
         {isFetching && conversations.length === 0 ? (
           <LoadingSpinner><FontAwesomeIcon icon={faCircleNodes} spin /></LoadingSpinner>
         ) : conversations.length === 0 ? (
-          <div style={{ padding: '20px', textAlign: 'center', opacity: 0.85, fontSize: '13px', color: 'inherit' }}>
+          <div style={{ padding: '20px', textAlign: 'center', fontSize: '13px', fontWeight: 600, color: 'inherit', textShadow: '0 1px 4px rgba(0,0,0,0.2)' }}>
             No conversations yet.
           </div>
         ) : (
@@ -631,7 +632,7 @@ export default function Messages() {
               {loadingMsgs ? (
                 <LoadingSpinner><FontAwesomeIcon icon={faCircleNodes} spin /></LoadingSpinner>
               ) : messages.length === 0 ? (
-                <div style={{ textAlign: 'center', opacity: 0.85, padding: '40px', fontSize: '14px', color: 'inherit' }}>
+                <div style={{ textAlign: 'center', padding: '40px', fontSize: '14px', fontWeight: 600, color: 'inherit', textShadow: '0 1px 6px rgba(0,0,0,0.25)' }}>
                   No messages yet. Say hello!
                 </div>
               ) : (
