@@ -11,7 +11,9 @@ const EMOJIS = [
 const Panel = styled.div`
   position: absolute;
   z-index: 300;
-  bottom: calc(100% + 6px);
+  ${({ $direction }) => $direction === 'down'
+    ? 'top: calc(100% + 6px);'
+    : 'bottom: calc(100% + 6px);'}
   ${({ $align }) => $align === 'right' ? 'right: 0;' : 'left: 0;'}
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.95);
   backdrop-filter: blur(20px);
@@ -45,7 +47,7 @@ const EmojiBtn = styled.button`
   &:hover { background: rgba(${({ theme }) => theme.mainRgba}, 0.1); }
 `;
 
-export default function EmojiPicker({ onSelect, onClose, align = 'left' }) {
+export default function EmojiPicker({ onSelect, onClose, align = 'left', direction = 'up' }) {
   const ref = useRef();
 
   useEffect(() => {
@@ -55,7 +57,7 @@ export default function EmojiPicker({ onSelect, onClose, align = 'left' }) {
   }, [onClose]);
 
   return (
-    <Panel ref={ref} $align={align}>
+    <Panel ref={ref} $align={align} $direction={direction}>
       {EMOJIS.map(emoji => (
         <EmojiBtn
           key={emoji}
