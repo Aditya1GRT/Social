@@ -443,7 +443,7 @@ export default function Settings() {
             <p>The Social Scoop does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of The Social Scoop, its agents and/or affiliates. The Social Scoop reserves the right to monitor all Comments and to remove any Comments which can be considered inappropriate, offensive or causes breach of these Terms and Conditions.</p>
             <b>Disclaimer</b>
             <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will limit or exclude our or your liability for death or personal injury, limit or exclude our or your liability for fraud or fraudulent misrepresentation, or limit any of our or your liabilities in any way that is not permitted under applicable law.</p>
-            <p style={{ opacity: 0.55, fontSize: 12, marginTop: 14 }}>Effective Date: May 24, 2022</p>
+            <p style={{ opacity: 0.55, fontSize: 12, marginTop: 14 }}>Effective Date: December 16, 2025</p>
           </TermsContent>
         )}
       </SettingsCard>
