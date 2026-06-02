@@ -38,10 +38,10 @@ const BackBtn = styled.button`
 `;
 
 const Card = styled(motion.div)`
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.28);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.14);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.16);
   border-radius: 24px;
   padding: 32px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
@@ -139,7 +139,7 @@ const Input = styled.input`
   min-height: 44px;
   border-radius: 12px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.35);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.22);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 15px;
@@ -158,7 +158,7 @@ const TextArea = styled.textarea`
   padding: 11px 14px;
   border-radius: 12px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.35);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.22);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 15px;
@@ -188,8 +188,9 @@ const SaveBtn = styled.button`
   min-height: 44px;
   border-radius: 14px;
   border: none;
-  background: ${({ theme }) => theme.accent};
-  color: ${({ theme }) => theme.body};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
+  color: white;
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 15px;
   font-weight: 700;
@@ -198,9 +199,9 @@ const SaveBtn = styled.button`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: opacity 0.2s;
-  &:hover { opacity: 0.88; }
-  &:disabled { opacity: 0.55; cursor: not-allowed; }
+  transition: filter 0.2s, opacity 0.2s;
+  &:hover { filter: brightness(1.1); }
+  &:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
 `;
 
 const CancelBtn = styled.button`
@@ -208,7 +209,7 @@ const CancelBtn = styled.button`
   min-height: 44px;
   border-radius: 14px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.18);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 15px;

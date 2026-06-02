@@ -34,10 +34,10 @@ const PageWrapper = styled.div`
 `;
 
 const ProfileCard = styled(motion.div)`
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.28);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.14);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.18);
   border-radius: 24px;
   padding: 30px;
   margin-bottom: 24px;
@@ -169,19 +169,20 @@ const ActionBtn = styled.button`
   padding: 9px 20px;
   min-height: 44px;
   border-radius: 20px;
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
+  border: ${({ $primary }) => $primary ? 'none' : '1px solid rgba(255,255,255,0.2)'};
   background: ${({ $primary, theme }) =>
-    $primary ? theme.accent : 'rgba(255,255,255,0.1)'};
-  color: ${({ $primary, theme }) => ($primary ? theme.body : theme.main)};
+    $primary ? theme.accentGrad : 'rgba(255,255,255,0.12)'};
+  box-shadow: ${({ $primary, theme }) => $primary ? theme.btnGlow : 'none'};
+  color: ${({ $primary }) => ($primary ? 'white' : 'inherit')};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: filter 0.2s, opacity 0.2s;
   backdrop-filter: blur(8px);
 
-  &:hover { opacity: 0.85; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:hover { filter: ${({ $primary }) => $primary ? 'brightness(1.1)' : 'brightness(1.05)'}; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 `;
 
 const EditLink = styled(Link)`
@@ -192,7 +193,7 @@ const EditLink = styled(Link)`
   min-height: 44px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.18);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 14px;

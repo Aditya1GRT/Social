@@ -13,10 +13,10 @@ import { createPost, uploadFile } from '../redux/actions';
 import EmojiPicker from './EmojiPicker';
 
 const Card = styled.div`
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.25);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
   border-radius: 18px;
   padding: 18px;
   margin-bottom: 20px;
@@ -65,7 +65,7 @@ const TextArea = styled.textarea`
   padding: 10px 14px;
   border-radius: 14px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.18);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 15px;
@@ -178,20 +178,21 @@ const SubmitBtn = styled.button`
   min-height: 44px;
   border-radius: 20px;
   border: none;
-  background: ${({ theme }) => theme.accent};
-  color: ${({ theme }) => theme.body};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
+  color: white;
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: opacity 0.2s;
+  transition: filter 0.2s, opacity 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
-  &:hover { opacity: 0.88; }
-  &:disabled { opacity: 0.55; cursor: not-allowed; }
+  &:hover { filter: brightness(1.1); }
+  &:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
 `;
 
 const EmojiToggleBtn = styled.button`

@@ -66,10 +66,10 @@ const UserCard = styled(motion.div)`
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.25);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   flex-wrap: nowrap;
@@ -159,19 +159,22 @@ const Btn = styled.button`
 
   background: ${({ $variant, theme }) =>
     $variant === 'approve'
-      ? theme.accent
+      ? theme.accentGrad
       : $variant === 'reject'
       ? 'rgba(231,76,60,0.15)'
       : 'rgba(0,0,0,0.08)'};
 
-  color: ${({ $variant, theme }) =>
+  box-shadow: ${({ $variant, theme }) =>
+    $variant === 'approve' ? theme.btnGlow : 'none'};
+
+  color: ${({ $variant }) =>
     $variant === 'approve'
-      ? theme.body
+      ? 'white'
       : $variant === 'reject'
       ? '#e74c3c'
-      : theme.main};
+      : 'inherit'};
 
-  &:hover { opacity: 0.82; }
+  &:hover { filter: brightness(1.08); opacity: 0.95; }
   &:disabled { opacity: 0.45; cursor: not-allowed; }
 
   @media (max-width: 400px) {

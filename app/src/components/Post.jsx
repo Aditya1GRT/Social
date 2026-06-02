@@ -18,10 +18,10 @@ import Comment from './Comment';
 import EmojiPicker from './EmojiPicker';
 
 const Card = styled(motion.div)`
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.25);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
   border-radius: 18px;
   overflow: hidden;
   margin-bottom: 20px;
@@ -223,7 +223,7 @@ const CommentInput = styled.input`
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 14px;
@@ -234,7 +234,8 @@ const CommentInput = styled.input`
 `;
 
 const SendBtn = styled.button`
-  background: ${({ theme }) => theme.accent};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
   border: none;
   border-radius: 50%;
   width: 36px;
@@ -243,11 +244,11 @@ const SendBtn = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: ${({ theme }) => theme.body};
+  color: white;
   flex-shrink: 0;
-  transition: opacity 0.2s;
-  &:hover { opacity: 0.85; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  transition: filter 0.2s, opacity 0.2s;
+  &:hover { filter: brightness(1.1); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
   @media (max-width: 480px) {
     width: 44px;
