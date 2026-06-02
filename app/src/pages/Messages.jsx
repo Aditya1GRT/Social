@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleNodes, faPaperPlane, faMessage } from '@fortawesome/free-solid-svg-icons';
+import { faCircleNodes, faPaperPlane, faMessage, faPlus, faMagnifyingGlass, faTimes } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
-import { getConversations, getMessages, sendMessage, getUsersDetails } from '../redux/actions';
+import { getConversations, getMessages, sendMessage, getUsersDetails, newConversation, searchUsers } from '../redux/actions';
 
 // undefined → Socket.io connects to the current page origin (correct in production).
 // In local dev the Vite proxy forwards /socket.io to localhost:5000.
@@ -249,6 +249,128 @@ const SendBtn = styled.button`
   &:disabled { opacity: 0.5; cursor: not-allowed; }
 `;
 
+const NewChatBtn = styled.button`
+  background: ${({ theme }) => theme.accent};
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: ${({ theme }) => theme.body};
+  font-size: 13px;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+  &:hover { opacity: 0.85; }
+`;
+
+const Modal = styled.div`
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  padding: 20px;
+`;
+
+const ModalCard = styled(motion.div)`
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.97);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
+  border-radius: 20px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 50px rgba(0,0,0,0.25);
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+`;
+
+const ModalTitle = styled.h3`
+  font-size: 17px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.main};
+`;
+
+const CloseBtn = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: ${({ theme }) => theme.text};
+  font-size: 16px;
+  opacity: 0.6;
+  &:hover { opacity: 1; }
+`;
+
+const ModalSearchInput = styled.input`
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.4);
+  color: ${({ theme }) => theme.main};
+  font-family: ${({ theme }) => theme.fontFamily};
+  font-size: 14px;
+  outline: none;
+  margin-bottom: 14px;
+  &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.6; }
+  &:focus { border-color: ${({ theme }) => theme.accent}; }
+`;
+
+const ModalUserItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+  &:hover { background: rgba(${({ theme }) => theme.mainRgba}, 0.08); }
+`;
+
+const ModalAvatar = styled.div`
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: ${({ theme }) => theme.accent};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.body};
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+  overflow: hidden;
+`;
+
+const ModalAvatarImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const ModalUserName = styled.div`
+  font-size: 14px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.main};
+`;
+
+const ModalUserHandle = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.text};
+  opacity: 0.7;
+`;
+
 const LoadingSpinner = styled.div`
   display: flex;
   justify-content: center;
@@ -276,6 +398,11 @@ export default function Messages() {
   const [convoUsers, setConvoUsers] = useState({});
   const [loadingMsgs, setLoadingMsgs] = useState(false);
   const [arrivingMsg, setArrivingMsg] = useState(null);
+  const [showNewChat, setShowNewChat] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const searchDebounce = useRef(null);
 
   const socketRef = useRef(null);
   const bottomRef = useRef(null);
@@ -392,13 +519,51 @@ export default function Messages() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setSearchQuery(val);
+    clearTimeout(searchDebounce.current);
+    if (!val.trim()) { setSearchResults([]); return; }
+    searchDebounce.current = setTimeout(async () => {
+      setSearching(true);
+      try {
+        const data = await searchUsers(val.trim());
+        setSearchResults((Array.isArray(data) ? data : []).filter(u => u._id !== currentUser?._id));
+      } catch { setSearchResults([]); }
+      finally { setSearching(false); }
+    }, 350);
+  };
+
+  const handleStartChat = async (user) => {
+    try {
+      const existing = conversations.find(c =>
+        c.members?.includes(user._id) && c.members?.includes(currentUser._id)
+      );
+      if (existing) {
+        setActiveConvo(existing);
+      } else {
+        const convo = await newConversation(dispatch, currentUser._id, user._id);
+        setActiveConvo(convo);
+        setConvoUsers(prev => ({ ...prev, [user._id]: user }));
+      }
+      setShowNewChat(false);
+      setSearchQuery('');
+      setSearchResults([]);
+    } catch (err) { console.error(err); }
+  };
+
   const otherUser = activeConvo ? convoUsers[getOtherUserId(activeConvo)] : null;
   const isOnline = otherUser && onlineUsers.includes(otherUser._id);
 
   return (
     <PageWrapper>
       <ConvoList>
-        <ConvoListHeader>Messages</ConvoListHeader>
+        <ConvoListHeader style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          Messages
+          <NewChatBtn onClick={() => setShowNewChat(true)} title="New conversation">
+            <FontAwesomeIcon icon={faPlus} />
+          </NewChatBtn>
+        </ConvoListHeader>
         {isFetching && conversations.length === 0 ? (
           <LoadingSpinner><FontAwesomeIcon icon={faCircleNodes} spin /></LoadingSpinner>
         ) : conversations.length === 0 ? (
@@ -510,6 +675,50 @@ export default function Messages() {
           </>
         )}
       </ChatArea>
+      {showNewChat && (
+        <Modal onClick={e => { if (e.target === e.currentTarget) { setShowNewChat(false); setSearchQuery(''); setSearchResults([]); } }}>
+          <ModalCard initial={{ opacity: 0, scale: 0.93 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.18 }}>
+            <ModalHeader>
+              <ModalTitle>New Message</ModalTitle>
+              <CloseBtn onClick={() => { setShowNewChat(false); setSearchQuery(''); setSearchResults([]); }}>
+                <FontAwesomeIcon icon={faTimes} />
+              </CloseBtn>
+            </ModalHeader>
+            <ModalSearchInput
+              autoFocus
+              placeholder="Search users..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
+            {searching && (
+              <LoadingSpinner><FontAwesomeIcon icon={faCircleNodes} spin /></LoadingSpinner>
+            )}
+            {!searching && searchResults.map(user => (
+              <ModalUserItem key={user._id} onClick={() => handleStartChat(user)}>
+                <ModalAvatar>
+                  {user.profilePicture
+                    ? <ModalAvatarImg src={user.profilePicture} alt={user.name} />
+                    : (user.name || user.username || '?')[0].toUpperCase()
+                  }
+                </ModalAvatar>
+                <div>
+                  <ModalUserName>{user.name || user.username}</ModalUserName>
+                  <ModalUserHandle>@{user.username}</ModalUserHandle>
+                </div>
+              </ModalUserItem>
+            ))}
+            {!searching && searchQuery && searchResults.length === 0 && (
+              <div style={{ textAlign: 'center', opacity: 0.5, padding: '16px', fontSize: '13px' }}>No users found</div>
+            )}
+            {!searchQuery && (
+              <div style={{ textAlign: 'center', opacity: 0.45, padding: '16px', fontSize: '13px' }}>
+                <FontAwesomeIcon icon={faMagnifyingGlass} style={{ marginRight: 6 }} />
+                Type a name or username to search
+              </div>
+            )}
+          </ModalCard>
+        </Modal>
+      )}
     </PageWrapper>
   );
 }
