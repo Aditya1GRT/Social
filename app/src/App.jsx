@@ -82,16 +82,34 @@ function PublicRoute({ children }) {
   return !currentUser ? children : <Navigate to="/" replace />;
 }
 
+function getInitialDark(user) {
+  if (user?.prefersDarkTheme !== undefined) return user.prefersDarkTheme;
+  const saved = localStorage.getItem('themePreference');
+  if (saved !== null) return saved === 'dark';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
 export default function App() {
   const dispatch = useDispatch();
   const currentUser = useSelector(s => s.user?.currentUser);
+  const [isDark, setIsDark] = React.useState(() => getInitialDark(currentUser));
 
-  const prefersDark =
-    currentUser?.prefersDarkTheme !== undefined
-      ? currentUser.prefersDarkTheme
-      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+  // Sync isDark when user logs in/out or their stored preference changes
+  useEffect(() => {
+    setIsDark(getInitialDark(currentUser));
+  }, [currentUser?._id, currentUser?.prefersDarkTheme]);
 
-  const theme = prefersDark ? darkTheme : lightTheme;
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    localStorage.setItem('themePreference', next ? 'dark' : 'light');
+    if (currentUser) {
+      // Fire-and-forget — UI updates immediately regardless of API result
+      changeTheme(dispatch, currentUser._id, next).catch(() => {});
+    }
+  };
+
+  const theme = isDark ? darkTheme : lightTheme;
 
   useEffect(() => {
     if (currentUser) {
@@ -103,8 +121,8 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
-      <AppWrapper $dark={prefersDark}>
-        <TopBar />
+      <AppWrapper $dark={isDark}>
+        <TopBar isDark={isDark} onToggleTheme={toggleTheme} />
         <ContentWrapper>
           {currentUser && <NavBar />}
           <MainArea>
