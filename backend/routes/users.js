@@ -170,11 +170,7 @@ router.get('/:query', async (req, res) => {
   try {
     const re = new RegExp(req.params.query, 'i');
     const found = await users.findAsync({ $or: [{ username: re }, { name: re }] });
-    const result = {};
-    found.forEach((u, i) => {
-      result[i] = { ...sanitize(u), userId: u._id };
-    });
-    res.status(200).json(result);
+    res.status(200).json(found.map(u => ({ ...sanitize(u), userId: u._id })));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
