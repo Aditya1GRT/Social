@@ -144,11 +144,22 @@ const EmptyChat = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.main};
-  gap: 12px;
-  font-size: 15px;
-  font-weight: 600;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  gap: 14px;
+
+  p {
+    background: rgba(${({ theme }) => theme.bodyRgba}, 0.75);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
+    border-radius: 30px;
+    padding: 14px 24px;
+    color: ${({ theme }) => theme.main};
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    margin: 0;
+  }
 `;
 
 const ChatHeader = styled.div`
