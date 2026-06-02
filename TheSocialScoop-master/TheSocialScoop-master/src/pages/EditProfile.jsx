@@ -7,7 +7,7 @@ import { publicRequest } from "../requestMethods";
 import { faHighlighter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../redux/userSlice";
+import { loginSuccess, logOut } from "../redux/userSlice";
 import { motion } from "framer-motion";
 
 const MainContainer = styled(motion.div)`
@@ -270,23 +270,27 @@ const EditProfile = ({ user }) => {
   };
   const submit = async (e, downloadURL = null) => {
     e.preventDefault();
-    downloadURL
-      ? await publicRequest.put(`/users/${currentUser._id}`, {
-          ...userData,
-          profilePicture: downloadURL,
-          _id: user._id,
-        })
-      : await publicRequest.put(`/users/${currentUser._id}`, {
-          ...userData,
-          _id: user._id,
-        });
-    downloadURL
-      ? dispatch(
-          loginSuccess({ ...user, ...userData, profilePicture: downloadURL })
-        )
-      : dispatch(loginSuccess({ ...user, ...userData }));
-
-    nav(`/user/${user.username}`, { replace: true });
+    try {
+      const body = {
+        ...userData,
+        _id: user._id,
+        ...(downloadURL ? { profilePicture: downloadURL } : {}),
+      };
+      const res = await publicRequest.put(`/users/${currentUser._id}`, body);
+      if (!res.data) {
+        // Account no longer exists in DB (e.g. server restarted and wiped data)
+        dispatch(logOut());
+        nav("/login", { replace: true });
+        return;
+      }
+      dispatch(loginSuccess(downloadURL
+        ? { ...user, ...userData, profilePicture: downloadURL }
+        : { ...user, ...userData }
+      ));
+      nav(`/user/${user.username}`, { replace: true });
+    } catch (err) {
+      console.error("Profile update failed:", err.message);
+    }
   };
 
   return (

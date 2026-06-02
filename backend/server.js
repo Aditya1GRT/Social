@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
@@ -88,6 +89,19 @@ if (fs.existsSync(buildPath)) {
 }
 
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
+
+async function start() {
+  if (process.env.MONGODB_URI) {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log('Connected to MongoDB (durable storage)');
+  } else {
+    console.warn('MONGODB_URI not set — using NeDB file storage (data is lost on process restart)');
+    console.warn('Set MONGODB_URI to a free MongoDB Atlas cluster for persistent storage.');
+  }
+  server.listen(PORT, () => console.log(`Backend server running on port ${PORT}`));
+}
+
+start().catch((err) => {
+  console.error('Failed to start server:', err.message);
+  process.exit(1);
 });

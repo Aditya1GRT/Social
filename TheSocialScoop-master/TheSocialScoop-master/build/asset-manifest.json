@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/static/js/main.f59047e1.js",
+    "main.js": "/static/js/main.e907c2c2.js",
     "static/media/bgLight.jpg": "/static/media/bgLight.84e7c92303cb07b80dc0.jpg",
     "static/media/bgDark.jpg": "/static/media/bgDark.c53d946a96188ff28174.jpg",
     "static/media/bgDarkMobile.jpg": "/static/media/bgDarkMobile.227c7618954750046b79.jpg",
@@ -14,6 +14,6 @@
     "index.html": "/index.html"
   },
   "entrypoints": [
-    "static/js/main.f59047e1.js"
+    "static/js/main.e907c2c2.js"
   ]
 }
