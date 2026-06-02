@@ -337,9 +337,9 @@ export const uploadFile = async (file) => {
   const formData = new FormData();
   formData.append('file', file);
   try {
-    const { data } = await api.post('upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // Let axios set Content-Type automatically (includes multipart boundary).
+    // Use a longer timeout — Cloudinary uploads can take 30–60s for large files.
+    const { data } = await api.post('upload', formData, { timeout: 120000 });
     return data.url;
   } catch (err) {
     console.error('uploadFile error:', err);
