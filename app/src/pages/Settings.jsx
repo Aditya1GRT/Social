@@ -12,6 +12,9 @@ import {
   faGear,
   faShieldHalved,
   faPalette,
+  faFileContract,
+  faChevronDown,
+  faChevronUp,
 } from '@fortawesome/free-solid-svg-icons';
 import { changeTheme, deleteAccount } from '../redux/actions';
 
@@ -235,15 +238,22 @@ export default function Settings() {
   const currentUser = useSelector(s => s.user?.currentUser);
   const isFetching = useSelector(s => s.user?.isFetching);
 
-  const isDark = currentUser?.prefersDarkTheme ??
-    window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const savedTheme = localStorage.getItem('themePreference');
+  const isDark = currentUser?.prefersDarkTheme !== undefined
+    ? currentUser.prefersDarkTheme
+    : savedTheme !== null
+      ? savedTheme === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
 
   const handleThemeToggle = () => {
     if (!currentUser) return;
-    changeTheme(dispatch, currentUser._id, !isDark);
+    const next = !isDark;
+    localStorage.setItem('themePreference', next ? 'dark' : 'light');
+    changeTheme(dispatch, currentUser._id, next);
   };
 
   const handleDeleteAccount = async () => {
@@ -317,6 +327,51 @@ export default function Settings() {
             Delete
           </DangerBtn>
         </SettingRow>
+      </SettingsCard>
+
+      <SettingsCard
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
+        <SectionHeader
+          style={{ cursor: 'pointer' }}
+          onClick={() => setShowTerms(v => !v)}
+        >
+          <SectionIcon><FontAwesomeIcon icon={faFileContract} /></SectionIcon>
+          <SectionTitle style={{ flex: 1 }}>Terms &amp; Conditions</SectionTitle>
+          <FontAwesomeIcon icon={showTerms ? faChevronUp : faChevronDown} style={{ opacity: 0.5, fontSize: 13 }} />
+        </SectionHeader>
+
+        {showTerms && (
+          <div style={{ padding: '16px 20px', fontSize: '13px', lineHeight: '1.7', color: 'inherit', opacity: 0.8 }}>
+            <p>Welcome to The Social Scoop!</p>
+            <br />
+            <p>These terms and conditions outline the rules and regulations for the use of The Social Scoop's Website. By accessing this website we assume you accept these terms and conditions.</p>
+            <br />
+            <p style={{ fontWeight: 700, marginBottom: 6 }}>Cookies</p>
+            <p>We employ the use of cookies. By accessing The Social Scoop, you agreed to use cookies in agreement with The Social Scoop's Privacy Policy. Cookies are used by our website to enable the functionality of certain areas and to make it easier for people visiting our website.</p>
+            <br />
+            <p style={{ fontWeight: 700, marginBottom: 6 }}>License</p>
+            <p>Unless otherwise stated, The Social Scoop and/or its licensors own the intellectual property rights for all material on The Social Scoop. All intellectual property rights are reserved. You may access this for your own personal use subjected to restrictions set in these terms and conditions.</p>
+            <br />
+            <p>You must not:</p>
+            <ul style={{ paddingLeft: 20, marginTop: 6 }}>
+              <li>Republish material from The Social Scoop</li>
+              <li>Sell, rent or sub-license material from The Social Scoop</li>
+              <li>Reproduce, duplicate or copy material from The Social Scoop</li>
+              <li>Redistribute content from The Social Scoop</li>
+            </ul>
+            <br />
+            <p style={{ fontWeight: 700, marginBottom: 6 }}>Comments &amp; User Content</p>
+            <p>The Social Scoop does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of The Social Scoop, its agents and/or affiliates. The Social Scoop reserves the right to monitor all Comments and to remove any Comments which can be considered inappropriate, offensive or causes breach of these Terms and Conditions.</p>
+            <br />
+            <p style={{ fontWeight: 700, marginBottom: 6 }}>Disclaimer</p>
+            <p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will limit or exclude our or your liability for death or personal injury, limit or exclude our or your liability for fraud or fraudulent misrepresentation, or limit any of our or your liabilities in any way that is not permitted under applicable law.</p>
+            <br />
+            <p style={{ opacity: 0.6, fontSize: 12 }}>Effective Date: May 24, 2022</p>
+          </div>
+        )}
       </SettingsCard>
 
       {showDeleteModal && (

@@ -77,9 +77,9 @@ export const refresh = async (dispatch, user) => {
 // ─── Theme & Account ─────────────────────────────────────────────────────────
 
 export const changeTheme = async (dispatch, userId, val) => {
+  dispatch(changeThemeSuccess(val)); // update UI immediately
   try {
     await api.put(`users/theme/${userId}`, { prefersDarkTheme: val });
-    dispatch(changeThemeSuccess(val));
   } catch (err) {
     console.error('changeTheme error:', err);
   }

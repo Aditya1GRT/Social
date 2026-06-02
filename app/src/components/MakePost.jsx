@@ -7,8 +7,10 @@ import {
   faImage,
   faVideo,
   faTimes,
+  faFaceSmile,
 } from '@fortawesome/free-solid-svg-icons';
 import { createPost, uploadFile } from '../redux/actions';
+import EmojiPicker from './EmojiPicker';
 
 const Card = styled.div`
   background: rgba(${({ theme }) => theme.bodyRgba}, 0.25);
@@ -158,6 +160,25 @@ const SubmitBtn = styled.button`
   &:disabled { opacity: 0.55; cursor: not-allowed; }
 `;
 
+const EmojiToggleBtn = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  color: ${({ theme }) => theme.text};
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: ${({ theme }) => theme.fontFamily};
+  &:hover {
+    border-color: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.accent};
+  }
+`;
+
 const ErrorMsg = styled.p`
   color: #e74c3c;
   font-size: 13px;
@@ -169,6 +190,7 @@ export default function MakePost() {
   const currentUser = useSelector(s => s.user?.currentUser);
   const isFetching = useSelector(s => s.post?.isFetching);
   const [text, setText] = useState('');
+  const [showEmoji, setShowEmoji] = useState(false);
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [mediaType, setMediaType] = useState('');
@@ -256,6 +278,18 @@ export default function MakePost() {
 
         <Footer>
           <MediaActions>
+            <div style={{ position: 'relative' }}>
+              <EmojiToggleBtn type="button" onClick={() => setShowEmoji(v => !v)}>
+                <FontAwesomeIcon icon={faFaceSmile} />
+                Emoji
+              </EmojiToggleBtn>
+              {showEmoji && (
+                <EmojiPicker
+                  onSelect={emoji => { setText(t => t + emoji); setShowEmoji(false); }}
+                  onClose={() => setShowEmoji(false)}
+                />
+              )}
+            </div>
             <MediaBtn>
               <FontAwesomeIcon icon={faImage} />
               Photo
