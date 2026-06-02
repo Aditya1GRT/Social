@@ -15,8 +15,10 @@ import {
   faFileContract,
   faChevronDown,
   faChevronUp,
+  faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 import { changeTheme, deleteAccount } from '../redux/actions';
+import { logOut } from '../redux/slices/userSlice';
 
 const PageWrapper = styled.div`
   padding: 24px 20px;
@@ -132,6 +134,26 @@ const ThemeIcon = styled.div`
   color: ${({ $dark, theme }) => $dark ? '#f1c40f' : '#f39c12'};
   font-size: 15px;
   margin-right: 8px;
+`;
+
+const LogoutBtn = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  color: ${({ theme }) => theme.main};
+  font-family: ${({ theme }) => theme.fontFamily};
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  &:hover {
+    border-color: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.accent};
+  }
 `;
 
 const DangerBtn = styled.button`
@@ -256,6 +278,11 @@ export default function Settings() {
     changeTheme(dispatch, currentUser._id, next);
   };
 
+  const handleLogout = () => {
+    dispatch(logOut());
+    navigate('/login');
+  };
+
   const handleDeleteAccount = async () => {
     if (!currentUser) return;
     setDeleting(true);
@@ -316,6 +343,17 @@ export default function Settings() {
           </SectionIcon>
           <SectionTitle>Account</SectionTitle>
         </SectionHeader>
+
+        <SettingRow>
+          <SettingInfo>
+            <SettingName>Log Out</SettingName>
+            <SettingDesc>Sign out of your account</SettingDesc>
+          </SettingInfo>
+          <LogoutBtn onClick={handleLogout}>
+            <FontAwesomeIcon icon={faRightFromBracket} />
+            Log Out
+          </LogoutBtn>
+        </SettingRow>
 
         <SettingRow>
           <SettingInfo>
