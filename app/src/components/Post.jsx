@@ -26,6 +26,8 @@ const Card = styled(motion.div)`
   overflow: hidden;
   margin-bottom: 20px;
   box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  width: 100%;
+  min-width: 0;
 `;
 
 const Header = styled.div`
@@ -107,25 +109,41 @@ const PostText = styled.p`
   color: ${({ theme }) => theme.text};
   line-height: 1.5;
   white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  @media (max-width: 480px) {
+    font-size: 14px;
+  }
 `;
 
 const MediaWrapper = styled.div`
   width: 100%;
   max-height: 480px;
   overflow: hidden;
+
+  @media (max-width: 480px) {
+    max-height: 320px;
+  }
 `;
 
 const PostImage = styled.img`
   width: 100%;
   height: 100%;
+  max-width: 100%;
   object-fit: cover;
   display: block;
 `;
 
 const PostVideo = styled.video`
   width: 100%;
+  max-width: 100%;
   max-height: 480px;
   display: block;
+
+  @media (max-width: 480px) {
+    max-height: 320px;
+  }
 `;
 
 const Actions = styled.div`
@@ -141,6 +159,7 @@ const ActionBtn = styled.button`
   align-items: center;
   gap: 6px;
   padding: 7px 12px;
+  min-height: 44px;
   border-radius: 20px;
   border: none;
   background: none;
@@ -173,10 +192,13 @@ const CommentInputRow = styled.form`
   display: flex;
   gap: 8px;
   align-items: center;
+  flex-wrap: nowrap;
+  min-width: 0;
 `;
 
 const CommentInput = styled.input`
   flex: 1;
+  min-width: 0;
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
@@ -194,8 +216,8 @@ const SendBtn = styled.button`
   background: ${({ theme }) => theme.accent};
   border: none;
   border-radius: 50%;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -205,6 +227,11 @@ const SendBtn = styled.button`
   transition: opacity 0.2s;
   &:hover { opacity: 0.85; }
   &:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  @media (max-width: 480px) {
+    width: 44px;
+    height: 44px;
+  }
 `;
 
 function timeAgo(dateStr) {

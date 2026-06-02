@@ -29,7 +29,9 @@ const GlobalStyle = createGlobalStyle`
     color: ${({ theme }) => theme.text};
     background-color: ${({ theme }) => theme.body};
     min-height: 100vh;
+    overflow-x: hidden;
   }
+  img, video { max-width: 100%; height: auto; }
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 3px; }
@@ -38,6 +40,7 @@ const GlobalStyle = createGlobalStyle`
 const AppWrapper = styled.div`
   min-height: 100vh;
   position: relative;
+  overflow-x: hidden;
   background-image: url(${({ $dark }) => ($dark ? bgDark : bgLight)});
   background-size: cover;
   background-position: center;
@@ -53,6 +56,7 @@ const ContentWrapper = styled.div`
   display: flex;
   min-height: 100vh;
   padding-top: 64px;
+  overflow-x: hidden;
 
   @media (max-width: 768px) {
     padding-top: 56px;

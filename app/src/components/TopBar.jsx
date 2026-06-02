@@ -53,15 +53,17 @@ const SearchWrapper = styled.div`
   flex: 1;
   max-width: 400px;
   margin: 0 20px;
+  min-width: 0;
 
   @media (max-width: 480px) {
-    max-width: 180px;
-    margin: 0 10px;
+    max-width: 160px;
+    margin: 0 8px;
   }
 `;
 
 const SearchInput = styled.input`
   flex: 1;
+  min-width: 0;
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
@@ -72,11 +74,17 @@ const SearchInput = styled.input`
   font-size: 14px;
   outline: none;
   transition: all 0.2s;
+  width: 100%;
 
   &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.7; }
   &:focus {
     border-color: ${({ theme }) => theme.accent};
     background: rgba(${({ theme }) => theme.bodyRgba}, 0.5);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+    padding: 8px 10px;
   }
 `;
 
@@ -84,8 +92,8 @@ const SearchBtn = styled.button`
   background: ${({ theme }) => theme.accent};
   border: none;
   border-radius: 50%;
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -95,17 +103,26 @@ const SearchBtn = styled.button`
   flex-shrink: 0;
 
   &:hover { opacity: 0.85; }
+
+  @media (max-width: 480px) {
+    width: 44px;
+    height: 44px;
+  }
 `;
 
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
 `;
 
 const ThemeToggle = styled.button`
-  background: none;
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   border-radius: 50%;
   width: 36px;
@@ -117,11 +134,15 @@ const ThemeToggle = styled.button`
   color: ${({ theme }) => theme.main};
   font-size: 15px;
   transition: all 0.2s;
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
 
   &:hover {
     background: rgba(${({ theme }) => theme.mainRgba}, 0.1);
     border-color: ${({ theme }) => theme.accent};
+  }
+
+  @media (max-width: 480px) {
+    width: 44px;
+    height: 44px;
   }
 `;
 
@@ -135,6 +156,11 @@ const Avatar = styled(Link)`
   flex-shrink: 0;
   transition: transform 0.2s;
   &:hover { transform: scale(1.05); }
+
+  @media (max-width: 480px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const AvatarImg = styled.img`
