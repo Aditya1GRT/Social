@@ -18,10 +18,10 @@ const Bar = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.25);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.18);
   box-shadow: 0 2px 20px rgba(0,0,0,0.1);
 
   @media (max-width: 768px) {
@@ -72,7 +72,7 @@ const SearchInput = styled.input`
   padding: 8px 14px;
   border-radius: 20px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.18);
   backdrop-filter: blur(8px);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
@@ -100,7 +100,8 @@ const SearchInput = styled.input`
 `;
 
 const SearchBtn = styled.button`
-  background: ${({ theme }) => theme.accent};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
   border: none;
   border-radius: 50%;
   width: 44px;
@@ -109,11 +110,11 @@ const SearchBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${({ theme }) => theme.body};
-  transition: opacity 0.2s;
+  color: white;
+  transition: filter 0.2s;
   flex-shrink: 0;
 
-  &:hover { opacity: 0.85; }
+  &:hover { filter: brightness(1.12); }
 `;
 
 const RightSection = styled.div`

@@ -42,10 +42,10 @@ const PageTitle = styled.h2`
 `;
 
 const SettingsCard = styled(motion.div)`
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.28);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.14);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.16);
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 20px;
@@ -156,20 +156,18 @@ const LogoutBtn = styled.button`
   padding: 10px 18px;
   min-height: 44px;
   border-radius: 12px;
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
-  color: ${({ theme }) => theme.main};
+  border: none;
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
+  color: white;
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: filter 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
-  &:hover {
-    border-color: ${({ theme }) => theme.accent};
-    color: ${({ theme }) => theme.accent};
-  }
+  &:hover { filter: brightness(1.1); }
 `;
 
 const DangerBtn = styled.button`

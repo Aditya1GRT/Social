@@ -16,10 +16,10 @@ const PageWrapper = styled.div`
 `;
 
 const Card = styled(motion.div)`
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.28);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.14);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.18);
   border-radius: 24px;
   padding: 40px;
   width: 100%;
@@ -64,8 +64,8 @@ const Input = styled.input`
   width: 100%;
   padding: 10px 42px 10px 14px;
   border-radius: 12px;
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.35);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.25);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.22);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 15px;
@@ -94,8 +94,9 @@ const SubmitBtn = styled.button`
   padding: 12px;
   border-radius: 14px;
   border: none;
-  background: ${({ theme }) => theme.accent};
-  color: ${({ theme }) => theme.body};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
+  color: white;
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 16px;
   font-weight: 700;
@@ -104,10 +105,10 @@ const SubmitBtn = styled.button`
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transition: opacity 0.2s;
+  transition: filter 0.2s, opacity 0.2s;
   margin-top: 8px;
-  &:hover { opacity: 0.88; }
-  &:disabled { opacity: 0.55; cursor: not-allowed; }
+  &:hover { filter: brightness(1.1); }
+  &:disabled { opacity: 0.55; cursor: not-allowed; box-shadow: none; }
 `;
 
 const ErrorMsg = styled.p`

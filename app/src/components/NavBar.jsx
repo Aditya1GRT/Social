@@ -18,10 +18,10 @@ const SideNav = styled.nav`
   align-items: center;
   padding: 24px 0;
   gap: 8px;
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-right: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
   flex-shrink: 0;
   position: sticky;
   top: 64px;
@@ -48,7 +48,7 @@ const BottomNav = styled.nav`
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    background: rgba(${({ theme }) => theme.bodyRgba}, 0.95);
+    background: rgba(${({ theme }) => theme.bodyRgba}, 0.82);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border-top: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);

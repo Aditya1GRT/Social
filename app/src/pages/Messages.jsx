@@ -28,8 +28,8 @@ const ConvoList = styled.div`
   width: 300px;
   flex-shrink: 0;
   border-right: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
-  backdrop-filter: blur(12px);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.1);
+  backdrop-filter: blur(16px);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -154,8 +154,8 @@ const EmptyChat = styled.div`
 const ChatHeader = styled.div`
   padding: 14px 20px;
   border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
-  backdrop-filter: blur(12px);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.1);
+  backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -209,9 +209,9 @@ const MessageBubble = styled(motion.div)`
   border-radius: ${({ $own }) => $own ? '18px 18px 4px 18px' : '18px 18px 18px 4px'};
   background: ${({ $own, theme }) =>
     $own
-      ? theme.accent
+      ? theme.accentGrad
       : `rgba(${theme.mainRgba}, 0.1)`};
-  color: ${({ $own, theme }) => $own ? theme.body : theme.main};
+  color: ${({ $own, theme }) => $own ? 'white' : theme.main};
   align-self: ${({ $own }) => $own ? 'flex-end' : 'flex-start'};
   font-size: 14px;
   line-height: 1.45;
@@ -240,8 +240,8 @@ const InputArea = styled.form`
   gap: 10px;
   padding: 14px 20px;
   border-top: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
-  backdrop-filter: blur(12px);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.1);
+  backdrop-filter: blur(16px);
   flex-shrink: 0;
 
   @media (max-width: 480px) {
@@ -257,7 +257,7 @@ const MessageInput = styled.input`
   min-height: 44px;
   border-radius: 22px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.35);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 14px;
@@ -268,7 +268,8 @@ const MessageInput = styled.input`
 `;
 
 const SendBtn = styled.button`
-  background: ${({ theme }) => theme.accent};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
   border: none;
   border-radius: 50%;
   width: 44px;
@@ -277,16 +278,17 @@ const SendBtn = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: ${({ theme }) => theme.body};
+  color: white;
   font-size: 15px;
-  transition: opacity 0.2s;
+  transition: filter 0.2s, opacity 0.2s;
   flex-shrink: 0;
-  &:hover { opacity: 0.88; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:hover { filter: brightness(1.1); }
+  &:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 `;
 
 const NewChatBtn = styled.button`
-  background: ${({ theme }) => theme.accent};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
   border: none;
   border-radius: 50%;
   width: 36px;
@@ -295,11 +297,11 @@ const NewChatBtn = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: ${({ theme }) => theme.body};
+  color: white;
   font-size: 14px;
   flex-shrink: 0;
-  transition: opacity 0.2s;
-  &:hover { opacity: 0.85; }
+  transition: filter 0.2s;
+  &:hover { filter: brightness(1.1); }
 `;
 
 const Modal = styled.div`

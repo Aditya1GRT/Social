@@ -37,7 +37,7 @@ const SearchInput = styled.input`
   min-height: 44px;
   border-radius: 22px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.18);
   backdrop-filter: blur(12px);
   color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
@@ -58,19 +58,20 @@ const SearchBtn = styled.button`
   min-height: 44px;
   border-radius: 22px;
   border: none;
-  background: ${({ theme }) => theme.accent};
-  color: ${({ theme }) => theme.body};
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
+  color: white;
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: opacity 0.2s;
+  transition: filter 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
-  &:hover { opacity: 0.88; }
+  &:hover { filter: brightness(1.1); }
 
   @media (max-width: 480px) {
     font-size: 14px;
@@ -89,10 +90,10 @@ const UserCard = styled(motion.div)`
   align-items: center;
   gap: 14px;
   padding: 14px 18px;
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.25);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
   border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
   transition: transform 0.15s;
@@ -165,17 +166,18 @@ const ActionBtn = styled.button`
   border-radius: 18px;
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
   background: ${({ $primary, theme }) =>
-    $primary ? theme.accent : 'rgba(255,255,255,0.1)'};
-  color: ${({ $primary, theme }) => ($primary ? theme.body : theme.main)};
+    $primary ? theme.accentGrad : 'rgba(255,255,255,0.1)'};
+  box-shadow: ${({ $primary, theme }) => $primary ? theme.btnGlow : 'none'};
+  color: ${({ $primary }) => ($primary ? 'white' : 'inherit')};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: filter 0.2s, opacity 0.2s;
   white-space: nowrap;
   flex-shrink: 0;
-  &:hover { opacity: 0.85; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:hover { filter: ${({ $primary }) => $primary ? 'brightness(1.1)' : 'none'}; opacity: ${({ $primary }) => $primary ? 1 : 0.85}; }
+  &:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
   @media (max-width: 480px) {
     padding: 6px 10px;
