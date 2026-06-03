@@ -141,7 +141,7 @@ const PostImage = styled.img`
   max-width: 100%;
   display: block;
   object-fit: cover;
-  object-position: center top;
+  object-position: center center;
 
   @media (max-width: 480px) {
     max-height: 380px;
