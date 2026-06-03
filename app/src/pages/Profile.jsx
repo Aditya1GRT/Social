@@ -504,11 +504,11 @@ export default function Profile() {
                 <StatNum>{postCount}</StatNum>
                 <StatLabel>Posts</StatLabel>
               </StatItem>
-              <StatItem $clickable onClick={() => openTab('followers')}>
+              <StatItem $clickable={isOwnProfile} onClick={isOwnProfile ? () => openTab('followers') : undefined}>
                 <StatNum>{followerCount}</StatNum>
                 <StatLabel>Followers</StatLabel>
               </StatItem>
-              <StatItem $clickable onClick={() => openTab('following')}>
+              <StatItem $clickable={isOwnProfile} onClick={isOwnProfile ? () => openTab('following') : undefined}>
                 <StatNum>{followingCount}</StatNum>
                 <StatLabel>Following</StatLabel>
               </StatItem>
