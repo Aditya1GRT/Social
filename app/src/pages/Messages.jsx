@@ -183,19 +183,20 @@ const MessagesContainer = styled.div`
 
 const MessageBubble = styled(motion.div)`
   max-width: 68%;
-  padding: ${({ $media }) => $media ? '4px' : '9px 14px'};
+  min-width: 52px;
+  padding: ${({ $media }) => $media ? '4px' : '10px 16px'};
   border-radius: ${({ $own }) => $own ? '18px 18px 4px 18px' : '18px 18px 18px 4px'};
-  background: ${({ $own, theme }) => $own ? theme.accentGrad : `rgba(${theme.bodyRgba}, 0.88)`};
-  backdrop-filter: ${({ $own }) => $own ? 'none' : 'blur(12px)'};
-  -webkit-backdrop-filter: ${({ $own }) => $own ? 'none' : 'blur(12px)'};
+  background: ${({ $own, theme }) => $own ? theme.accentGrad : `rgba(${theme.bodyRgba}, 0.92)`};
+  backdrop-filter: ${({ $own }) => $own ? 'none' : 'blur(16px)'};
+  -webkit-backdrop-filter: ${({ $own }) => $own ? 'none' : 'blur(16px)'};
   color: ${({ $own, theme }) => $own ? 'white' : theme.main};
   align-self: ${({ $own }) => $own ? 'flex-end' : 'flex-start'};
-  font-size: 14px; line-height: 1.45; font-weight: 500;
+  font-size: 16px; line-height: 1.5; font-weight: 500;
   word-break: break-word; overflow-wrap: break-word;
   overflow: hidden;
-  border: ${({ $own, theme }) => $own ? 'none' : `1px solid rgba(${theme.mainRgba}, 0.12)`};
-  box-shadow: ${({ $own, theme }) => $own ? theme.btnGlow : '0 2px 12px rgba(0,0,0,0.12)'};
-  @media (max-width: 480px) { max-width: 82%; font-size: 13px; }
+  border: ${({ $own, theme }) => $own ? 'none' : `1px solid rgba(${theme.mainRgba}, 0.15)`};
+  box-shadow: ${({ $own, theme }) => $own ? theme.btnGlow : '0 2px 16px rgba(0,0,0,0.15)'};
+  @media (max-width: 480px) { max-width: 82%; font-size: 15px; }
 `;
 
 const MediaImg = styled.img`
@@ -211,14 +212,18 @@ const MediaVideo = styled.video`
   @media (max-width: 480px) { max-width: 180px; }
 `;
 
-const BubbleCaption = styled.div`padding: 4px 10px 8px; font-size: 13px;`;
+const BubbleCaption = styled.div`padding: 6px 12px 8px; font-size: 15px; font-weight: 500;`;
 
 const MessageTime = styled.div`
-  font-size: 11px; opacity: 0.85; font-weight: 500;
-  color: ${({ theme }) => theme.main};
+  font-size: 12px; font-weight: 600;
+  color: ${({ $own, theme }) => $own ? 'rgba(255,255,255,0.85)' : theme.main};
+  background: ${({ $own, theme }) => $own ? 'transparent' : `rgba(${theme.bodyRgba}, 0.75)`};
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
   text-align: ${({ $own }) => $own ? 'right' : 'left'};
-  margin-top: 2px;
-  padding: ${({ $own }) => $own ? '0 4px 0 0' : '0 0 0 4px'};
+  margin-top: 4px;
+  align-self: ${({ $own }) => $own ? 'flex-end' : 'flex-start'};
 `;
 
 const InputWrapper = styled.div`position: relative;`;
