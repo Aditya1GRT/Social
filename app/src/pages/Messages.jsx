@@ -228,22 +228,23 @@ const InputArea = styled.form`
 `;
 
 const IconBtn = styled.button`
-  width: 38px; height: 38px; border-radius: 50%; border: none;
-  background: rgba(${({ theme }) => theme.mainRgba}, 0.08);
-  color: ${({ theme }) => theme.text}; font-size: 16px;
+  width: 40px; height: 40px; border-radius: 50%; border: none;
+  background: ${({ theme }) => theme.accentGrad};
+  box-shadow: ${({ theme }) => theme.btnGlow};
+  color: white; font-size: 16px;
   cursor: pointer; display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: all 0.2s;
-  &:hover { background: rgba(${({ theme }) => theme.mainRgba}, 0.15); color: ${({ theme }) => theme.accent}; }
+  flex-shrink: 0; transition: filter 0.2s;
+  &:hover { filter: brightness(1.1); }
 `;
 
 const MessageInput = styled.input`
   flex: 1; min-width: 0; padding: 10px 16px; min-height: 44px;
-  border-radius: 22px; border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
+  border-radius: 22px; border: 1.5px solid rgba(${({ theme }) => theme.mainRgba}, 0.25);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.75);
   color: ${({ theme }) => theme.main}; font-family: ${({ theme }) => theme.fontFamily};
-  font-size: 14px; outline: none; transition: border-color 0.2s;
-  &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.6; }
-  &:focus { border-color: ${({ theme }) => theme.accent}; }
+  font-size: 14px; font-weight: 500; outline: none; transition: border-color 0.2s;
+  &::placeholder { color: ${({ theme }) => theme.text}; opacity: 0.8; }
+  &:focus { border-color: ${({ theme }) => theme.accent}; background: rgba(${({ theme }) => theme.bodyRgba}, 0.9); }
 `;
 
 const SendBtn = styled.button`

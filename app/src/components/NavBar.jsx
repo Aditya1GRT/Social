@@ -65,20 +65,25 @@ const NavItem = styled(NavLink)`
   width: 46px;
   height: 46px;
   border-radius: 14px;
-  color: ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.main};
   font-size: 18px;
   text-decoration: none;
   transition: all 0.2s;
   position: relative;
+  opacity: 0.7;
 
   &:hover {
-    background: rgba(${({ theme }) => theme.mainRgba}, 0.1);
-    color: ${({ theme }) => theme.main};
+    background: rgba(${({ theme }) => theme.mainRgba}, 0.12);
+    color: ${({ theme }) => theme.accent};
+    opacity: 1;
   }
 
   &.active {
     color: ${({ theme }) => theme.accent};
-    background: rgba(${({ theme }) => theme.mainRgba}, 0.08);
+    background: ${({ theme }) => theme.accentGrad};
+    box-shadow: ${({ theme }) => theme.btnGlow};
+    opacity: 1;
+    color: white;
   }
 
   @media (max-width: 768px) {
