@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Social Scoop — Project Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg:      #07091a;
+  --bg2:     #0f1330;
+  --surface: rgba(15,18,48,0.82);
+  --card:    rgba(255,255,255,0.055);
+  --border:  rgba(255,255,255,0.11);
+  --text:    #eef2ff;
+  --muted:   #9aa4cc;
+  --accent:  #7c3aed;
+  --cyan:    #06b6d4;
+  --green:   #22c55e;
+  --amber:   #f59e0b;
+  --danger:  #fb7185;
+  --glow:    0 0 40px rgba(124,58,237,0.35);
+  --r:       20px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:16px;}
+body{
+  font-family:'Inter',ui-sans-serif,system-ui,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+}
+
+/* ── GRID BG ── */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(124,58,237,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(124,58,237,0.06) 1px,transparent 1px);
+  background-size:40px 40px;
+  mask-image:radial-gradient(ellipse at center,black 30%,transparent 80%);
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 10% 20%,rgba(124,58,237,0.18) 0%,transparent 35%),
+    radial-gradient(circle at 90% 10%,rgba(6,182,212,0.14) 0%,transparent 30%),
+    radial-gradient(circle at 70% 80%,rgba(34,197,94,0.10) 0%,transparent 28%),
+    radial-gradient(circle at 30% 90%,rgba(245,158,11,0.10) 0%,transparent 25%);
+}
+
+/* ── PARTICLES ── */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.particle{
+  position:absolute;border-radius:50%;
+  animation:float linear infinite;
+  opacity:0;
+}
+@keyframes float{
+  0%{opacity:0;transform:translateY(100vh) rotate(0deg);}
+  10%{opacity:1;}
+  90%{opacity:0.6;}
+  100%{opacity:0;transform:translateY(-20px) rotate(360deg);}
+}
+
+/* ── NAV ── */
+.nav{
+  position:sticky;top:0;z-index:1000;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  background:rgba(7,9,26,0.82);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding:12px 24px;max-width:1280px;margin:0 auto;
+}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-logo{
+  width:44px;height:44px;border-radius:14px;
+  background:linear-gradient(135deg,var(--accent),var(--cyan));
+  box-shadow:var(--glow);
+  display:grid;place-items:center;font-size:22px;flex:none;
+  animation:logoPulse 3s ease-in-out infinite;
+}
+@keyframes logoPulse{0%,100%{box-shadow:0 0 20px rgba(124,58,237,0.4);}50%{box-shadow:0 0 40px rgba(124,58,237,0.7),0 0 80px rgba(6,182,212,0.3);}}
+.brand-text h1{font-size:1rem;font-weight:800;line-height:1.2;}
+.brand-text p{font-size:0.76rem;color:var(--muted);}
+.nav-links{display:flex;flex-wrap:wrap;gap:6px;}
+.nav-links a{
+  padding:8px 14px;border-radius:999px;
+  color:var(--muted);font-size:0.85rem;font-weight:500;
+  background:rgba(255,255,255,0.04);
+  border:1px solid transparent;
+  transition:.2s;text-decoration:none;
+}
+.nav-links a:hover,.nav-links a.active{
+  color:#fff;
+  background:linear-gradient(135deg,rgba(124,58,237,0.3),rgba(6,182,212,0.2));
+  border-color:rgba(255,255,255,0.1);
+  transform:translateY(-1px);
+}
+
+/* ── LAYOUT ── */
+.container{width:min(calc(100% - 40px),1240px);margin:0 auto;position:relative;z-index:1;}
+section{padding:72px 0;}
+.eyebrow{
+  display:inline-flex;padding:7px 14px;border-radius:999px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  color:#c4c9f0;font-size:0.75rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;
+}
+.section-title{
+  font-size:clamp(1.8rem,4vw,3rem);font-weight:800;
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:12px;
+}
+.section-sub{color:var(--muted);font-size:1.05rem;max-width:58ch;margin-bottom:36px;}
+
+/* ── GRADIENT TEXT ── */
+.grad{
+  background:linear-gradient(135deg,#a78bfa,#22d3ee,#34d399);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  background-size:200% 200%;animation:gradShift 4s ease infinite;
+}
+@keyframes gradShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+.grad-amber{background:linear-gradient(135deg,#f59e0b,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* ── HERO ── */
+#hero{padding:90px 0 60px;overflow:hidden;}
+.hero-grid{display:grid;grid-template-columns:1.1fr 0.9fr;gap:32px;align-items:center;}
+.hero-left{}
+.hero-eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.pulse-dot{width:10px;height:10px;border-radius:50%;background:var(--green);animation:pulseDot 2s ease-in-out infinite;}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0.7);}50%{box-shadow:0 0 0 8px rgba(34,197,94,0);}}
+.hero-title{font-size:clamp(2.6rem,7vw,5.2rem);font-weight:900;letter-spacing:-.05em;line-height:.95;margin-bottom:22px;}
+.hero-desc{color:var(--muted);font-size:1.1rem;max-width:50ch;margin-bottom:28px;line-height:1.7;}
+.hero-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px;}
+.chip{
+  padding:9px 16px;border-radius:999px;font-size:.88rem;font-weight:600;
+  border:1px solid rgba(255,255,255,0.12);
+  transition:.2s;cursor:default;
+}
+.chip:hover{transform:translateY(-2px);}
+.chip-purple{background:rgba(124,58,237,.18);color:#d6bcff;border-color:rgba(124,58,237,.3);}
+.chip-cyan{background:rgba(6,182,212,.18);color:#b5f6ff;border-color:rgba(6,182,212,.3);}
+.chip-green{background:rgba(34,197,94,.18);color:#baf7cc;border-color:rgba(34,197,94,.3);}
+.chip-amber{background:rgba(245,158,11,.18);color:#ffe1a8;border-color:rgba(245,158,11,.3);}
+.chip-danger{background:rgba(251,113,133,.18);color:#ffd0d8;border-color:rgba(251,113,133,.3);}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.stat-box{
+  padding:18px;border-radius:18px;text-align:center;
+  background:var(--card);border:1px solid var(--border);
+  backdrop-filter:blur(8px);
+}
+.stat-num{font-size:1.8rem;font-weight:900;}
+.stat-lbl{font-size:.78rem;color:var(--muted);font-weight:500;margin-top:2px;}
+
+/* ── PHONE MOCKUP ── */
+.phone-showcase{
+  display:flex;justify-content:center;align-items:flex-end;
+  gap:-20px;height:540px;position:relative;
+}
+.phone{
+  width:220px;flex:none;
+  background:linear-gradient(180deg,#1a1a2e,#0f0f1e);
+  border-radius:36px;
+  border:2px solid rgba(255,255,255,0.15);
+  box-shadow:0 30px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.1);
+  overflow:hidden;
+  position:relative;
+  transition:.4s;
+}
+.phone:hover{transform:translateY(-12px) scale(1.02);}
+.phone-notch{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:90px;height:26px;background:#0f0f1e;border-radius:0 0 16px 16px;
+  z-index:10;
+}
+.phone-screen{height:100%;padding-top:36px;overflow:hidden;position:relative;}
+.phone.main{width:240px;transform:translateY(-20px);z-index:10;border-color:rgba(124,58,237,.6);}
+.phone.main:hover{transform:translateY(-32px) scale(1.02);}
+.phone.left{transform:rotate(-6deg) translateX(20px) translateY(20px);z-index:5;opacity:.85;}
+.phone.left:hover{transform:rotate(-3deg) translateX(20px) translateY(8px);}
+.phone.right{transform:rotate(6deg) translateX(-20px) translateY(20px);z-index:5;opacity:.85;}
+.phone.right:hover{transform:rotate(3deg) translateX(-20px) translateY(8px);}
+
+/* Phone screen content */
+.screen{height:100%;display:flex;flex-direction:column;}
+
+/* Login screen */
+.s-login{background:linear-gradient(160deg,#0d1f3c,#1a0d3c);}
+.s-login .app-logo{margin:32px auto 16px;width:60px;height:60px;border-radius:20px;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-size:28px;box-shadow:0 8px 24px rgba(124,58,237,.5);}
+.s-login h3{text-align:center;font-size:14px;font-weight:700;margin-bottom:4px;}
+.s-login p{text-align:center;font-size:10px;color:rgba(255,255,255,.5);margin-bottom:24px;}
+.s-input{margin:0 16px 10px;height:32px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;padding:0 10px;font-size:10px;color:rgba(255,255,255,.5);}
+.s-btn{margin:4px 16px;height:34px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;cursor:pointer;}
+.s-link{text-align:center;font-size:9px;color:rgba(255,255,255,.4);margin-top:8px;}
+
+/* Feed screen */
+.s-feed{background:linear-gradient(160deg,#0a1628,#1a1230);}
+.s-topbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.07);}
+.s-topbar .logo{font-size:11px;font-weight:800;background:linear-gradient(135deg,#7c3aed,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.s-topbar .icons{display:flex;gap:6px;}
+.s-topbar .icon-dot{width:24px;height:24px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:10px;}
+.s-post{margin:8px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);overflow:hidden;}
+.s-post-header{display:flex;align-items:center;gap:8px;padding:8px;}
+.s-avatar{width:26px;height:26px;border-radius:50%;flex:none;}
+.s-avatar.av1{background:linear-gradient(135deg,#f59e0b,#fb7185);}
+.s-avatar.av2{background:linear-gradient(135deg,#06b6d4,#22c55e);}
+.s-avatar.av3{background:linear-gradient(135deg,#7c3aed,#06b6d4);}
+.s-uname{font-size:9px;font-weight:700;}
+.s-time{font-size:8px;color:rgba(255,255,255,.4);}
+.s-img{width:100%;height:80px;background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(6,182,212,.2));display:flex;align-items:center;justify-content:center;font-size:20px;}
+.s-actions{display:flex;gap:8px;padding:6px 8px;}
+.s-act{display:flex;align-items:center;gap:4px;font-size:8px;color:rgba(255,255,255,.5);}
+.s-act span{font-size:9px;}
+
+/* Messages screen */
+.s-msg{background:linear-gradient(160deg,#0a1628,#1a1230);}
+.s-msg-list{flex:1;overflow:hidden;}
+.s-convo{display:flex;align-items:center;gap:8px;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,.05);}
+.s-c-name{font-size:9px;font-weight:700;}
+.s-c-last{font-size:8px;color:rgba(255,255,255,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.s-online{width:7px;height:7px;border-radius:50%;background:#22c55e;flex:none;}
+
+/* Profile screen */
+.s-profile{background:linear-gradient(160deg,#0a1628,#1a1230);}
+.s-cover{height:60px;background:linear-gradient(135deg,rgba(124,58,237,.5),rgba(6,182,212,.4));}
+.s-pav{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#fb7185);border:3px solid #0a1628;margin:-22px 0 0 12px;}
+.s-pinfo{padding:6px 12px;}
+.s-pname{font-size:11px;font-weight:800;}
+.s-pbio{font-size:8px;color:rgba(255,255,255,.5);}
+.s-pstats{display:flex;gap:12px;padding:8px 12px;}
+.s-pstat{text-align:center;}
+.s-pstat-n{font-size:11px;font-weight:800;}
+.s-pstat-l{font-size:7px;color:rgba(255,255,255,.4);}
+.s-pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;flex:1;}
+.s-pgrid-item{aspect-ratio:1;background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(6,182,212,.1));}
+
+/* ── CARDS ── */
+.card{
+  padding:24px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  backdrop-filter:blur(8px);
+  transition:.25s;
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(124,58,237,.12),transparent 65%);
+  transition:.3s;pointer-events:none;
+}
+.card:hover::before{opacity:1;}
+.card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.3);}
+.card-icon{
+  width:52px;height:52px;border-radius:16px;
+  display:grid;place-items:center;font-size:24px;
+  margin-bottom:14px;
+  background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(6,182,212,.15));
+  border:1px solid rgba(255,255,255,.1);
+}
+.card h4{font-size:1.05rem;font-weight:700;margin-bottom:8px;}
+.card p,.card li{color:var(--muted);font-size:.9rem;}
+.card ul{margin:0;padding-left:18px;}
+.card li{margin-bottom:4px;}
+
+/* ── GRID ── */
+.grid{display:grid;gap:18px;}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr));}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr));}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr));}
+
+/* ── PROBLEM ── */
+.card.problem{border-left:3px solid rgba(251,113,133,.5);background:linear-gradient(180deg,rgba(251,113,133,.07),var(--card));}
+.card.objective{border-left:3px solid rgba(34,197,94,.5);background:linear-gradient(180deg,rgba(34,197,94,.07),var(--card));}
+.card.tech{border-left:3px solid rgba(6,182,212,.5);background:linear-gradient(180deg,rgba(6,182,212,.07),var(--card));}
+
+/* ── TECH STACK ── */
+.tech-logo{
+  width:60px;height:60px;border-radius:20px;
+  display:grid;place-items:center;font-size:28px;
+  margin-bottom:14px;border:1px solid rgba(255,255,255,.1);
+  transition:.3s;
+}
+.card:hover .tech-logo{transform:rotate(10deg) scale(1.1);}
+
+/* ── TIMELINE ── */
+.timeline{display:grid;gap:14px;}
+.tl-step{
+  display:grid;grid-template-columns:52px 1fr;
+  gap:16px;align-items:start;
+  padding:18px;border-radius:18px;
+  background:rgba(255,255,255,.04);border:1px solid var(--border);
+  transition:.2s;
+}
+.tl-step:hover{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.25);}
+.tl-num{
+  width:52px;height:52px;border-radius:16px;
+  display:grid;place-items:center;
+  font-weight:900;font-size:1.1rem;
+  background:linear-gradient(135deg,var(--accent),var(--cyan));
+  box-shadow:var(--glow);flex:none;
+}
+.tl-step h4{font-size:1rem;font-weight:700;margin-bottom:4px;}
+.tl-step p{color:var(--muted);font-size:.88rem;}
+
+/* ── FEATURES BIG CARDS ── */
+.feature-card{
+  padding:28px;border-radius:24px;
+  background:var(--card);border:1px solid var(--border);
+  display:flex;gap:18px;align-items:flex-start;
+  transition:.25s;
+}
+.feature-card:hover{border-color:rgba(124,58,237,.3);transform:translateX(4px);}
+.fc-icon{
+  width:56px;height:56px;flex:none;border-radius:18px;
+  display:grid;place-items:center;font-size:26px;
+  background:linear-gradient(135deg,rgba(124,58,237,.3),rgba(6,182,212,.2));
+  border:1px solid rgba(255,255,255,.1);
+}
+.fc-body h4{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
+.fc-body p{color:var(--muted);font-size:.88rem;}
+
+/* ── ARCHITECTURE ── */
+.arch-flow{
+  display:flex;align-items:center;justify-content:center;
+  gap:0;flex-wrap:wrap;padding:28px;
+  background:var(--card);border:1px solid var(--border);border-radius:24px;
+}
+.arch-box{
+  padding:16px 20px;border-radius:14px;text-align:center;
+  font-size:.85rem;font-weight:700;min-width:120px;
+}
+.arch-arrow{font-size:1.5rem;color:rgba(255,255,255,.25);padding:0 8px;flex:none;}
+.ab-client{background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.35);color:#d6bcff;}
+.ab-api{background:rgba(6,182,212,.2);border:1px solid rgba(6,182,212,.35);color:#b5f6ff;}
+.ab-socket{background:rgba(245,158,11,.2);border:1px solid rgba(245,158,11,.35);color:#ffe1a8;}
+.ab-db{background:rgba(34,197,94,.2);border:1px solid rgba(34,197,94,.35);color:#baf7cc;}
+.ab-storage{background:rgba(251,113,133,.2);border:1px solid rgba(251,113,133,.35);color:#ffd0d8;}
+
+/* ── SCREENSHOT GALLERY ── */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+.gallery-phone{
+  border-radius:28px;
+  border:2px solid rgba(255,255,255,.12);
+  background:linear-gradient(180deg,#12122a,#0a0a1e);
+  overflow:hidden;
+  transition:.3s;
+  cursor:default;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.gallery-phone:hover{transform:translateY(-8px) scale(1.02);border-color:rgba(124,58,237,.5);box-shadow:0 30px 80px rgba(0,0,0,.6),var(--glow);}
+.gp-notch{
+  height:22px;background:#0a0a1e;
+  display:flex;justify-content:center;align-items:flex-end;padding-bottom:3px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.gp-notch-pill{width:70px;height:8px;background:#1a1a30;border-radius:4px;}
+.gp-screen{padding:10px;min-height:260px;}
+.gp-label{
+  text-align:center;padding:10px;
+  font-size:.78rem;font-weight:700;color:var(--muted);
+  border-top:1px solid rgba(255,255,255,.06);
+}
+
+/* ── FUTURE SCOPE ── */
+.future-card{
+  padding:24px;border-radius:20px;
+  background:var(--card);border:1px solid var(--border);
+  transition:.3s;position:relative;overflow:hidden;
+}
+.future-card::after{
+  content:"";position:absolute;bottom:-30px;right:-30px;
+  width:100px;height:100px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%);
+  pointer-events:none;transition:.3s;
+}
+.future-card:hover{border-color:rgba(124,58,237,.4);transform:translateY(-4px);}
+.future-card:hover::after{transform:scale(1.5);}
+.future-tag{
+  display:inline-block;padding:3px 10px;border-radius:999px;
+  font-size:.72rem;font-weight:700;margin-bottom:10px;
+}
+.tag-new{background:rgba(34,197,94,.15);color:#baf7cc;border:1px solid rgba(34,197,94,.2);}
+.tag-enhance{background:rgba(124,58,237,.15);color:#d6bcff;border:1px solid rgba(124,58,237,.2);}
+.tag-research{background:rgba(245,158,11,.15);color:#ffe1a8;border:1px solid rgba(245,158,11,.2);}
+.future-card h4{font-size:1rem;font-weight:700;margin-bottom:6px;}
+.future-card p{color:var(--muted);font-size:.85rem;}
+
+/* ── TEAM ── */
+.team-card{
+  padding:28px 24px;border-radius:24px;text-align:center;
+  background:var(--card);border:1px solid var(--border);
+  transition:.3s;
+}
+.team-card:hover{border-color:rgba(124,58,237,.35);transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.team-avatar{
+  width:72px;height:72px;border-radius:24px;
+  display:grid;place-items:center;font-size:28px;
+  margin:0 auto 14px;
+  border:2px solid rgba(255,255,255,.1);
+  transition:.3s;
+}
+.team-card:hover .team-avatar{border-color:rgba(124,58,237,.5);box-shadow:var(--glow);}
+.ta1{background:linear-gradient(135deg,#7c3aed,#06b6d4);}
+.ta2{background:linear-gradient(135deg,#f59e0b,#fb7185);}
+.ta3{background:linear-gradient(135deg,#22c55e,#06b6d4);}
+.ta4{background:linear-gradient(135deg,#fb7185,#f59e0b);}
+.ta-guide{background:linear-gradient(135deg,#7c3aed,#22c55e);}
+.team-name{font-size:1rem;font-weight:800;margin-bottom:4px;}
+.team-roll{font-size:.8rem;color:var(--muted);}
+.team-role{
+  display:inline-block;margin-top:8px;padding:4px 12px;
+  border-radius:999px;font-size:.75rem;font-weight:600;
+  background:rgba(124,58,237,.15);color:#d6bcff;
+  border:1px solid rgba(124,58,237,.2);
+}
+
+/* ── CTA ── */
+.cta-section{
+  padding:60px;border-radius:32px;text-align:center;
+  background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(6,182,212,.15),rgba(245,158,11,.1));
+  border:1px solid rgba(124,58,237,.25);
+  position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:"";position:absolute;inset:-50%;
+  background:radial-gradient(circle at 50% 50%,rgba(124,58,237,.1),transparent 60%);
+  animation:ctaGlow 4s ease-in-out infinite;
+}
+@keyframes ctaGlow{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+.cta-section h3{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;margin-bottom:14px;position:relative;}
+.cta-section p{color:var(--muted);max-width:60ch;margin:0 auto;position:relative;font-size:1.05rem;}
+
+/* ── FOOTER ── */
+footer{
+  padding:32px 0 48px;text-align:center;
+  color:var(--muted);font-size:.9rem;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+footer strong{color:var(--text);}
+
+/* ── REVEAL ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.show{opacity:1;transform:translateY(0);}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-left.show{opacity:1;transform:translateX(0);}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-right.show{opacity:1;transform:translateX(0);}
+.delay-1{transition-delay:.1s;}
+.delay-2{transition-delay:.2s;}
+.delay-3{transition-delay:.3s;}
+.delay-4{transition-delay:.4s;}
+.delay-5{transition-delay:.5s;}
+.delay-6{transition-delay:.6s;}
+
+/* ── DIVIDER ── */
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(124,58,237,.4),rgba(6,182,212,.3),transparent);margin:4px 0;}
+
+/* ── BADGE ── */
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:999px;
+  background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(6,182,212,.15));
+  border:1px solid rgba(124,58,237,.3);
+  font-size:.9rem;font-weight:600;color:#d6bcff;
+  margin-bottom:20px;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .g4{grid-template-columns:repeat(2,1fr);}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-grid{grid-template-columns:1fr;}
+  .phone-showcase{height:400px;}
+  .phone.left,.phone.right{display:none;}
+}
+@media(max-width:768px){
+  section{padding:48px 0;}
+  .g3{grid-template-columns:repeat(2,1fr);}
+  .g2{grid-template-columns:1fr;}
+  .nav-links{display:none;}
+  .hero-stats{grid-template-columns:repeat(3,1fr);}
+  .cta-section{padding:36px 24px;}
+}
+@media(max-width:540px){
+  .g3,.g4{grid-template-columns:1fr;}
+  .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .tl-step{grid-template-columns:1fr;}
+  .arch-flow{flex-direction:column;}
+  .arch-arrow{transform:rotate(90deg);}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand">
+      <div class="brand-logo">🌐</div>
+      <div class="brand-text">
+        <h1>The Social Scoop</h1>
+        <p>Major Project Presentation · 2025–26</p>
+      </div>
+    </div>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#problem">Problem</a>
+      <a href="#features">Features</a>
+      <a href="#stack">Tech Stack</a>
+      <a href="#screens">Screens</a>
+      <a href="#future">Future Scope</a>
+      <a href="#team">Team</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="reveal-left">
+        <div class="hero-eyebrow">
+          <div class="pulse-dot"></div>
+          <span class="eyebrow">Major Project · University of Lucknow · 2025–26</span>
+        </div>
+        <h1 class="hero-title">
+          The<br><span class="grad">Social Scoop</span>
+        </h1>
+        <p class="hero-desc">
+          A modern full-stack social media platform built around <strong>privacy</strong>,
+          <strong>real-time communication</strong>, and a clean <strong>chronological feed</strong>
+          — free from ads, algorithms, and data mining.
+        </p>
+        <div class="hero-chips">
+          <span class="chip chip-purple">⚛️ React + Redux</span>
+          <span class="chip chip-cyan">🍃 MongoDB Atlas</span>
+          <span class="chip chip-green">💬 Socket.IO</span>
+          <span class="chip chip-amber">☁️ Cloudinary</span>
+          <span class="chip chip-danger">🔒 JWT Auth</span>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-box">
+            <div class="stat-num grad">8+</div>
+            <div class="stat-lbl">Core Features</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num grad">MERN</div>
+            <div class="stat-lbl">Tech Stack</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num grad">Real-time</div>
+            <div class="stat-lbl">Chat + Calls</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <div class="phone-showcase">
+          <!-- Left phone: Feed -->
+          <div class="phone left">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="screen s-feed">
+                <div class="s-topbar">
+                  <span class="logo">Social Scoop</span>
+                  <div class="icons">
+                    <div class="icon-dot">🔔</div>
+                    <div class="icon-dot">💬</div>
+                  </div>
+                </div>
+                <div class="s-post">
+                  <div class="s-post-header">
+                    <div class="s-avatar av1"></div>
+                    <div><div class="s-uname">Aditya</div><div class="s-time">2h ago</div></div>
+                  </div>
+                  <div class="s-img">🌅</div>
+                  <div class="s-actions">
+                    <div class="s-act">❤️ <span>12</span></div>
+                    <div class="s-act">💬 <span>3</span></div>
+                  </div>
+                </div>
+                <div class="s-post">
+                  <div class="s-post-header">
+                    <div class="s-avatar av2"></div>
+                    <div><div class="s-uname">Abhishek</div><div class="s-time">5h ago</div></div>
+                  </div>
+                  <div class="s-img">🎨</div>
+                  <div class="s-actions">
+                    <div class="s-act">❤️ <span>8</span></div>
+                    <div class="s-act">💬 <span>1</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main phone: Login -->
+          <div class="phone main">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="screen s-login">
+                <div class="app-logo">🌐</div>
+                <h3>The Social Scoop</h3>
+                <p>Sign in to your account</p>
+                <div class="s-input">👤 &nbsp;Username</div>
+                <div class="s-input">🔒 &nbsp;Password</div>
+                <div class="s-btn">Sign In</div>
+                <div class="s-link">Don't have an account? Sign Up</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right phone: Messages -->
+          <div class="phone right">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="screen s-msg">
+                <div class="s-topbar">
+                  <span class="logo">Messages</span>
+                  <div class="icon-dot">✏️</div>
+                </div>
+                <div class="s-msg-list">
+                  <div class="s-convo">
+                    <div class="s-avatar av1"></div>
+                    <div style="flex:1;min-width:0">
+                      <div class="s-c-name">Aditya</div>
+                      <div class="s-c-last">Hey, what's up? 👋</div>
+                    </div>
+                    <div class="s-online"></div>
+                  </div>
+                  <div class="s-convo">
+                    <div class="s-avatar av2"></div>
+                    <div style="flex:1;min-width:0">
+                      <div class="s-c-name">Abhishek</div>
+                      <div class="s-c-last">Sent a photo 📸</div>
+                    </div>
+                  </div>
+                  <div class="s-convo">
+                    <div class="s-avatar av3"></div>
+                    <div style="flex:1;min-width:0">
+                      <div class="s-c-name">Aliraja</div>
+                      <div class="s-c-last">See you tomorrow!</div>
+                    </div>
+                    <div class="s-online"></div>
+                  </div>
+                  <div class="s-convo">
+                    <div class="s-avatar" style="background:linear-gradient(135deg,#fb7185,#f59e0b)"></div>
+                    <div style="flex:1;min-width:0">
+                      <div class="s-c-name">Afzal</div>
+                      <div class="s-c-last">Cool project! 🔥</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Introduction + Abstract</span>
+      <h2 class="section-title">Why this project matters</h2>
+      <p class="section-sub">Social media should help people connect — not manipulate attention or harvest data. The Social Scoop reimagines the experience from the ground up.</p>
+    </div>
+    <div class="grid g2">
+      <article class="card reveal delay-1">
+        <div class="card-icon">📘</div>
+        <h4>Introduction</h4>
+        <p>Social media is a dominant internet communication medium for sharing information, creating content, and building communities. Yet today's major platforms compromise the user experience with ads, algorithmic manipulation, and opaque data policies. The Social Scoop was built to restore simplicity and user trust.</p>
+      </article>
+      <article class="card reveal delay-2">
+        <div class="card-icon">✨</div>
+        <h4>Abstract</h4>
+        <p>A privacy-first social media web app built on the MERN stack — MongoDB, Express, React, and Node.js. Users can register and log in securely, post photos and videos, like and comment, follow people with request approval, chat in real time via Socket.IO, and make voice/video calls with WebRTC. Light/dark themes and a fully responsive layout complete the experience.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ── -->
+<section id="problem">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Problem Statement</span>
+      <h2 class="section-title">What's broken in social media today</h2>
+      <p class="section-sub">Existing platforms prioritise engagement metrics and advertiser revenue over the actual user experience and their privacy.</p>
+    </div>
+    <div class="grid g3">
+      <article class="card problem reveal delay-1">
+        <div class="card-icon">📢</div>
+        <h4>Ad-Driven Design</h4>
+        <p>Platforms strategically insert ads into feeds and personalise them using invasive profiling, turning users into the product rather than the customer.</p>
+      </article>
+      <article class="card problem reveal delay-2">
+        <div class="card-icon">🧠</div>
+        <h4>Algorithmic Feed Manipulation</h4>
+        <p>Non-chronological feeds maximise time-on-platform by surfacing emotionally engaging (often outrage-driven) content rather than posts from people you follow.</p>
+      </article>
+      <article class="card problem reveal delay-3">
+        <div class="card-icon">🔓</div>
+        <h4>Privacy &amp; Security Gaps</h4>
+        <p>Weak authentication, unencrypted storage, and broad data-sharing practices leave user information exposed — especially on free-tier platforms used by students.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── OBJECTIVES ── -->
+<section id="objectives">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Objectives</span>
+      <h2 class="section-title">What The Social Scoop sets out to achieve</h2>
+      <p class="section-sub">Six clear goals guided every design and development decision throughout the project.</p>
+    </div>
+    <div class="grid g3">
+      <article class="card objective reveal delay-1">
+        <div class="card-icon">🧼</div>
+        <h4>Clean Minimal UI</h4>
+        <p>Design a clutter-free, responsive interface that works equally well on desktop and mobile without ads or distracting elements.</p>
+      </article>
+      <article class="card objective reveal delay-2">
+        <div class="card-icon">🚫</div>
+        <h4>No Ads or Data Mining</h4>
+        <p>Build an ad-free product that collects only the minimum data required for the feature to work and stores it securely.</p>
+      </article>
+      <article class="card objective reveal delay-3">
+        <div class="card-icon">🛡️</div>
+        <h4>Secure Architecture</h4>
+        <p>Protect users with bcrypt password hashing, JWT authentication, and token expiry — so credentials are never stored in plain text.</p>
+      </article>
+      <article class="card objective reveal delay-4">
+        <div class="card-icon">⚡</div>
+        <h4>Real-Time Communication</h4>
+        <p>Enable live direct messaging, online presence indicators, and WebRTC peer-to-peer video/voice calling through Socket.IO.</p>
+      </article>
+      <article class="card objective reveal delay-5">
+        <div class="card-icon">📅</div>
+        <h4>Chronological Feed</h4>
+        <p>Show posts in the order they were made — no ranking algorithm, no boosted content, no filtered visibility.</p>
+      </article>
+      <article class="card objective reveal delay-6">
+        <div class="card-icon">☁️</div>
+        <h4>Durable Media Storage</h4>
+        <p>Persist all photos and videos on Cloudinary CDN so media remains accessible and is automatically cleaned up when posts or accounts are deleted.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section id="features">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Core Features</span>
+      <h2 class="section-title">Everything the platform offers</h2>
+      <p class="section-sub">Eight fully implemented modules that together form a complete social media experience.</p>
+    </div>
+    <div class="grid g2" style="gap:14px;">
+      <div class="feature-card reveal delay-1">
+        <div class="fc-icon">🔐</div>
+        <div class="fc-body">
+          <h4>Secure Register &amp; Login</h4>
+          <p>bcrypt-hashed passwords, JWT-signed sessions with 30-day expiry, and automatic redirect to login on token expiry. Signup creates a profile instantly.</p>
+        </div>
+      </div>
+      <div class="feature-card reveal delay-2">
+        <div class="fc-icon">🖼️</div>
+        <div class="fc-body">
+          <h4>Post with Photos &amp; Videos</h4>
+          <p>Create posts with text, images, or videos. Media is uploaded to Cloudinary and auto-pauses when scrolled out of view. Like, comment, and delete with optimistic UI.</p>
+        </div>
+      </div>
+      <div class="feature-card reveal delay-3">
+        <div class="fc-icon">👥</div>
+        <div class="fc-body">
+          <h4>Follow with Request Approval</h4>
+          <p>Send follow requests that must be approved by the recipient. Followers/following lists, follow-request management, and real-time count updates.</p>
+        </div>
+      </div>
+      <div class="feature-card reveal delay-4">
+        <div class="fc-icon">💬</div>
+        <div class="fc-body">
+          <h4>Real-Time Direct Messaging</h4>
+          <p>One-to-one chat powered by Socket.IO with online indicators, photo/video sharing in chat, emoji picker, and smooth mobile layout with back navigation.</p>
+        </div>
+      </div>
+      <div class="feature-card reveal delay-5">
+        <div class="fc-icon">📹</div>
+        <div class="fc-body">
+          <h4>WebRTC Voice &amp; Video Calls</h4>
+          <p>Peer-to-peer calls using Google STUN servers and Socket.IO signaling. Accept/reject incoming calls, mute audio, toggle camera, and end calls from both sides.</p>
+        </div>
+      </div>
+      <div class="feature-card reveal delay-6">
+        <div class="fc-icon">🔎</div>
+        <div class="fc-body">
+          <h4>User Search &amp; Profiles</h4>
+          <p>Search users by name or username. Profile pages show bio, post grid, followers/following counts, and action buttons (Follow / Unfollow / Message).</p>
+        </div>
+      </div>
+      <div class="feature-card reveal delay-1">
+        <div class="fc-icon">🔔</div>
+        <div class="fc-body">
+          <h4>Notifications</h4>
+          <p>In-app notifications for likes, comments, and follow requests. Unread badge on the bell icon, mark-all-read, and profile picture shown per notification.</p>
+        </div>
+      </div>
+      <div class="feature-card reveal delay-2">
+        <div class="fc-icon">🌙</div>
+        <div class="fc-body">
+          <h4>Light / Dark Themes</h4>
+          <p>Glassmorphism UI with a full dark/light theme toggle. Preference is persisted per user in the database so it syncs across devices after login.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TECH STACK ── -->
+<section id="stack">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Technologies Used</span>
+      <h2 class="section-title">MERN stack + supporting tools</h2>
+      <p class="section-sub">A carefully chosen set of modern, production-grade technologies that work together as one cohesive system.</p>
+    </div>
+    <div class="grid g4">
+      <article class="card tech reveal delay-1">
+        <div class="tech-logo" style="background:rgba(97,218,251,0.15);border-color:rgba(97,218,251,0.25);">⚛️</div>
+        <h4>React 18</h4>
+        <p>Single-page frontend with hooks, context, and dynamic routing via React Router v6.</p>
+      </article>
+      <article class="card tech reveal delay-2">
+        <div class="tech-logo" style="background:rgba(124,58,237,0.15);">🧰</div>
+        <h4>Redux Toolkit</h4>
+        <p>Global state with slices for user, posts, conversations, profile, and notifications. Persisted via redux-persist.</p>
+      </article>
+      <article class="card tech reveal delay-3">
+        <div class="tech-logo" style="background:rgba(104,211,145,0.15);">🚀</div>
+        <h4>Node.js + Express</h4>
+        <p>REST API with route-level JWT middleware, multer for file uploads, and cors configuration.</p>
+      </article>
+      <article class="card tech reveal delay-4">
+        <div class="tech-logo" style="background:rgba(34,197,94,0.15);">🍃</div>
+        <h4>MongoDB + Mongoose</h4>
+        <p>Atlas M0 cloud database with schema-driven models and a custom adapter for both NeDB (local dev) and MongoDB.</p>
+      </article>
+      <article class="card tech reveal delay-1">
+        <div class="tech-logo" style="background:rgba(245,158,11,0.15);">📡</div>
+        <h4>Socket.IO</h4>
+        <p>Bidirectional real-time events for messages, online presence, and WebRTC call signaling (offer/answer/ICE).</p>
+      </article>
+      <article class="card tech reveal delay-2">
+        <div class="tech-logo" style="background:rgba(6,182,212,0.15);">📹</div>
+        <h4>WebRTC</h4>
+        <p>Peer-to-peer audio and video calls using RTCPeerConnection with Google STUN servers for NAT traversal.</p>
+      </article>
+      <article class="card tech reveal delay-3">
+        <div class="tech-logo" style="background:rgba(251,113,133,0.15);">☁️</div>
+        <h4>Cloudinary</h4>
+        <p>CDN media storage for post photos/videos and profile pictures. Auto-deleted on post or account removal.</p>
+      </article>
+      <article class="card tech reveal delay-4">
+        <div class="tech-logo" style="background:rgba(34,197,94,0.15);">🔒</div>
+        <h4>JWT + bcrypt</h4>
+        <p>Stateless authentication with signed tokens (30-day expiry) and bcrypt-hashed passwords at cost factor 10.</p>
+      </article>
+    </div>
+
+    <!-- Architecture flow -->
+    <div class="reveal" style="margin-top:32px;">
+      <h3 style="font-size:1.2rem;font-weight:700;margin-bottom:16px;color:var(--muted);">System Architecture</h3>
+      <div class="arch-flow">
+        <div class="arch-box ab-client">🖥️ React Client<br><small style="font-weight:400;opacity:.7">Vite + Redux</small></div>
+        <div class="arch-arrow">⟷</div>
+        <div class="arch-box ab-api">⚡ Express REST API<br><small style="font-weight:400;opacity:.7">JWT Auth + Routes</small></div>
+        <div class="arch-arrow">⟷</div>
+        <div class="arch-box ab-db">🍃 MongoDB Atlas<br><small style="font-weight:400;opacity:.7">Users, Posts, Chats</small></div>
+        <div class="arch-arrow">⟶</div>
+        <div class="arch-box ab-storage">☁️ Cloudinary<br><small style="font-weight:400;opacity:.7">Media CDN</small></div>
+        <div style="width:100%;display:flex;justify-content:center;align-items:center;gap:0;margin-top:16px;flex-wrap:wrap;">
+          <div class="arch-box ab-client">🖥️ React Client</div>
+          <div class="arch-arrow">⟷</div>
+          <div class="arch-box ab-socket">📡 Socket.IO Server<br><small style="font-weight:400;opacity:.7">Real-time Events</small></div>
+          <div class="arch-arrow">⟶</div>
+          <div class="arch-box ab-api">📹 WebRTC Signaling<br><small style="font-weight:400;opacity:.7">STUN + ICE</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METHODOLOGY ── -->
+<section id="methodology">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Development Methodology</span>
+      <h2 class="section-title">Agile approach to building the app</h2>
+      <p class="section-sub">Work was structured in iterative phases, allowing the team to plan, build, test, and improve continuously.</p>
+    </div>
+    <div class="card reveal" style="padding:32px;">
+      <div class="timeline">
+        <div class="tl-step">
+          <div class="tl-num">1</div>
+          <div>
+            <h4>Planning &amp; Requirements</h4>
+            <p>Identified user pain points with existing social platforms. Defined scope: auth, feed, messaging, profiles, follow system, and real-time features. Chose MERN stack based on the team's existing skills and project requirements.</p>
+          </div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">2</div>
+          <div>
+            <h4>Backend API Development</h4>
+            <p>Built Express routes for users, posts, conversations, messages, and notifications. Set up MongoDB Atlas with Mongoose models. Implemented JWT authentication, bcrypt password hashing, and Cloudinary media storage.</p>
+          </div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">3</div>
+          <div>
+            <h4>Frontend &amp; Real-Time Features</h4>
+            <p>Built React pages and components with styled-components (glassmorphism design). Added Redux Toolkit state management, Socket.IO for live chat, WebRTC for video calls, and emoji pickers. Implemented dark/light theme system.</p>
+          </div>
+        </div>
+        <div class="tl-step">
+          <div class="tl-num">4</div>
+          <div>
+            <h4>Testing, Bug Fixes &amp; Polish</h4>
+            <p>Fixed security holes (unauthenticated API routes), cascade-deleted user data on account removal, cleaned orphaned likes/comments, resolved mobile layout issues, improved post readability, and optimised media loading. Deployed to Render with MongoDB Atlas + Cloudinary.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCREENS ── -->
+<section id="screens">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Application Screens</span>
+      <h2 class="section-title">Every part of the app</h2>
+      <p class="section-sub">Eight core screens covering the full user journey from sign-up to messaging.</p>
+    </div>
+    <div class="gallery-grid">
+
+      <!-- Login -->
+      <div class="gallery-phone reveal delay-1">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-login" style="height:260px;">
+            <div class="app-logo" style="margin-top:20px;">🌐</div>
+            <h3>The Social Scoop</h3>
+            <p>Sign in to continue</p>
+            <div class="s-input">👤 &nbsp;Username</div>
+            <div class="s-input">🔒 &nbsp;Password</div>
+            <div class="s-btn">Sign In →</div>
+            <div class="s-link">New here? Create account</div>
+          </div>
+        </div>
+        <div class="gp-label">🔐 Login</div>
+      </div>
+
+      <!-- Home Feed -->
+      <div class="gallery-phone reveal delay-2">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-feed" style="height:260px;">
+            <div class="s-topbar">
+              <span class="logo">Social Scoop</span>
+              <div class="icons">
+                <div class="icon-dot">🔔</div>
+                <div class="icon-dot">💬</div>
+              </div>
+            </div>
+            <div class="s-post">
+              <div class="s-post-header">
+                <div class="s-avatar av1"></div>
+                <div><div class="s-uname">Aditya</div><div class="s-time">just now</div></div>
+              </div>
+              <div class="s-img" style="height:60px;">🌆</div>
+              <div class="s-actions"><div class="s-act">❤️ <span>5</span></div><div class="s-act">💬 <span>2</span></div></div>
+            </div>
+            <div class="s-post">
+              <div class="s-post-header">
+                <div class="s-avatar av3"></div>
+                <div><div class="s-uname">Aliraja</div><div class="s-time">1h ago</div></div>
+              </div>
+              <div class="s-actions" style="padding-top:6px;"><div class="s-act">❤️ <span>3</span></div><div class="s-act">💬</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="gp-label">🏠 Home Feed</div>
+      </div>
+
+      <!-- Profile -->
+      <div class="gallery-phone reveal delay-3">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-profile" style="height:260px;">
+            <div class="s-cover"></div>
+            <div class="s-pav"></div>
+            <div class="s-pinfo">
+              <div class="s-pname">Aditya Kumar</div>
+              <div class="s-pbio">@my_otherworld · Dev 🚀</div>
+            </div>
+            <div class="s-pstats">
+              <div class="s-pstat"><div class="s-pstat-n">12</div><div class="s-pstat-l">Posts</div></div>
+              <div class="s-pstat"><div class="s-pstat-n">48</div><div class="s-pstat-l">Followers</div></div>
+              <div class="s-pstat"><div class="s-pstat-n">36</div><div class="s-pstat-l">Following</div></div>
+            </div>
+            <div class="s-pgrid" style="flex:1;">
+              <div class="s-pgrid-item" style="background:linear-gradient(135deg,rgba(124,58,237,.4),rgba(6,182,212,.2))"></div>
+              <div class="s-pgrid-item" style="background:linear-gradient(135deg,rgba(245,158,11,.3),rgba(251,113,133,.2))"></div>
+              <div class="s-pgrid-item" style="background:linear-gradient(135deg,rgba(34,197,94,.3),rgba(6,182,212,.2))"></div>
+              <div class="s-pgrid-item" style="background:linear-gradient(135deg,rgba(251,113,133,.3),rgba(124,58,237,.2))"></div>
+              <div class="s-pgrid-item" style="background:linear-gradient(135deg,rgba(6,182,212,.4),rgba(34,197,94,.2))"></div>
+              <div class="s-pgrid-item" style="background:linear-gradient(135deg,rgba(245,158,11,.3),rgba(124,58,237,.2))"></div>
+            </div>
+          </div>
+        </div>
+        <div class="gp-label">👤 Profile</div>
+      </div>
+
+      <!-- Messages -->
+      <div class="gallery-phone reveal delay-4">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-msg" style="height:260px;">
+            <div class="s-topbar"><span class="logo">Messages</span><div class="icon-dot">✏️</div></div>
+            <div class="s-msg-list">
+              <div class="s-convo"><div class="s-avatar av1"></div><div style="flex:1;min-width:0"><div class="s-c-name">Aditya</div><div class="s-c-last">Hey! 👋</div></div><div class="s-online"></div></div>
+              <div class="s-convo"><div class="s-avatar av2"></div><div style="flex:1;min-width:0"><div class="s-c-name">Abhishek</div><div class="s-c-last">Sent a photo 📸</div></div></div>
+              <div class="s-convo"><div class="s-avatar av3"></div><div style="flex:1;min-width:0"><div class="s-c-name">Aliraja</div><div class="s-c-last">See you soon!</div></div><div class="s-online"></div></div>
+              <div class="s-convo"><div class="s-avatar" style="background:linear-gradient(135deg,#fb7185,#f59e0b)"></div><div style="flex:1;min-width:0"><div class="s-c-name">Afzal</div><div class="s-c-last">Great work! 🔥</div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="gp-label">💬 Messages</div>
+      </div>
+
+      <!-- Search -->
+      <div class="gallery-phone reveal delay-1">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-feed" style="height:260px;">
+            <div class="s-topbar"><span class="logo">Search</span></div>
+            <div style="margin:8px;"><div class="s-input" style="background:rgba(124,58,237,.15);border-color:rgba(124,58,237,.3);">🔍 &nbsp;Find users...</div></div>
+            <div style="padding:4px 8px;font-size:8px;color:rgba(255,255,255,.35);font-weight:700;">RESULTS</div>
+            <div class="s-convo"><div class="s-avatar av2"></div><div><div class="s-c-name">Abhishek Patel</div><div class="s-c-last">@abhishek_dev</div></div></div>
+            <div class="s-convo"><div class="s-avatar av3"></div><div><div class="s-c-name">Aliraja Ansari</div><div class="s-c-last">@aliraja</div></div></div>
+            <div class="s-convo"><div class="s-avatar" style="background:linear-gradient(135deg,#fb7185,#f59e0b)"></div><div><div class="s-c-name">Shaikh Afzal</div><div class="s-c-last">@afzal</div></div></div>
+          </div>
+        </div>
+        <div class="gp-label">🔎 Search</div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="gallery-phone reveal delay-2">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-feed" style="height:260px;">
+            <div class="s-topbar"><span class="logo">Notifications</span></div>
+            <div class="s-convo"><div class="s-avatar av1"></div><div><div class="s-c-name">Aditya liked your post</div><div class="s-c-last">❤️ · 2m ago</div></div></div>
+            <div class="s-convo" style="background:rgba(124,58,237,.1)"><div class="s-avatar av2"></div><div><div class="s-c-name">Abhishek commented</div><div class="s-c-last">💬 "Incredible!" · 8m ago</div></div></div>
+            <div class="s-convo"><div class="s-avatar av3"></div><div><div class="s-c-name">Aliraja sent a request</div><div class="s-c-last">👥 · 1h ago</div></div></div>
+            <div class="s-convo"><div class="s-avatar" style="background:linear-gradient(135deg,#fb7185,#f59e0b)"></div><div><div class="s-c-name">Afzal liked your post</div><div class="s-c-last">❤️ · 3h ago</div></div></div>
+          </div>
+        </div>
+        <div class="gp-label">🔔 Notifications</div>
+      </div>
+
+      <!-- Settings -->
+      <div class="gallery-phone reveal delay-3">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-feed" style="height:260px;">
+            <div class="s-topbar"><span class="logo">Settings</span></div>
+            <div style="padding:8px;">
+              <div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:rgba(255,255,255,.05);margin-bottom:6px;">
+                <span style="font-size:14px;">🌙</span>
+                <div style="flex:1"><div class="s-c-name">Dark Mode</div></div>
+                <div style="width:28px;height:16px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#06b6d4);"></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:rgba(255,255,255,.05);margin-bottom:6px;">
+                <span style="font-size:14px;">✏️</span>
+                <div class="s-c-name">Edit Profile</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:rgba(255,255,255,.05);margin-bottom:6px;">
+                <span style="font-size:14px;">🔒</span>
+                <div class="s-c-name">Privacy</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:rgba(251,113,133,.1);">
+                <span style="font-size:14px;">🗑️</span>
+                <div class="s-c-name" style="color:#fb7185;">Delete Account</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gp-label">⚙️ Settings</div>
+      </div>
+
+      <!-- Follow Requests -->
+      <div class="gallery-phone reveal delay-4">
+        <div class="gp-notch"><div class="gp-notch-pill"></div></div>
+        <div class="gp-screen">
+          <div class="screen s-feed" style="height:260px;">
+            <div class="s-topbar"><span class="logo">Follow Requests</span></div>
+            <div style="padding:8px;">
+              <div style="padding:6px 0;font-size:8px;color:rgba(255,255,255,.35);font-weight:700;">PENDING · 3</div>
+              <div class="s-convo" style="padding:8px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:6px;">
+                <div class="s-avatar av2"></div>
+                <div style="flex:1"><div class="s-c-name">Abhishek</div></div>
+                <div style="display:flex;gap:4px;">
+                  <div style="padding:3px 8px;border-radius:6px;background:rgba(34,197,94,.2);font-size:8px;font-weight:700;color:#baf7cc;">✓</div>
+                  <div style="padding:3px 8px;border-radius:6px;background:rgba(251,113,133,.2);font-size:8px;font-weight:700;color:#ffd0d8;">✕</div>
+                </div>
+              </div>
+              <div class="s-convo" style="padding:8px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:6px;">
+                <div class="s-avatar av3"></div>
+                <div style="flex:1"><div class="s-c-name">Aliraja</div></div>
+                <div style="display:flex;gap:4px;">
+                  <div style="padding:3px 8px;border-radius:6px;background:rgba(34,197,94,.2);font-size:8px;font-weight:700;color:#baf7cc;">✓</div>
+                  <div style="padding:3px 8px;border-radius:6px;background:rgba(251,113,133,.2);font-size:8px;font-weight:700;color:#ffd0d8;">✕</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gp-label">👥 Follow Requests</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FUTURE SCOPE ── -->
+<section id="future">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Future Scope + Novelty</span>
+      <h2 class="section-title">What comes next</h2>
+      <p class="section-sub">The platform has a strong foundation. These are the most meaningful extensions that can be built on top of it.</p>
+    </div>
+    <div class="grid g3" style="margin-bottom:32px;">
+      <div class="future-card reveal delay-1">
+        <span class="future-tag tag-new">New Feature</span>
+        <h4>📖 Stories (24-hour Posts)</h4>
+        <p>Disappearing photo/video stories that auto-delete after 24 hours, visible to followers with a ring around the profile picture — similar to Instagram Stories.</p>
+      </div>
+      <div class="future-card reveal delay-2">
+        <span class="future-tag tag-new">New Feature</span>
+        <h4>👥 Group Chats</h4>
+        <p>Multi-person conversations with group name, avatar, admin controls, and the ability to add/remove members. Built on top of the existing Socket.IO messaging system.</p>
+      </div>
+      <div class="future-card reveal delay-3">
+        <span class="future-tag tag-enhance">Enhancement</span>
+        <h4>🔐 End-to-End Encryption</h4>
+        <p>Encrypt direct messages client-side using the Web Crypto API so that even the server cannot read message content. Keys would be generated and stored per device.</p>
+      </div>
+      <div class="future-card reveal delay-4">
+        <span class="future-tag tag-new">New Feature</span>
+        <h4>📱 Native Mobile App</h4>
+        <p>Rewrite the frontend in React Native to publish on iOS App Store and Google Play with push notifications, native camera access, and offline caching.</p>
+      </div>
+      <div class="future-card reveal delay-5">
+        <span class="future-tag tag-new">New Feature</span>
+        <h4>🔔 Push Notifications</h4>
+        <p>Web Push API integration so users receive like, comment, and follow-request notifications even when the app is closed — without requiring a native app.</p>
+      </div>
+      <div class="future-card reveal delay-6">
+        <span class="future-tag tag-enhance">Enhancement</span>
+        <h4>🤖 AI Content Moderation</h4>
+        <p>Integrate a lightweight image classification model to automatically flag and reject nudity, violence, or hate-speech content before it is stored in the database.</p>
+      </div>
+      <div class="future-card reveal delay-1">
+        <span class="future-tag tag-research">Research</span>
+        <h4>📊 Creator Analytics</h4>
+        <p>Dashboard for content creators showing post reach, profile visits, follower growth over time, and best-performing content — built entirely on first-party data.</p>
+      </div>
+      <div class="future-card reveal delay-2">
+        <span class="future-tag tag-new">New Feature</span>
+        <h4>🎭 Short-Form Video (Reels)</h4>
+        <p>A dedicated vertical video feed for short clips (15–60 seconds), with looping playback and swipe-up navigation — extending the existing video post infrastructure.</p>
+      </div>
+      <div class="future-card reveal delay-3">
+        <span class="future-tag tag-enhance">Enhancement</span>
+        <h4>🌐 Internationalisation (i18n)</h4>
+        <p>Add multi-language support using react-i18next so the app can be used in Hindi, Urdu, and other regional languages — making it accessible to a wider student audience.</p>
+      </div>
+    </div>
+
+    <!-- Novelty -->
+    <div class="card reveal" style="padding:32px;">
+      <div class="card-icon">💡</div>
+      <h4 style="font-size:1.2rem;margin-bottom:16px;">What Makes This Project Novel</h4>
+      <div class="grid g2">
+        <ul style="list-style:none;padding:0;display:grid;gap:10px;">
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--green);">✔</span> Ad-free and free from algorithmic content ranking</li>
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--green);">✔</span> Follow-request approval system for privacy control</li>
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--green);">✔</span> Peer-to-peer WebRTC voice &amp; video calling built in</li>
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--green);">✔</span> Cascade account deletion cleans all linked data</li>
+        </ul>
+        <ul style="list-style:none;padding:0;display:grid;gap:10px;">
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--cyan);">✔</span> Full Cloudinary CDN with auto-cleanup on delete</li>
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--cyan);">✔</span> Self-healing DB: orphaned likes/counts fixed on read</li>
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--cyan);">✔</span> Single-binary deploy: frontend + backend on one Render URL</li>
+          <li style="display:flex;gap:10px;color:var(--muted);font-size:.9rem;"><span style="color:var(--cyan);">✔</span> Light/dark theme persisted per user across devices</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONCLUSION ── -->
+<section id="conclusion">
+  <div class="container">
+    <div class="cta-section reveal">
+      <span class="eyebrow" style="position:relative;">Conclusion</span>
+      <h3 style="position:relative;">Practical exposure to full-stack<br>web development through a<br><span class="grad">real-world social product</span></h3>
+      <p style="position:relative;margin-top:16px;">
+        The Social Scoop gave the team hands-on experience with every layer of modern web development —
+        database design, REST API architecture, real-time communication, cloud media storage,
+        frontend state management, and responsive UI. More than a class project, it is a
+        deployable product that solves a genuine problem with principled engineering choices.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ── TEAM ── -->
+<section id="team">
+  <div class="container">
+    <div class="reveal">
+      <span class="eyebrow">Presented By</span>
+      <h2 class="section-title">The team behind the app</h2>
+      <p class="section-sub">Major Project submitted in partial fulfilment of the degree requirements — Department of Computer Science &amp; Engineering, Faculty of Engineering &amp; Technology, University of Lucknow.</p>
+    </div>
+    <div class="grid g4" style="margin-bottom:24px;">
+      <div class="team-card reveal delay-1">
+        <div class="team-avatar ta1">👨‍💻</div>
+        <div class="team-name">Aditya Kumar Yadav</div>
+        <div class="team-roll">Roll No. 2410014325004</div>
+        <div class="team-role">Full-Stack Lead</div>
+      </div>
+      <div class="team-card reveal delay-2">
+        <div class="team-avatar ta2">👨‍💻</div>
+        <div class="team-name">Abhishek Patel</div>
+        <div class="team-roll">Roll No. 2410014325003</div>
+        <div class="team-role">Frontend Developer</div>
+      </div>
+      <div class="team-card reveal delay-3">
+        <div class="team-avatar ta3">👨‍💻</div>
+        <div class="team-name">Aliraja Ansari</div>
+        <div class="team-roll">Roll No. 2410014325010</div>
+        <div class="team-role">Backend Developer</div>
+      </div>
+      <div class="team-card reveal delay-4">
+        <div class="team-avatar ta4">👨‍💻</div>
+        <div class="team-name">Shaikh Afzal</div>
+        <div class="team-roll">Roll No. 2410014325005</div>
+        <div class="team-role">UI / UX Designer</div>
+      </div>
+    </div>
+    <div class="grid g2" style="max-width:640px;margin:0 auto;">
+      <div class="team-card reveal delay-1">
+        <div class="team-avatar ta-guide">🎓</div>
+        <div class="team-name">Er. Rohit Yadav</div>
+        <div class="team-roll">Assistant Professor</div>
+        <div class="team-role">Project Guide</div>
+      </div>
+      <div class="team-card reveal delay-2">
+        <div class="team-avatar" style="background:linear-gradient(135deg,#0f1630,#1a1040);">🏛️</div>
+        <div class="team-name">University of Lucknow</div>
+        <div class="team-roll">Faculty of Engineering &amp; Technology</div>
+        <div class="team-role">Dept. CSE · 2025–26</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p><strong>The Social Scoop</strong> · Major Project Presentation · University of Lucknow · 2025–26</p>
+    <p style="margin-top:6px;font-size:.82rem;">Department of Computer Science &amp; Engineering · Faculty of Engineering &amp; Technology</p>
+  </div>
+</footer>
+
+<script>
+// ── Scroll reveal
+const revealEls = document.querySelectorAll('.reveal,.reveal-left,.reveal-right');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// ── Active nav link
+const navLinks = [...document.querySelectorAll('.nav-links a')];
+const sections = navLinks.map(a => {
+  const id = a.getAttribute('href').replace('#','');
+  return document.getElementById(id);
+}).filter(Boolean);
+
+function setActive() {
+  const offset = window.scrollY + 150;
+  let current = sections[0];
+  sections.forEach(s => { if (s && s.offsetTop <= offset) current = s; });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + (current?.id || ''));
+  });
+}
+window.addEventListener('scroll', setActive, { passive: true });
+setActive();
+
+// ── Card mouse glow
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('mousemove', e => {
+    const r = card.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+    const y = ((e.clientY - r.top)  / r.height * 100).toFixed(1);
+    card.style.setProperty('--mx', x + '%');
+    card.style.setProperty('--my', y + '%');
+  });
+});
+
+// ── Floating particles
+const container = document.getElementById('particles');
+const colors = ['rgba(124,58,237,.4)','rgba(6,182,212,.35)','rgba(34,197,94,.3)','rgba(245,158,11,.3)'];
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  const size = Math.random() * 6 + 2;
+  p.style.cssText = `
+    width:${size}px;height:${size}px;
+    left:${Math.random()*100}%;
+    background:${colors[Math.floor(Math.random()*colors.length)]};
+    animation-duration:${Math.random()*20+15}s;
+    animation-delay:${Math.random()*20}s;
+  `;
+  container.appendChild(p);
+}
+
+// ── Animate stat counters
+const counters = document.querySelectorAll('.stat-num');
+const countObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    const target = parseInt(el.textContent);
+    if (isNaN(target)) return;
+    let cur = 0;
+    const step = Math.ceil(target / 40);
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = cur + (el.dataset.suffix || '');
+      if (cur >= target) clearInterval(t);
+    }, 30);
+    countObs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+counters.forEach(el => countObs.observe(el));
+</script>
+</body>
+</html>
