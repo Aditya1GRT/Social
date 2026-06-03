@@ -176,21 +176,24 @@ const Actions = styled.div`
 const ActionBtn = styled.button`
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 12px;
+  gap: 7px;
+  padding: 8px 16px;
   min-height: 44px;
   border-radius: 20px;
-  border: none;
-  background: none;
+  border: 1.5px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.35);
+  backdrop-filter: blur(8px);
   cursor: pointer;
-  color: ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 14px;
+  font-weight: 600;
   transition: all 0.2s;
-  font-weight: 500;
 
   &:hover {
-    background: rgba(${({ theme }) => theme.mainRgba}, 0.08);
+    background: rgba(${({ theme }) => theme.mainRgba}, 0.12);
+    border-color: ${({ theme }) => theme.accent};
+    color: ${({ theme }) => theme.accent};
   }
 
   &.liked { color: #e74c3c; }
