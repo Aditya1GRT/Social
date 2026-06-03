@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import EmojiPicker, { Theme } from 'emoji-picker-react';
@@ -384,6 +385,7 @@ function formatTime(dateStr) {
 
 export default function Messages() {
   const dispatch = useDispatch();
+  const location = useLocation();
   const currentUser = useSelector(s => s.user?.currentUser);
   const { conversations, isFetching } = useSelector(s => s.conversation);
   const isDark = currentUser?.prefersDarkTheme ?? false;
@@ -418,6 +420,7 @@ export default function Messages() {
   const fileInputRef = useRef(null);
   const searchDebounce = useRef(null);
   const emojiPickerRef = useRef(null);
+  const autoOpenDone = useRef(false);
 
   // WebRTC refs
   const peerConnectionRef = useRef(null);
@@ -505,6 +508,24 @@ export default function Messages() {
       setConvoUsers(map);
     });
   }, [conversations, currentUser?._id]);
+
+  // ── Auto-open DM when navigated from a profile ───────────────────────────────
+  useEffect(() => {
+    const dmUser = location.state?.dmUser;
+    if (!dmUser || autoOpenDone.current || isFetching || !currentUser?._id) return;
+    autoOpenDone.current = true;
+    const existing = conversations.find(c =>
+      c.members?.includes(dmUser._id) && c.members?.includes(currentUser._id)
+    );
+    if (existing) {
+      setActiveConvo(existing);
+    } else {
+      newConversation(dispatch, currentUser._id, dmUser._id).then(convo => {
+        setActiveConvo(convo);
+        setConvoUsers(prev => ({ ...prev, [dmUser._id]: dmUser }));
+      }).catch(() => {});
+    }
+  }, [conversations, isFetching]);
 
   useEffect(() => {
     if (!activeConvo?._id) return;

@@ -13,6 +13,7 @@ import {
   faUsers,
   faImage,
   faTimes,
+  faMessage,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   getUserProfile,
@@ -522,10 +523,16 @@ export default function Profile() {
                 </EditLink>
               ) : currentUser ? (
                 isFollowing ? (
-                  <ActionBtn onClick={handleUnfollow} disabled={isFetching}>
-                    <FontAwesomeIcon icon={faUserMinus} />
-                    Unfollow
-                  </ActionBtn>
+                  <>
+                    <ActionBtn onClick={handleUnfollow} disabled={isFetching}>
+                      <FontAwesomeIcon icon={faUserMinus} />
+                      Unfollow
+                    </ActionBtn>
+                    <ActionBtn $primary onClick={() => navigate('/messages', { state: { dmUser: { _id: profileUser._id, username: profileUser.username, name: profileUser.name, profilePicture: profileUser.profilePicture } } })}>
+                      <FontAwesomeIcon icon={faMessage} />
+                      Message
+                    </ActionBtn>
+                  </>
                 ) : hasSentRequest ? (
                   <ActionBtn onClick={handleUnsend} disabled={isFetching}>
                     <FontAwesomeIcon icon={faUserClock} />
