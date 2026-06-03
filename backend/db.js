@@ -67,12 +67,14 @@ if (process.env.MONGODB_URI) {
   const Post         = require('./models/Post');
   const Conversation = require('./models/Conversation');
   const Message      = require('./models/Message');
+  const Notification = require('./models/Notification');
 
   module.exports = {
     users:         new MongooseAdapter(User),
     posts:         new MongooseAdapter(Post),
     conversations: new MongooseAdapter(Conversation),
     messages:      new MongooseAdapter(Message),
+    notifications: new MongooseAdapter(Notification),
     usingMongo: true,
   };
 } else {
@@ -86,9 +88,10 @@ if (process.env.MONGODB_URI) {
   const posts         = new Datastore({ filename: path.join(dbDir, 'posts.db'),         autoload: true });
   const conversations = new Datastore({ filename: path.join(dbDir, 'conversations.db'), autoload: true });
   const messages      = new Datastore({ filename: path.join(dbDir, 'messages.db'),      autoload: true });
+  const notifications = new Datastore({ filename: path.join(dbDir, 'notifications.db'), autoload: true });
 
   users.ensureIndexAsync({ fieldName: 'username', unique: true }).catch(console.error);
   users.ensureIndexAsync({ fieldName: 'email',    unique: true }).catch(console.error);
 
-  module.exports = { users, posts, conversations, messages, usingMongo: false };
+  module.exports = { users, posts, conversations, messages, notifications, usingMongo: false };
 }

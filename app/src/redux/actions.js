@@ -34,6 +34,12 @@ import {
   postFetchSuccess,
   profileFailure,
 } from './slices/profileSlice';
+import {
+  notifFetchStart,
+  notifFetchSuccess,
+  notifFetchFail,
+  notifMarkAllRead,
+} from './slices/notificationSlice';
 
 // ─── Auth ────────────────────────────────────────────────────────────────────
 
@@ -328,6 +334,27 @@ export const getUserPosts = async (dispatch, user) => {
   } catch (err) {
     dispatch(profileFailure());
     throw err;
+  }
+};
+
+// ─── Notifications ────────────────────────────────────────────────────────────
+
+export const getNotifications = async (dispatch, userId) => {
+  dispatch(notifFetchStart());
+  try {
+    const { data } = await api.get(`notifications/${userId}`);
+    dispatch(notifFetchSuccess(data));
+  } catch (err) {
+    dispatch(notifFetchFail());
+  }
+};
+
+export const markNotificationsRead = async (dispatch, userId) => {
+  dispatch(notifMarkAllRead());
+  try {
+    await api.put(`notifications/read/${userId}`);
+  } catch (err) {
+    console.error('markNotificationsRead error:', err);
   }
 };
 

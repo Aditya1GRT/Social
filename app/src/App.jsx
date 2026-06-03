@@ -16,6 +16,7 @@ import Messages from './pages/Messages';
 import Search from './pages/Search';
 import FriendRequests from './pages/FriendRequests';
 import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
 
 import bgLight from './assets/bgLight.jpg';
 import bgDark from './assets/bgDark.jpg';
@@ -146,6 +147,7 @@ export default function App() {
               <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
               <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
               <Route path="/requests" element={<ProtectedRoute><FriendRequests /></ProtectedRoute>} />
+              <Route path="/notifications" element={<ProtectedRoute><Notifications /></ProtectedRoute>} />
               <Route path="/profile/edit" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
 
               {/* Semi-public routes */}

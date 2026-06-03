@@ -17,6 +17,7 @@ const postRoutes = require('./routes/posts');
 const conversationRoutes = require('./routes/conversations');
 const messageRoutes = require('./routes/messages');
 const uploadRoutes = require('./routes/upload');
+const notificationRoutes = require('./routes/notifications');
 
 const app = express();
 const server = http.createServer(app);
@@ -47,6 +48,7 @@ app.use('/api/posts', postRoutes);
 app.use('/api/conversations', conversationRoutes);
 app.use('/api/message', messageRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // Socket.io real-time messaging
 const activeUsers = [];

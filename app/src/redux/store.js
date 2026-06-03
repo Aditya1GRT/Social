@@ -7,6 +7,7 @@ import userReducer from './slices/userSlice';
 import postReducer from './slices/postSlice';
 import conversationReducer from './slices/conversationSlice';
 import profileReducer from './slices/profileSlice';
+import notificationReducer from './slices/notificationSlice';
 
 const userPersistConfig = {
   key: 'user',
@@ -23,12 +24,13 @@ const rootReducer = combineReducers({
   post: postReducer,
   conversation: persistReducer(conversationPersistConfig, conversationReducer),
   profile: profileReducer,
+  notifications: notificationReducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  blacklist: ['post', 'profile'],
+  blacklist: ['post', 'profile', 'notifications'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

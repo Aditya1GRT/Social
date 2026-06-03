@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -7,6 +8,7 @@ import {
   faMagnifyingGlass,
   faUserGroup,
   faMessage,
+  faBell,
   faGear,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -68,6 +70,7 @@ const NavItem = styled(NavLink)`
   font-size: 18px;
   text-decoration: none;
   transition: all 0.2s;
+  position: relative;
 
   &:hover {
     background: rgba(${({ theme }) => theme.mainRgba}, 0.1);
@@ -90,18 +93,44 @@ const NavItem = styled(NavLink)`
   }
 `;
 
+const Badge = styled.span`
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  background: #e74c3c;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+  line-height: 1;
+  pointer-events: none;
+`;
+
 const navItems = [
   { to: '/', icon: faHouse, label: 'Home', end: true },
   { to: '/search', icon: faMagnifyingGlass, label: 'Search' },
   { to: '/requests', icon: faUserGroup, label: 'Requests' },
   { to: '/messages', icon: faMessage, label: 'Messages' },
+  { to: '/notifications', icon: faBell, label: 'Notifications', badge: true },
   { to: '/settings', icon: faGear, label: 'Settings' },
 ];
 
 function NavItems() {
-  return navItems.map(({ to, icon, label, end }) => (
+  const notifItems = useSelector(s => s.notifications?.items || []);
+  const unreadCount = notifItems.filter(n => !n.read).length;
+
+  return navItems.map(({ to, icon, label, end, badge }) => (
     <NavItem key={to} to={to} end={end} title={label}>
       <FontAwesomeIcon icon={icon} />
+      {badge && unreadCount > 0 && (
+        <Badge>{unreadCount > 99 ? '99+' : unreadCount}</Badge>
+      )}
     </NavItem>
   ));
 }
