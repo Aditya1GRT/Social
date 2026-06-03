@@ -12,11 +12,39 @@ const sanitize = (user) => {
 };
 
 // GET user by username — must come before /:query
+// Also strips dead IDs from followers/following/followRequests arrays
+// and self-heals the DB so counts stay accurate after manual deletions.
 router.get('/user/:username', async (req, res) => {
   try {
     const user = await users.findOneAsync({ username: req.params.username });
     if (!user) return res.status(404).json({ message: 'User not found' });
-    res.status(200).json(sanitize(user));
+
+    // Collect all IDs that need existence checks
+    const allIds = [...new Set([
+      ...(user.followers      || []),
+      ...(user.following      || []),
+      ...(user.followRequests || []),
+      ...(user.reqSent        || []),
+      ...(user.reqRecieved    || []),
+    ].filter(Boolean))];
+
+    const found = await Promise.all(allIds.map(id => users.findOneAsync({ _id: id })));
+    const existing = new Set(found.filter(Boolean).map(u => u._id));
+
+    const clean = {
+      followers:      (user.followers      || []).filter(id => existing.has(id)),
+      following:      (user.following      || []).filter(id => existing.has(id)),
+      followRequests: (user.followRequests || []).filter(id => existing.has(id)),
+      reqSent:        (user.reqSent        || []).filter(id => existing.has(id)),
+      reqRecieved:    (user.reqRecieved    || []).filter(id => existing.has(id)),
+    };
+
+    const changed = Object.keys(clean).some(k => clean[k].length !== (user[k] || []).length);
+    if (changed) {
+      users.updateAsync({ _id: user._id }, { $set: clean }).catch(() => {});
+    }
+
+    res.status(200).json(sanitize({ ...user, ...clean }));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
