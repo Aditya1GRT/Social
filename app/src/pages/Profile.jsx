@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCircleNodes,
@@ -12,6 +12,7 @@ import {
   faEdit,
   faUsers,
   faImage,
+  faTimes,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   getUserProfile,
@@ -19,6 +20,8 @@ import {
   follow,
   unsendFollowReq,
   unfollow,
+  getFollowers,
+  getFollowing,
 } from '../redux/actions';
 import Post from '../components/Post';
 
@@ -139,8 +142,18 @@ const Stats = styled.div`
   }
 `;
 
-const StatItem = styled.div`
+const StatItem = styled.button`
   text-align: center;
+  background: none;
+  border: none;
+  cursor: ${({ $clickable }) => $clickable ? 'pointer' : 'default'};
+  padding: 6px 10px;
+  border-radius: 10px;
+  transition: background 0.15s;
+  font-family: ${({ theme }) => theme.fontFamily};
+  &:hover {
+    background: ${({ $clickable, theme }) => $clickable ? `rgba(${theme.mainRgba}, 0.08)` : 'none'};
+  }
 `;
 
 const StatNum = styled.div`
@@ -153,6 +166,130 @@ const StatLabel = styled.div`
   font-size: 12px;
   color: ${({ theme }) => theme.text};
   opacity: 0.9;
+`;
+
+// ── Followers / Following modal ───────────────────────────────────────────────
+
+const ModalOverlay = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+  padding: 20px;
+`;
+
+const ModalCard = styled(motion.div)`
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.18);
+  border-radius: 24px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+`;
+
+const ModalHeader = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0 4px;
+  border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
+  flex-shrink: 0;
+`;
+
+const TabBtn = styled.button`
+  flex: 1;
+  padding: 16px 8px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid ${({ $active, theme }) => $active ? theme.accent : 'transparent'};
+  color: ${({ $active, theme }) => $active ? theme.accent : theme.text};
+  font-family: ${({ theme }) => theme.fontFamily};
+  font-size: 14px;
+  font-weight: ${({ $active }) => $active ? 700 : 500};
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-bottom: -1px;
+  &:hover { color: ${({ theme }) => theme.accent}; }
+`;
+
+const ModalClose = styled.button`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(${({ theme }) => theme.mainRgba}, 0.08);
+  color: ${({ theme }) => theme.text};
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s;
+  &:hover { background: rgba(${({ theme }) => theme.mainRgba}, 0.15); }
+`;
+
+const ModalList = styled.div`
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+`;
+
+const UserRow = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  text-decoration: none;
+  transition: background 0.15s;
+  &:hover { background: rgba(${({ theme }) => theme.mainRgba}, 0.06); }
+`;
+
+const UserAvatar = styled.div`
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: ${({ theme }) => theme.accent};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 17px;
+  border: 2px solid ${({ theme }) => theme.accent};
+`;
+
+const UserAvatarImg = styled.img`width: 100%; height: 100%; object-fit: cover;`;
+
+const UserName = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.main};
+`;
+
+const UserHandle = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.text};
+  opacity: 0.7;
+`;
+
+const EmptyList = styled.div`
+  text-align: center;
+  padding: 40px 20px;
+  color: ${({ theme }) => theme.text};
+  opacity: 0.55;
+  font-size: 14px;
 `;
 
 const ActionRow = styled.div`
@@ -247,6 +384,38 @@ export default function Profile() {
   const isFetching = useSelector(s => s.user?.isFetching);
   const { user: profileUser, posts, isFetching: profileFetching } = useSelector(s => s.profile);
 
+  // Followers / Following modal
+  const [activeTab, setActiveTab] = useState(null); // null | 'followers' | 'following'
+  const [listData, setListData] = useState([]);
+  const [listLoading, setListLoading] = useState(false);
+
+  const openTab = async (tab) => {
+    setActiveTab(tab);
+    setListData([]);
+    setListLoading(true);
+    try {
+      const data = tab === 'followers'
+        ? await getFollowers(profileUser.username)
+        : await getFollowing(profileUser.username);
+      setListData(data || []);
+    } catch { setListData([]); }
+    finally { setListLoading(false); }
+  };
+
+  const switchTab = async (tab) => {
+    if (tab === activeTab) return;
+    setListData([]);
+    setListLoading(true);
+    setActiveTab(tab);
+    try {
+      const data = tab === 'followers'
+        ? await getFollowers(profileUser.username)
+        : await getFollowing(profileUser.username);
+      setListData(data || []);
+    } catch { setListData([]); }
+    finally { setListLoading(false); }
+  };
+
   useEffect(() => {
     if (username) {
       getUserProfile(dispatch, username);
@@ -335,11 +504,11 @@ export default function Profile() {
                 <StatNum>{postCount}</StatNum>
                 <StatLabel>Posts</StatLabel>
               </StatItem>
-              <StatItem>
+              <StatItem $clickable onClick={() => openTab('followers')}>
                 <StatNum>{followerCount}</StatNum>
                 <StatLabel>Followers</StatLabel>
               </StatItem>
-              <StatItem>
+              <StatItem $clickable onClick={() => openTab('following')}>
                 <StatNum>{followingCount}</StatNum>
                 <StatLabel>Following</StatLabel>
               </StatItem>
@@ -398,6 +567,60 @@ export default function Profile() {
       ) : (
         posts?.map(post => <Post key={post._id} post={post} />)
       )}
+
+      {/* ── Followers / Following modal ── */}
+      <AnimatePresence>
+        {activeTab && (
+          <ModalOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={(e) => { if (e.target === e.currentTarget) setActiveTab(null); }}
+          >
+            <ModalCard
+              initial={{ opacity: 0, scale: 0.93, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.93, y: 16 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ModalHeader>
+                <TabBtn $active={activeTab === 'followers'} onClick={() => switchTab('followers')}>
+                  Followers · {followerCount}
+                </TabBtn>
+                <TabBtn $active={activeTab === 'following'} onClick={() => switchTab('following')}>
+                  Following · {followingCount}
+                </TabBtn>
+                <ModalClose onClick={() => setActiveTab(null)}>
+                  <FontAwesomeIcon icon={faTimes} />
+                </ModalClose>
+              </ModalHeader>
+
+              <ModalList>
+                {listLoading ? (
+                  <EmptyList><FontAwesomeIcon icon={faCircleNodes} spin style={{ fontSize: 22 }} /></EmptyList>
+                ) : listData.length === 0 ? (
+                  <EmptyList>No {activeTab} yet.</EmptyList>
+                ) : (
+                  listData.map(u => (
+                    <UserRow key={u._id} to={`/user/${u.username}`} onClick={() => setActiveTab(null)}>
+                      <UserAvatar>
+                        {u.profilePicture
+                          ? <UserAvatarImg src={u.profilePicture} alt={u.name} />
+                          : (u.name || u.username || '?')[0].toUpperCase()
+                        }
+                      </UserAvatar>
+                      <div>
+                        <UserName>{u.name || u.username}</UserName>
+                        <UserHandle>@{u.username}</UserHandle>
+                      </div>
+                    </UserRow>
+                  ))
+                )}
+              </ModalList>
+            </ModalCard>
+          </ModalOverlay>
+        )}
+      </AnimatePresence>
     </PageWrapper>
   );
 }

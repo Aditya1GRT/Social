@@ -181,6 +181,16 @@ export const getFollowers = async (username) => {
   }
 };
 
+export const getFollowing = async (username) => {
+  try {
+    const { data } = await api.get(`users/friends/${username}`);
+    return data;
+  } catch (err) {
+    console.error('getFollowing error:', err);
+    return [];
+  }
+};
+
 export const getUsersDetails = async (ids) => {
   try {
     const { data } = await api.post('users/users-details', { data: ids });
