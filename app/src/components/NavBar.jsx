@@ -14,7 +14,6 @@ import {
 
 const SideNav = styled.nav`
   width: 64px;
-  min-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,11 +23,11 @@ const SideNav = styled.nav`
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-right: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
-  flex-shrink: 0;
-  position: sticky;
+  position: fixed;
   top: 64px;
+  left: 0;
   height: calc(100vh - 64px);
-  overflow: hidden;
+  z-index: 100;
 
   @media (max-width: 768px) {
     display: none;
