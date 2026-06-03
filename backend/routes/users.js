@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const { users, notifications } = require('../db');
+const { users, posts, notifications } = require('../db');
 const { verifyToken } = require('../middleware/auth');
+const { deleteFile } = require('../services/storage');
 
 const sanitize = (user) => {
   if (!user) return null;
@@ -172,10 +173,45 @@ router.put('/:id', verifyToken, async (req, res) => {
   }
 });
 
-// DELETE user account
+// DELETE user account — cascades to posts, social graph, and notifications
 router.delete('/:id', verifyToken, async (req, res) => {
+  const id = req.params.id;
   try {
-    await users.removeAsync({ _id: req.params.id }, {});
+    // 1. Delete all posts and their Cloudinary media
+    const userPosts = await posts.findAsync({ userId: id });
+    await Promise.all(userPosts.map(async (p) => {
+      if (p.postMedia && p.postMedia !== 'null') deleteFile(p.postMedia).catch(() => {});
+      await posts.removeAsync({ _id: p._id }, {});
+    }));
+
+    // 2. Scrub the deleted user from every other user's followers/following/followRequests
+    const affected = await users.findAsync({});
+    await Promise.all(affected.map(u => {
+      const inFollowers     = (u.followers     || []).includes(id);
+      const inFollowing     = (u.following     || []).includes(id);
+      const inFollowReq     = (u.followRequests || []).includes(id);
+      if (!inFollowers && !inFollowing && !inFollowReq) return Promise.resolve();
+      return users.updateAsync({ _id: u._id }, { $set: {
+        followers:      (u.followers     || []).filter(x => x !== id),
+        following:      (u.following     || []).filter(x => x !== id),
+        followRequests: (u.followRequests || []).filter(x => x !== id),
+      }});
+    }));
+
+    // 3. Delete notifications involving this user
+    const allNotifs = await notifications.findAsync({});
+    await Promise.all(
+      allNotifs
+        .filter(n => n.userId === id || n.fromUserId === id)
+        .map(n => notifications.removeAsync({ _id: n._id }, {}))
+    );
+
+    // 4. Delete the user's profile picture from Cloudinary
+    const user = await users.findOneAsync({ _id: id });
+    if (user?.profilePicture) deleteFile(user.profilePicture).catch(() => {});
+
+    // 5. Remove user record
+    await users.removeAsync({ _id: id }, {});
     res.status(200).json({ message: 'User deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });

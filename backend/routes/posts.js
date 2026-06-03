@@ -4,14 +4,15 @@ const { posts, users, notifications } = require('../db');
 const { verifyToken } = require('../middleware/auth');
 const { deleteFile } = require('../services/storage');
 
-// Helper: enrich posts with author profile info
+// Helper: enrich post with author info; returns null if author was deleted
 const enrichPost = async (post) => {
   const author = await users.findOneAsync({ _id: post.userId });
+  if (!author) return null;
   return {
     ...post,
-    username: author ? author.username : 'deleted',
-    name: author ? author.name : 'Deleted User',
-    profilePicture: author ? author.profilePicture : null,
+    username: author.username,
+    name: author.name,
+    profilePicture: author.profilePicture,
   };
 };
 
@@ -21,7 +22,7 @@ router.get('/profile/:userId', async (req, res) => {
   try {
     const userPosts = await posts.findAsync({ userId: req.params.userId });
     userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    const enriched = await Promise.all(userPosts.map(enrichPost));
+    const enriched = (await Promise.all(userPosts.map(enrichPost))).filter(Boolean);
     res.status(200).json(enriched);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -36,8 +37,7 @@ router.get('/:userId', async (req, res) => {
     const followingIds = [...(user.following || []), req.params.userId];
     const feedPosts = await posts.findAsync({ userId: { $in: followingIds } });
     feedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-    const enriched = await Promise.all(feedPosts.map(enrichPost));
+    const enriched = (await Promise.all(feedPosts.map(enrichPost))).filter(Boolean);
     res.status(200).json(enriched);
   } catch (err) {
     res.status(500).json({ message: err.message });
