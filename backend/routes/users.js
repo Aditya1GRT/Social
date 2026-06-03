@@ -26,8 +26,9 @@ router.get('/followers/:username', async (req, res) => {
   try {
     const user = await users.findOneAsync({ username: req.params.username });
     if (!user) return res.status(200).json([]);
-    const list = await users.findAsync({ _id: { $in: user.followers || [] } });
-    res.status(200).json(list.map(sanitize));
+    const ids = [...new Set((user.followers || []).filter(Boolean))];
+    const list = await Promise.all(ids.map(id => users.findOneAsync({ _id: id })));
+    res.status(200).json(list.filter(Boolean).map(sanitize));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -38,8 +39,9 @@ router.get('/friends/:username', async (req, res) => {
   try {
     const user = await users.findOneAsync({ username: req.params.username });
     if (!user) return res.status(200).json([]);
-    const list = await users.findAsync({ _id: { $in: user.following || [] } });
-    res.status(200).json(list.map(sanitize));
+    const ids = [...new Set((user.following || []).filter(Boolean))];
+    const list = await Promise.all(ids.map(id => users.findOneAsync({ _id: id })));
+    res.status(200).json(list.filter(Boolean).map(sanitize));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
