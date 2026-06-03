@@ -4,7 +4,7 @@ const { conversations } = require('../db');
 const { verifyToken } = require('../middleware/auth');
 
 // GET all conversations for a user
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', verifyToken, async (req, res) => {
   try {
     // Direct array-element equality: works in both NeDB and MongoDB
     const list = await conversations.findAsync({ members: req.params.userId });

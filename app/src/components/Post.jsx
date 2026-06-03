@@ -316,11 +316,11 @@ export default function Post({ post }) {
     if (!text || !userId || isSubmitting) return;
     setIsSubmitting(true);
     const tempId = 'temp_' + Date.now();
-    const tempComment = { _id: tempId, userId, comment: text, username: currentUser.username };
+    const tempComment = { _id: tempId, userId, comment: text, username: currentUser.username, profilePicture: currentUser.profilePicture, name: currentUser.name };
     setComments(prev => [...prev, tempComment]);
     setCommentText('');
     try {
-      await addComment(post._id, { userId, comment: text, username: currentUser.username });
+      await addComment(post._id, { userId, comment: text, username: currentUser.username, profilePicture: currentUser.profilePicture, name: currentUser.name });
     } catch (err) {
       setComments(prev => prev.filter(c => c._id !== tempId));
       console.error(err);
