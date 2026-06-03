@@ -307,7 +307,6 @@ export default function Notifications() {
 
         {!isFetching && filtered.length === 0 && (
           <EmptyState>
-            <FontAwesomeIcon icon={faBell} size="2x" style={{ marginBottom: 12, display: 'block' }} />
             No {filter === 'all' ? '' : filter} notifications yet
           </EmptyState>
         )}
