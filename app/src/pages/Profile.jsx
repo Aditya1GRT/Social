@@ -28,7 +28,7 @@ import Post from '../components/Post';
 
 const PageWrapper = styled.div`
   padding: 24px 20px;
-  max-width: 800px;
+  max-width: 620px;
   margin: 0 auto;
   width: 100%;
 
