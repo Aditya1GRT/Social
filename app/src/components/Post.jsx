@@ -125,31 +125,22 @@ const PostText = styled.p`
 
 const MediaWrapper = styled.div`
   width: 100%;
-  max-height: 480px;
-  overflow: hidden;
-
-  @media (max-width: 480px) {
-    max-height: 320px;
-  }
+  background: rgba(${({ theme }) => theme.mainRgba}, 0.03);
 `;
 
 const PostImage = styled.img`
   width: 100%;
-  height: 100%;
+  height: auto;
   max-width: 100%;
-  object-fit: cover;
   display: block;
+  object-fit: contain;
 `;
 
 const PostVideo = styled.video`
   width: 100%;
+  height: auto;
   max-width: 100%;
-  max-height: 480px;
   display: block;
-
-  @media (max-width: 480px) {
-    max-height: 320px;
-  }
 `;
 
 const Actions = styled.div`
