@@ -368,11 +368,15 @@ const LoadingWrapper = styled.div`
 const EmptyPosts = styled.div`
   text-align: center;
   padding: 40px;
-  color: ${({ theme }) => theme.text};
-  opacity: 0.6;
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.2);
+  color: ${({ theme }) => theme.main};
+  font-size: 16px;
+  font-weight: 600;
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 18px;
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
 `;
 
 const NotFound = styled.div`
