@@ -185,13 +185,16 @@ const MessageBubble = styled(motion.div)`
   max-width: 68%;
   padding: ${({ $media }) => $media ? '4px' : '9px 14px'};
   border-radius: ${({ $own }) => $own ? '18px 18px 4px 18px' : '18px 18px 18px 4px'};
-  background: ${({ $own, theme }) => $own ? theme.accentGrad : `rgba(${theme.mainRgba}, 0.1)`};
+  background: ${({ $own, theme }) => $own ? theme.accentGrad : `rgba(${theme.bodyRgba}, 0.88)`};
+  backdrop-filter: ${({ $own }) => $own ? 'none' : 'blur(12px)'};
+  -webkit-backdrop-filter: ${({ $own }) => $own ? 'none' : 'blur(12px)'};
   color: ${({ $own, theme }) => $own ? 'white' : theme.main};
   align-self: ${({ $own }) => $own ? 'flex-end' : 'flex-start'};
-  font-size: 14px; line-height: 1.45;
+  font-size: 14px; line-height: 1.45; font-weight: 500;
   word-break: break-word; overflow-wrap: break-word;
   overflow: hidden;
-  border: ${({ $own }) => $own ? 'none' : '1px solid rgba(0,0,0,0.06)'};
+  border: ${({ $own, theme }) => $own ? 'none' : `1px solid rgba(${theme.mainRgba}, 0.12)`};
+  box-shadow: ${({ $own, theme }) => $own ? theme.btnGlow : '0 2px 12px rgba(0,0,0,0.12)'};
   @media (max-width: 480px) { max-width: 82%; font-size: 13px; }
 `;
 
@@ -211,7 +214,8 @@ const MediaVideo = styled.video`
 const BubbleCaption = styled.div`padding: 4px 10px 8px; font-size: 13px;`;
 
 const MessageTime = styled.div`
-  font-size: 10px; opacity: 0.75;
+  font-size: 11px; opacity: 0.85; font-weight: 500;
+  color: ${({ theme }) => theme.main};
   text-align: ${({ $own }) => $own ? 'right' : 'left'};
   margin-top: 2px;
   padding: ${({ $own }) => $own ? '0 4px 0 0' : '0 0 0 4px'};
