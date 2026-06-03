@@ -75,8 +75,8 @@ export default function Comment({ comment, currentUserId, onDelete }) {
   return (
     <CommentRow>
       <Avatar>
-        {comment.userPicture ? (
-          <AvatarImg src={comment.userPicture} alt={comment.username} />
+        {comment.profilePicture ? (
+          <AvatarImg src={comment.profilePicture} alt={comment.username} />
         ) : (
           initial
         )}

@@ -720,10 +720,11 @@ export default function Messages() {
       stream.getTracks().forEach(track => pc.addTrack(track, stream));
       const offer = await pc.createOffer();
       await pc.setLocalDescription(offer);
+      const callUser = convoUsers[otherUserId];
       setCallType(type);
       setCallWithUserId(otherUserId);
       setCallState('calling');
-      setCallerInfo({ name: otherUser?.name || otherUser?.username, picture: otherUser?.profilePicture });
+      setCallerInfo({ name: callUser?.name || callUser?.username, picture: callUser?.profilePicture });
       socketRef.current?.emit('callUser', {
         to: otherUserId,
         from: currentUser._id,

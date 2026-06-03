@@ -4,7 +4,7 @@ const { messages } = require('../db');
 const { verifyToken } = require('../middleware/auth');
 
 // GET messages in a conversation
-router.get('/:conversationId', async (req, res) => {
+router.get('/:conversationId', verifyToken, async (req, res) => {
   try {
     const list = await messages.findAsync({ conversationId: req.params.conversationId });
     list.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
