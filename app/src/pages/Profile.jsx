@@ -351,6 +351,12 @@ const SectionTitle = styled.h3`
   gap: 8px;
 `;
 
+const PostsSection = styled.div`
+  max-width: 620px;
+  margin: 0 auto;
+  width: 100%;
+`;
+
 const LoadingWrapper = styled.div`
   display: flex;
   justify-content: center;
@@ -558,22 +564,24 @@ export default function Profile() {
         </ProfileHeader>
       </ProfileCard>
 
-      <SectionTitle>
-        <FontAwesomeIcon icon={faImage} />
-        Posts
-      </SectionTitle>
+      <PostsSection>
+        <SectionTitle>
+          <FontAwesomeIcon icon={faImage} />
+          Posts
+        </SectionTitle>
 
-      {profileFetching ? (
-        <LoadingWrapper>
-          <FontAwesomeIcon icon={faCircleNodes} spin />
-        </LoadingWrapper>
-      ) : posts?.length === 0 ? (
-        <EmptyPosts>
-          <p>No posts yet.</p>
-        </EmptyPosts>
-      ) : (
-        posts?.map(post => <Post key={post._id} post={post} />)
-      )}
+        {profileFetching ? (
+          <LoadingWrapper>
+            <FontAwesomeIcon icon={faCircleNodes} spin />
+          </LoadingWrapper>
+        ) : posts?.length === 0 ? (
+          <EmptyPosts>
+            <p>No posts yet.</p>
+          </EmptyPosts>
+        ) : (
+          posts?.map(post => <Post key={post._id} post={post} />)
+        )}
+      </PostsSection>
 
       {/* ── Followers / Following modal ── */}
       <AnimatePresence>
