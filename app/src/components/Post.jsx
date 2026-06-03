@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -289,6 +289,19 @@ export default function Post({ post }) {
   const [likes, setLikes] = useState(post.likes || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (!entry.isIntersecting) el.pause(); },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   const userId = currentUser?._id;
   const liked = likes.includes(userId);
   const likeCount = likes.length;
@@ -374,7 +387,7 @@ export default function Post({ post }) {
       {post.postMedia && post.postMedia !== 'null' && post.postMedia !== '' && (
         <MediaWrapper>
           {post.mediaType === 'video' ? (
-            <PostVideo src={post.postMedia} controls />
+            <PostVideo ref={videoRef} src={post.postMedia} controls />
           ) : (
             <PostImage src={post.postMedia} alt="post media" />
           )}
