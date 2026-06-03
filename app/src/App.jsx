@@ -42,17 +42,13 @@ const AppWrapper = styled.div`
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
-  background-image:
-    radial-gradient(ellipse 28% 16% at 62% 22%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 55%, transparent 100%),
-    url(${({ $dark }) => ($dark ? bgDark : bgLight)});
+  background-image: url(${({ $dark }) => ($dark ? bgDark : bgLight)});
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
 
   @media (max-width: 600px) {
-    background-image:
-      radial-gradient(ellipse 38% 16% at 68% 20%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.18) 55%, transparent 100%),
-      url(${({ $dark }) => ($dark ? bgDarkMobile : bgLightMobile)});
+    background-image: url(${({ $dark }) => ($dark ? bgDarkMobile : bgLightMobile)});
     background-attachment: scroll;
   }
 `;
