@@ -9,7 +9,7 @@ import {
   faCircleNodes, faPaperPlane, faMessage, faPlus, faMagnifyingGlass,
   faTimes, faFaceSmile, faImage, faPhone, faVideo,
   faMicrophoneSlash, faMicrophone, faVideoSlash, faPhoneSlash,
-  faPhoneVolume,
+  faPhoneVolume, faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
 import io from 'socket.io-client';
 import {
@@ -47,12 +47,10 @@ const ConvoList = styled.div`
   display: flex;
   flex-direction: column;
   @media (max-width: 768px) {
+    display: ${({ $hasActive }) => $hasActive ? 'none' : 'flex'};
     width: 100%;
-    max-height: 180px;
-    min-height: 80px;
-    flex-shrink: 0;
+    flex: 1;
     border-right: none;
-    border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.1);
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
@@ -107,6 +105,9 @@ const ConvoUsername = styled.div`font-size: 12px; color: ${({ theme }) => theme.
 
 const ChatArea = styled.div`
   flex: 1; display: flex; flex-direction: column; overflow: hidden; min-height: 0;
+  @media (max-width: 768px) {
+    display: ${({ $hasActive }) => $hasActive ? 'flex' : 'none'};
+  }
 `;
 
 const EmptyChat = styled.div`
@@ -141,6 +142,26 @@ const ChatHeaderAvatar = styled.div`
 const ChatHeaderImg = styled.img`width: 100%; height: 100%; object-fit: cover;`;
 
 const ChatHeaderName = styled.div`font-size: 15px; font-weight: 700; color: ${({ theme }) => theme.main};`;
+
+const BackBtn = styled.button`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(${({ theme }) => theme.mainRgba}, 0.08);
+    color: ${({ theme }) => theme.main};
+    font-size: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+    &:hover { background: rgba(${({ theme }) => theme.mainRgba}, 0.15); }
+  }
+`;
 
 const CallBtns = styled.div`display: flex; gap: 8px; margin-left: auto;`;
 
@@ -755,7 +776,7 @@ export default function Messages() {
   return (
     <PageWrapper>
       {/* ── Conversation list ── */}
-      <ConvoList>
+      <ConvoList $hasActive={!!activeConvo}>
         <ConvoListHeader style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           Messages
           <NewChatBtn onClick={() => setShowNewChat(true)} title="New conversation">
@@ -790,7 +811,7 @@ export default function Messages() {
       </ConvoList>
 
       {/* ── Chat area ── */}
-      <ChatArea>
+      <ChatArea $hasActive={!!activeConvo}>
         {!activeConvo ? (
           <EmptyChat>
             <FontAwesomeIcon icon={faMessage} size="3x" style={{ opacity: 0.3 }} />
@@ -799,6 +820,9 @@ export default function Messages() {
         ) : (
           <>
             <ChatHeader>
+              <BackBtn onClick={() => setActiveConvo(null)} title="Back">
+                <FontAwesomeIcon icon={faArrowLeft} />
+              </BackBtn>
               <ChatHeaderAvatar>
                 {otherUser?.profilePicture
                   ? <ChatHeaderImg src={otherUser.profilePicture} alt={otherUser.name} />
