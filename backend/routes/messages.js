@@ -17,8 +17,15 @@ router.get('/:conversationId', async (req, res) => {
 // POST send a message
 router.post('/', verifyToken, async (req, res) => {
   try {
-    const { conversationId, senderId, message } = req.body;
-    const newMsg = { conversationId, senderId, message, createdAt: new Date() };
+    const { conversationId, senderId, message, messageMedia, mediaType } = req.body;
+    const newMsg = {
+      conversationId,
+      senderId,
+      message: message || '',
+      messageMedia: messageMedia || '',
+      mediaType: mediaType || '',
+      createdAt: new Date(),
+    };
     const created = await messages.insertAsync(newMsg);
     res.status(201).json(created);
   } catch (err) {
