@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { posts, users } = require('../db');
+const { posts, users, notifications } = require('../db');
 const { verifyToken } = require('../middleware/auth');
 
 // Helper: enrich posts with author profile info
@@ -81,6 +81,22 @@ router.put('/reactions/:postId', verifyToken, async (req, res) => {
       await posts.updateAsync({ _id: req.params.postId }, { $pull: { likes: userId } });
     } else {
       await posts.updateAsync({ _id: req.params.postId }, { $push: { likes: userId } });
+      if (userId !== post.userId) {
+        users.findOneAsync({ _id: userId }).then(actor => {
+          notifications.insertAsync({
+            userId: post.userId,
+            fromUserId: userId,
+            fromUsername: actor?.username || '',
+            fromName: actor?.name || '',
+            fromPicture: actor?.profilePicture || '',
+            type: 'like',
+            postId: post._id,
+            postDescription: post.description || '',
+            read: false,
+            createdAt: new Date(),
+          });
+        }).catch(() => {});
+      }
     }
     res.status(200).json({ message: liked ? 'Unliked' : 'Liked' });
   } catch (err) {
@@ -93,7 +109,23 @@ router.put('/comment/:postId', verifyToken, async (req, res) => {
   try {
     const { commentData } = req.body;
     const comment = { ...commentData, id: Date.now().toString() };
+    const post = await posts.findOneAsync({ _id: req.params.postId });
     await posts.updateAsync({ _id: req.params.postId }, { $push: { comments: comment } });
+    if (post && commentData.userId !== post.userId) {
+      notifications.insertAsync({
+        userId: post.userId,
+        fromUserId: commentData.userId,
+        fromUsername: commentData.username || '',
+        fromName: commentData.name || '',
+        fromPicture: commentData.profilePicture || '',
+        type: 'comment',
+        postId: post._id,
+        postDescription: post.description || '',
+        comment: commentData.comment || '',
+        read: false,
+        createdAt: new Date(),
+      }).catch(() => {});
+    }
     res.status(200).json({ message: 'Comment added' });
   } catch (err) {
     res.status(500).json({ message: err.message });

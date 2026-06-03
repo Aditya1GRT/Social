@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const { users } = require('../db');
+const { users, notifications } = require('../db');
 const { verifyToken } = require('../middleware/auth');
 
 const sanitize = (user) => {
@@ -105,8 +105,23 @@ router.put('/approve-follow-request/:id', verifyToken, async (req, res) => {
     const requesterId = req.params.id;
     const { userId: approverId } = req.body;
     // Mutual follow: both users follow each other
-    await users.updateAsync({ _id: approverId }, { $push: { followers: requesterId, following: requesterId }, $pull: { reqRecieved: requesterId } });
-    await users.updateAsync({ _id: requesterId }, { $push: { following: approverId, followers: approverId }, $pull: { reqSent: approverId } });
+    const [approver] = await Promise.all([
+      users.findOneAsync({ _id: approverId }),
+      users.updateAsync({ _id: approverId }, { $push: { followers: requesterId, following: requesterId }, $pull: { reqRecieved: requesterId } }),
+      users.updateAsync({ _id: requesterId }, { $push: { following: approverId, followers: approverId }, $pull: { reqSent: approverId } }),
+    ]);
+    notifications.insertAsync({
+      userId: requesterId,
+      fromUserId: approverId,
+      fromUsername: approver?.username || '',
+      fromName: approver?.name || '',
+      fromPicture: approver?.profilePicture || '',
+      type: 'follow',
+      postId: '',
+      postDescription: '',
+      read: false,
+      createdAt: new Date(),
+    }).catch(() => {});
     res.status(200).json({ message: 'Follow request approved' });
   } catch (err) {
     res.status(500).json({ message: err.message });
