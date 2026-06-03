@@ -24,6 +24,16 @@ const PageWrapper = styled.div`
   }
 `;
 
+const ContentCard = styled.div`
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.55);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.16);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+`;
+
 const PageTitle = styled.h2`
   font-size: 22px;
   font-weight: 700;
@@ -73,9 +83,11 @@ const FilterBtn = styled.button`
   gap: 6px;
   padding: 7px 14px;
   border-radius: 20px;
-  border: 1px solid ${({ $active, theme }) => $active ? theme.accent : `rgba(${theme.mainRgba}, 0.2)`};
-  background: ${({ $active, theme }) => $active ? `rgba(${theme.mainRgba}, 0.1)` : 'transparent'};
-  color: ${({ $active, theme }) => $active ? theme.accent : theme.text};
+  border: 1.5px solid ${({ $active, theme }) => $active ? theme.accent : `rgba(${theme.mainRgba}, 0.35)`};
+  background: ${({ $active, theme }) => $active
+    ? `rgba(${theme.mainRgba}, 0.18)`
+    : `rgba(${theme.bodyRgba}, 0.35)`};
+  color: ${({ $active, theme }) => $active ? theme.accent : theme.main};
   font-family: ${({ theme }) => theme.fontFamily};
   font-size: 13px;
   font-weight: ${({ $active }) => $active ? 700 : 500};
@@ -96,19 +108,17 @@ const BadgeCount = styled.span`
 `;
 
 const NotifCard = styled(motion.div)`
-  background: rgba(${({ theme }) => theme.bodyRgba}, ${({ $unread }) => $unread ? '0.22' : '0.1'});
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, ${({ $unread }) => $unread ? '0.2' : '0.1'});
+  background: rgba(${({ theme }) => theme.bodyRgba}, ${({ $unread }) => $unread ? '0.55' : '0.35'});
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, ${({ $unread }) => $unread ? '0.22' : '0.12'});
   border-left: ${({ $unread, theme }) => $unread ? `3px solid ${theme.accent}` : '3px solid transparent'};
   border-radius: 16px;
   padding: 14px 16px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   display: flex;
   align-items: center;
   gap: 12px;
   transition: background 0.2s;
-  &:hover { background: rgba(${({ theme }) => theme.bodyRgba}, 0.3); }
+  &:hover { background: rgba(${({ theme }) => theme.bodyRgba}, 0.65); }
 `;
 
 const Avatar = styled(Link)`
@@ -196,10 +206,11 @@ const PostPreview = styled.div`
 
 const EmptyState = styled.div`
   text-align: center;
-  padding: 60px 20px;
-  color: ${({ theme }) => theme.text};
-  opacity: 0.5;
+  padding: 48px 20px;
+  color: ${({ theme }) => theme.main};
   font-size: 15px;
+  font-weight: 500;
+  opacity: 0.7;
 `;
 
 const UnreadDot = styled.div`
@@ -276,77 +287,79 @@ export default function Notifications() {
         )}
       </TitleActions>
 
-      <FilterRow>
-        {TYPE_FILTERS.map(({ key, label, icon }) => {
-          const cnt = countFor(key);
-          return (
-            <FilterBtn key={key} $active={filter === key} onClick={() => setFilter(key)}>
-              <FontAwesomeIcon icon={icon} />
-              {label}
-              {cnt > 0 && <BadgeCount>{cnt}</BadgeCount>}
-            </FilterBtn>
-          );
-        })}
-      </FilterRow>
+      <ContentCard>
+        <FilterRow>
+          {TYPE_FILTERS.map(({ key, label, icon }) => {
+            const cnt = countFor(key);
+            return (
+              <FilterBtn key={key} $active={filter === key} onClick={() => setFilter(key)}>
+                <FontAwesomeIcon icon={icon} />
+                {label}
+                {cnt > 0 && <BadgeCount>{cnt}</BadgeCount>}
+              </FilterBtn>
+            );
+          })}
+        </FilterRow>
 
-      {isFetching && (
-        <EmptyState>Loading...</EmptyState>
-      )}
+        {isFetching && (
+          <EmptyState>Loading...</EmptyState>
+        )}
 
-      {!isFetching && filtered.length === 0 && (
-        <EmptyState>
-          <FontAwesomeIcon icon={faBell} size="2x" style={{ marginBottom: 12, display: 'block' }} />
-          No {filter === 'all' ? '' : filter} notifications yet
-        </EmptyState>
-      )}
+        {!isFetching && filtered.length === 0 && (
+          <EmptyState>
+            <FontAwesomeIcon icon={faBell} size="2x" style={{ marginBottom: 12, display: 'block' }} />
+            No {filter === 'all' ? '' : filter} notifications yet
+          </EmptyState>
+        )}
 
-      <AnimatePresence>
-        {filtered.map((notif, i) => (
-          <NotifCard
-            key={notif._id}
-            $unread={!notif.read}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, delay: i * 0.03 }}
-          >
-            <AvatarWrapper>
-              <Avatar to={`/user/${notif.fromUsername}`}>
-                {notif.fromPicture ? (
-                  <AvatarImg src={notif.fromPicture} alt={notif.fromName} />
-                ) : (
-                  <AvatarPlaceholder>
-                    {(notif.fromName || notif.fromUsername || '?')[0].toUpperCase()}
-                  </AvatarPlaceholder>
+        <AnimatePresence>
+          {filtered.map((notif, i) => (
+            <NotifCard
+              key={notif._id}
+              $unread={!notif.read}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, delay: i * 0.03 }}
+            >
+              <AvatarWrapper>
+                <Avatar to={`/user/${notif.fromUsername}`}>
+                  {notif.fromPicture ? (
+                    <AvatarImg src={notif.fromPicture} alt={notif.fromName} />
+                  ) : (
+                    <AvatarPlaceholder>
+                      {(notif.fromName || notif.fromUsername || '?')[0].toUpperCase()}
+                    </AvatarPlaceholder>
+                  )}
+                </Avatar>
+                <TypeIcon $type={notif.type}>
+                  <FontAwesomeIcon icon={
+                    notif.type === 'like' ? faHeart :
+                    notif.type === 'comment' ? faComment :
+                    faUserPlus
+                  } />
+                </TypeIcon>
+              </AvatarWrapper>
+
+              <NotifContent>
+                <NotifText>
+                  <strong>{notif.fromName || notif.fromUsername}</strong>{' '}
+                  {typeLabel(notif)}
+                </NotifText>
+                {notif.comment && (
+                  <PostPreview>"{notif.comment}"</PostPreview>
                 )}
-              </Avatar>
-              <TypeIcon $type={notif.type}>
-                <FontAwesomeIcon icon={
-                  notif.type === 'like' ? faHeart :
-                  notif.type === 'comment' ? faComment :
-                  faUserPlus
-                } />
-              </TypeIcon>
-            </AvatarWrapper>
+                {!notif.comment && notif.postDescription && (
+                  <PostPreview>{notif.postDescription}</PostPreview>
+                )}
+                <NotifMeta>{timeAgo(notif.createdAt)}</NotifMeta>
+              </NotifContent>
 
-            <NotifContent>
-              <NotifText>
-                <strong>{notif.fromName || notif.fromUsername}</strong>{' '}
-                {typeLabel(notif)}
-              </NotifText>
-              {notif.comment && (
-                <PostPreview>"{notif.comment}"</PostPreview>
-              )}
-              {!notif.comment && notif.postDescription && (
-                <PostPreview>{notif.postDescription}</PostPreview>
-              )}
-              <NotifMeta>{timeAgo(notif.createdAt)}</NotifMeta>
-            </NotifContent>
-
-            {!notif.read && <UnreadDot />}
-          </NotifCard>
-        ))}
-      </AnimatePresence>
+              {!notif.read && <UnreadDot />}
+            </NotifCard>
+          ))}
+        </AnimatePresence>
+      </ContentCard>
     </PageWrapper>
   );
 }
