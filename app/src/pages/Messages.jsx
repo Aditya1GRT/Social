@@ -421,6 +421,8 @@ export default function Messages() {
   const { conversations, isFetching } = useSelector(s => s.conversation);
   const isDark = currentUser?.prefersDarkTheme ?? false;
 
+  const convoError = useSelector(s => s.conversation?.error);
+
   // Chat state
   const [activeConvo, setActiveConvo] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -796,6 +798,10 @@ export default function Messages() {
         </ConvoListHeader>
         {isFetching && conversations.length === 0 ? (
           <LoadingSpinner><FontAwesomeIcon icon={faCircleNodes} spin /></LoadingSpinner>
+        ) : convoError && conversations.length === 0 ? (
+          <div style={{ padding: '20px', textAlign: 'center', fontSize: '13px', fontWeight: 600, color: '#e74c3c' }}>
+            Failed to load. Please refresh.
+          </div>
         ) : conversations.length === 0 ? (
           <div style={{ padding: '20px', textAlign: 'center', fontSize: '13px', fontWeight: 600, color: 'inherit' }}>
             No conversations yet.

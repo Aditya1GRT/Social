@@ -20,3 +20,16 @@ api.interceptors.request.use(cfg => {
   if (t) cfg.headers.token = `Bearer ${t}`;
   return cfg;
 });
+
+// When the server returns 401 (unauthenticated) or 403 (token expired/invalid),
+// clear the persisted session and send the user to login so they can get a fresh token.
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err?.response?.status === 401 || err?.response?.status === 403) {
+      localStorage.removeItem('persist:root');
+      window.location.href = '/login';
+    }
+    return Promise.reject(err);
+  }
+);
