@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -11,6 +11,8 @@ import {
   faPaperPlane,
   faCircleNodes,
   faFaceSmile,
+  faTimes,
+  faExpand,
 } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as faHeartRegular } from '@fortawesome/free-regular-svg-icons';
 import { reactPost, deletePost, addComment, deleteComment } from '../redux/actions';
@@ -160,6 +162,82 @@ const PostVideo = styled.video`
   }
 `;
 
+const MediaClickable = styled.div`
+  position: relative;
+  cursor: zoom-in;
+  &:hover > .expand-hint { opacity: 1; }
+`;
+
+const ExpandHint = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: white;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+`;
+
+const LightboxOverlay = styled(motion.div)`
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  cursor: zoom-out;
+`;
+
+const LightboxClose = styled.button`
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9001;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  &:hover { background: rgba(255, 255, 255, 0.28); }
+`;
+
+const LightboxImg = styled(motion.img)`
+  max-width: 100%;
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: default;
+  user-select: none;
+`;
+
+const LightboxVideo = styled(motion.video)`
+  max-width: 100%;
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  cursor: default;
+`;
+
 const Actions = styled.div`
   display: flex;
   align-items: center;
@@ -286,10 +364,23 @@ export default function Post({ post }) {
   const [likes, setLikes] = useState(post.likes || []);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [lightbox, setLightbox] = useState(null); // null | { src, type }
+
   const userId = currentUser?._id;
   const liked = likes.includes(userId);
   const likeCount = likes.length;
   const isOwn = post.userId === userId;
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const onKey = (e) => { if (e.key === 'Escape') setLightbox(null); };
+    document.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [lightbox]);
 
   const handleLike = () => {
     if (!userId) return;
@@ -370,15 +461,57 @@ export default function Post({ post }) {
 
       {post.postMedia && post.postMedia !== 'null' && post.postMedia !== '' && (
         <MediaWrapper>
-          {post.mediaType === 'video' ? (
-            <PostVideo controls src={post.postMedia}>
-              Your browser does not support the video tag.
-            </PostVideo>
-          ) : (
-            <PostImage src={post.postMedia} alt="post media" />
-          )}
+          <MediaClickable onClick={() => setLightbox({ src: post.postMedia, type: post.mediaType })}>
+            {post.mediaType === 'video' ? (
+              <PostVideo src={post.postMedia} />
+            ) : (
+              <PostImage src={post.postMedia} alt="post media" />
+            )}
+            <ExpandHint className="expand-hint">
+              <FontAwesomeIcon icon={faExpand} />
+            </ExpandHint>
+          </MediaClickable>
         </MediaWrapper>
       )}
+
+      {/* ── Lightbox ── */}
+      <AnimatePresence>
+        {lightbox && (
+          <LightboxOverlay
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setLightbox(null)}
+          >
+            <LightboxClose onClick={(e) => { e.stopPropagation(); setLightbox(null); }}>
+              <FontAwesomeIcon icon={faTimes} />
+            </LightboxClose>
+            {lightbox.type === 'video' ? (
+              <LightboxVideo
+                src={lightbox.src}
+                controls
+                autoPlay
+                initial={{ scale: 0.92, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.92, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+              />
+            ) : (
+              <LightboxImg
+                src={lightbox.src}
+                alt="full size"
+                initial={{ scale: 0.92, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.92, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                onClick={(e) => e.stopPropagation()}
+              />
+            )}
+          </LightboxOverlay>
+        )}
+      </AnimatePresence>
 
       <Actions>
         <ActionBtn
