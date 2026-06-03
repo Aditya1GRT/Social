@@ -16,19 +16,44 @@ const enrichPost = async (post) => {
   };
 };
 
-// GET feed posts for a user (own posts + posts from people they follow)
-// NOTE: /profile/:userId must be defined before /:userId
+// Strip likes/comments from accounts that no longer exist.
+// Uses a single batch lookup for all unique user IDs across the post list,
+// then self-heals the DB for any post that had orphaned entries.
+const stripOrphans = async (postList) => {
+  const allIds = new Set();
+  postList.forEach(p => {
+    (p.likes || []).forEach(id => allIds.add(id));
+    (p.comments || []).forEach(c => { if (c.userId) allIds.add(c.userId); });
+  });
+  if (!allIds.size) return postList;
+
+  const found = await Promise.all([...allIds].map(id => users.findOneAsync({ _id: id })));
+  const existing = new Set(found.filter(Boolean).map(u => u._id));
+
+  return postList.map(p => {
+    const cleanLikes    = (p.likes    || []).filter(id => existing.has(id));
+    const cleanComments = (p.comments || []).filter(c  => existing.has(c.userId));
+    if (cleanLikes.length !== (p.likes || []).length ||
+        cleanComments.length !== (p.comments || []).length) {
+      posts.updateAsync({ _id: p._id }, { $set: { likes: cleanLikes, comments: cleanComments } }).catch(() => {});
+    }
+    return { ...p, likes: cleanLikes, comments: cleanComments };
+  });
+};
+
+// GET profile posts
 router.get('/profile/:userId', async (req, res) => {
   try {
     const userPosts = await posts.findAsync({ userId: req.params.userId });
     userPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     const enriched = (await Promise.all(userPosts.map(enrichPost))).filter(Boolean);
-    res.status(200).json(enriched);
+    res.status(200).json(await stripOrphans(enriched));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
+// GET feed posts for a user (own posts + posts from people they follow)
 router.get('/:userId', async (req, res) => {
   try {
     const user = await users.findOneAsync({ _id: req.params.userId });
@@ -38,7 +63,7 @@ router.get('/:userId', async (req, res) => {
     const feedPosts = await posts.findAsync({ userId: { $in: followingIds } });
     feedPosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     const enriched = (await Promise.all(feedPosts.map(enrichPost))).filter(Boolean);
-    res.status(200).json(enriched);
+    res.status(200).json(await stripOrphans(enriched));
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
