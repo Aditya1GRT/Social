@@ -18,14 +18,14 @@ import Comment from './Comment';
 import EmojiPicker from './EmojiPicker';
 
 const Card = styled(motion.div)`
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.12);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.12);
   border-radius: 18px;
   overflow: hidden;
   margin-bottom: 20px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 28px rgba(0,0,0,0.18);
   width: 100%;
   min-width: 0;
 `;
@@ -81,14 +81,14 @@ const NameLink = styled(Link)`
 
 const Username = styled.span`
   font-size: 12px;
-  color: ${({ theme }) => theme.text};
-  opacity: 0.9;
+  color: ${({ theme }) => theme.main};
+  opacity: 0.75;
 `;
 
 const Time = styled.span`
   font-size: 11px;
-  color: ${({ theme }) => theme.text};
-  opacity: 0.75;
+  color: ${({ theme }) => theme.main};
+  opacity: 0.65;
 `;
 
 const DeleteBtn = styled.button`
@@ -112,8 +112,9 @@ const DeleteBtn = styled.button`
 const PostText = styled.p`
   padding: 0 16px 14px;
   font-size: 15px;
-  color: ${({ theme }) => theme.text};
-  line-height: 1.5;
+  color: ${({ theme }) => theme.main};
+  font-weight: 500;
+  line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
   overflow-wrap: break-word;
