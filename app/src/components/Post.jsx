@@ -125,22 +125,39 @@ const PostText = styled.p`
 
 const MediaWrapper = styled.div`
   width: 100%;
-  background: rgba(${({ theme }) => theme.mainRgba}, 0.03);
+  max-height: 460px;
+  overflow: hidden;
+  background: rgba(${({ theme }) => theme.mainRgba}, 0.04);
+
+  @media (max-width: 480px) {
+    max-height: 380px;
+  }
 `;
 
 const PostImage = styled.img`
   width: 100%;
   height: auto;
+  max-height: 460px;
   max-width: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: center top;
+
+  @media (max-width: 480px) {
+    max-height: 380px;
+  }
 `;
 
 const PostVideo = styled.video`
   width: 100%;
   height: auto;
+  max-height: 460px;
   max-width: 100%;
   display: block;
+
+  @media (max-width: 480px) {
+    max-height: 380px;
+  }
 `;
 
 const Actions = styled.div`
