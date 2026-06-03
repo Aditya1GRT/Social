@@ -72,11 +72,37 @@ io.on('connection', (socket) => {
     io.emit('getUsers', activeUsers);
   });
 
-  socket.on('sendMessage', ({ senderId, reciverId, message }) => {
+  socket.on('sendMessage', ({ senderId, reciverId, message, messageMedia, mediaType }) => {
     const receiver = getUser(reciverId);
     if (receiver) {
-      io.to(receiver.socketId).emit('getMessage', { senderId, message });
+      io.to(receiver.socketId).emit('getMessage', { senderId, message, messageMedia, mediaType });
     }
+  });
+
+  // WebRTC signaling
+  socket.on('callUser', ({ to, from, fromName, fromPicture, offer, callType }) => {
+    const receiver = getUser(to);
+    if (receiver) io.to(receiver.socketId).emit('incomingCall', { from, fromName, fromPicture, offer, callType });
+  });
+
+  socket.on('answerCall', ({ to, answer }) => {
+    const caller = getUser(to);
+    if (caller) io.to(caller.socketId).emit('callAccepted', { answer });
+  });
+
+  socket.on('iceCandidate', ({ to, candidate }) => {
+    const user = getUser(to);
+    if (user) io.to(user.socketId).emit('iceCandidate', { candidate });
+  });
+
+  socket.on('endCall', ({ to }) => {
+    const user = getUser(to);
+    if (user) io.to(user.socketId).emit('callEnded');
+  });
+
+  socket.on('rejectCall', ({ to }) => {
+    const user = getUser(to);
+    if (user) io.to(user.socketId).emit('callRejected');
   });
 
   socket.on('disconnect', () => {
