@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { posts, users, notifications } = require('../db');
 const { verifyToken } = require('../middleware/auth');
+const { deleteFile } = require('../services/storage');
 
 // Helper: enrich posts with author profile info
 const enrichPost = async (post) => {
@@ -150,7 +151,12 @@ router.put('/delete-comment/:postId', verifyToken, async (req, res) => {
 // DELETE a post
 router.delete('/delete-post/:postId', verifyToken, async (req, res) => {
   try {
+    const post = await posts.findOneAsync({ _id: req.params.postId });
     await posts.removeAsync({ _id: req.params.postId }, {});
+    // Fire-and-forget: remove the media file from Cloudinary so it doesn't linger
+    if (post?.postMedia && post.postMedia !== 'null') {
+      deleteFile(post.postMedia).catch(() => {});
+    }
     res.status(200).json({ message: 'Post deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });

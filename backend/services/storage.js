@@ -38,4 +38,21 @@ const saveFile = async (file, req) => {
   return saveLocally(file, req);
 };
 
-module.exports = { saveFile, usingCloudinary };
+// Deletes a file from Cloudinary given its URL.
+// Extracts public_id and resource_type from the URL automatically.
+// No-op when Cloudinary is not configured or URL is empty/null.
+const deleteFile = async (url) => {
+  if (!usingCloudinary || !url || url === 'null') return;
+  try {
+    // URL format: https://res.cloudinary.com/<cloud>/<resource_type>/upload/[v123/]<public_id>.<ext>
+    const resourceTypeMatch = url.match(/cloudinary\.com\/[^/]+\/([^/]+)\/upload/);
+    const resourceType = (resourceTypeMatch && resourceTypeMatch[1]) || 'image';
+    const publicIdMatch = url.match(/\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/);
+    if (!publicIdMatch) return;
+    await cloudinary.uploader.destroy(publicIdMatch[1], { resource_type: resourceType });
+  } catch (err) {
+    console.error('deleteFile error:', err);
+  }
+};
+
+module.exports = { saveFile, deleteFile, usingCloudinary };
