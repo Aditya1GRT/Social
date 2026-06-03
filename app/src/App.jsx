@@ -73,8 +73,10 @@ const MainArea = styled.main`
   min-height: calc(100vh - 64px);
   min-width: 0;
   width: 100%;
+  margin-left: 64px;
 
   @media (max-width: 768px) {
+    margin-left: 0;
     min-height: calc(100vh - 116px);
   }
 
