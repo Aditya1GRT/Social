@@ -6,7 +6,7 @@ const notificationSchema = new mongoose.Schema({
   fromUsername:{ type: String, default: '' },
   fromName:    { type: String, default: '' },
   fromPicture: { type: String, default: '' },
-  type:        { type: String, enum: ['like', 'comment', 'follow'], required: true },
+  type:        { type: String, enum: ['like', 'comment', 'follow', 'message', 'followRequest'], required: true },
   postId:      { type: String, default: '' },
   postDescription: { type: String, default: '' },
   comment:     { type: String, default: '' },

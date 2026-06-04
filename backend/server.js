@@ -33,6 +33,9 @@ const io = new Server(server, {
 // which keeps generated upload URLs on https and avoids mixed-content blocking.
 app.set('trust proxy', true);
 
+// Expose io to route handlers via req.app.get('io')
+app.set('io', io);
+
 app.use(cors());
 app.use(express.json());
 
@@ -54,7 +57,10 @@ app.use('/api/notifications', notificationRoutes);
 const activeUsers = [];
 
 const addUser = (userId, socketId) => {
-  if (!activeUsers.find(u => u.userId === userId)) {
+  const existing = activeUsers.find(u => u.userId === userId);
+  if (existing) {
+    existing.socketId = socketId;
+  } else {
     activeUsers.push({ userId, socketId });
   }
 };
@@ -69,6 +75,7 @@ const getUser = (userId) => activeUsers.find(u => u.userId === userId);
 io.on('connection', (socket) => {
   socket.on('addUser', (userId) => {
     addUser(userId, socket.id);
+    socket.join(userId);  // enables io.to(userId).emit() from route handlers
     io.emit('getUsers', activeUsers);
   });
 

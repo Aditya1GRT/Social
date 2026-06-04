@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,6 +10,8 @@ import {
   faComment,
   faUserPlus,
   faCheckDouble,
+  faEnvelope,
+  faUserClock,
 } from '@fortawesome/free-solid-svg-icons';
 import { getNotifications, markNotificationsRead } from '../redux/actions';
 
@@ -149,6 +151,14 @@ const AvatarPlaceholder = styled.div`
   font-size: 16px;
 `;
 
+const TYPE_COLOR = {
+  like:          '#e74c3c',
+  comment:       '#3498db',
+  follow:        '#2ecc71',
+  message:       '#06b6d4',
+  followRequest: '#f59e0b',
+};
+
 const TypeIcon = styled.div`
   position: absolute;
   bottom: -2px;
@@ -156,10 +166,7 @@ const TypeIcon = styled.div`
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: ${({ $type }) =>
-    $type === 'like' ? '#e74c3c' :
-    $type === 'comment' ? '#3498db' :
-    '#2ecc71'};
+  background: ${({ $type }) => TYPE_COLOR[$type] || '#7c3aed'};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -234,14 +241,25 @@ function timeAgo(dateStr) {
 }
 
 const TYPE_FILTERS = [
-  { key: 'all', label: 'All', icon: faBell },
-  { key: 'like', label: 'Likes', icon: faHeart },
-  { key: 'comment', label: 'Comments', icon: faComment },
-  { key: 'follow', label: 'Follows', icon: faUserPlus },
+  { key: 'all',           label: 'All',      icon: faBell },
+  { key: 'message',       label: 'Messages', icon: faEnvelope },
+  { key: 'followRequest', label: 'Requests', icon: faUserClock },
+  { key: 'like',          label: 'Likes',    icon: faHeart },
+  { key: 'comment',       label: 'Comments', icon: faComment },
+  { key: 'follow',        label: 'Follows',  icon: faUserPlus },
 ];
+
+const TYPE_ICON = {
+  like:          faHeart,
+  comment:       faComment,
+  follow:        faUserPlus,
+  message:       faEnvelope,
+  followRequest: faUserClock,
+};
 
 export default function Notifications() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const currentUser = useSelector(s => s.user?.currentUser);
   const { items, isFetching } = useSelector(s => s.notifications);
   const [filter, setFilter] = useState('all');
@@ -266,10 +284,17 @@ export default function Notifications() {
   const countFor = (type) => items.filter(n => !n.read && (type === 'all' || n.type === type)).length;
 
   const typeLabel = (n) => {
-    if (n.type === 'like') return 'liked your post';
-    if (n.type === 'comment') return 'commented on your post';
-    if (n.type === 'follow') return 'accepted your follow request';
+    if (n.type === 'like')          return 'liked your post';
+    if (n.type === 'comment')       return 'commented on your post';
+    if (n.type === 'follow')        return 'accepted your follow request';
+    if (n.type === 'message')       return 'sent you a message';
+    if (n.type === 'followRequest') return 'sent you a follow request';
     return '';
+  };
+
+  const handleCardClick = (notif) => {
+    if (notif.type === 'message')       navigate('/messages');
+    if (notif.type === 'followRequest') navigate('/requests');
   };
 
   return (
@@ -316,13 +341,15 @@ export default function Notifications() {
             <NotifCard
               key={notif._id}
               $unread={!notif.read}
+              onClick={() => handleCardClick(notif)}
+              style={{ cursor: (notif.type === 'message' || notif.type === 'followRequest') ? 'pointer' : 'default' }}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2, delay: i * 0.03 }}
             >
               <AvatarWrapper>
-                <Avatar to={`/user/${notif.fromUsername}`}>
+                <Avatar to={`/user/${notif.fromUsername}`} onClick={e => e.stopPropagation()}>
                   {notif.fromPicture ? (
                     <AvatarImg src={notif.fromPicture} alt={notif.fromName} />
                   ) : (
@@ -332,11 +359,7 @@ export default function Notifications() {
                   )}
                 </Avatar>
                 <TypeIcon $type={notif.type}>
-                  <FontAwesomeIcon icon={
-                    notif.type === 'like' ? faHeart :
-                    notif.type === 'comment' ? faComment :
-                    faUserPlus
-                  } />
+                  <FontAwesomeIcon icon={TYPE_ICON[notif.type] || faBell} />
                 </TypeIcon>
               </AvatarWrapper>
 

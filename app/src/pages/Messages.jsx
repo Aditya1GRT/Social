@@ -11,13 +11,11 @@ import {
   faMicrophoneSlash, faMicrophone, faVideoSlash, faPhoneSlash,
   faPhoneVolume, faArrowLeft,
 } from '@fortawesome/free-solid-svg-icons';
-import io from 'socket.io-client';
+import appSocket from '../utils/socket';
 import {
   getConversations, getMessages, sendMessage, getUsersDetails,
   newConversation, searchUsers, uploadFile,
 } from '../redux/actions';
-
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || undefined;
 const ICE_SERVERS = [
   { urls: 'stun:stun.l.google.com:19302' },
   { urls: 'stun:stun1.l.google.com:19302' },
@@ -463,45 +461,48 @@ export default function Messages() {
 
   // ── Socket setup ─────────────────────────────────────────────────────────────
   useEffect(() => {
-    const socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
-    socketRef.current = socket;
+    socketRef.current = appSocket;
 
-    socket.on('connect', () => {
-      if (currentUser?._id) socket.emit('addUser', currentUser._id);
-    });
-
-    socket.on('getUsers', (users) => setOnlineUsers(users.map(u => u.userId)));
-
-    socket.on('getMessage', (data) => setArrivingMsg(data));
-
-    // WebRTC signaling listeners
-    socket.on('incomingCall', ({ from, fromName, fromPicture, offer, callType }) => {
+    const onGetUsers   = (users) => setOnlineUsers(users.map(u => u.userId));
+    const onGetMessage = (data) => setArrivingMsg(data);
+    const onIncomingCall = ({ from, fromName, fromPicture, offer, callType }) => {
       setCallerInfo({ userId: from, name: fromName, picture: fromPicture });
       setIncomingOffer(offer);
       setCallType(callType);
       setCallWithUserId(from);
       setCallState('incoming');
-    });
-
-    socket.on('callAccepted', async ({ answer }) => {
+    };
+    const onCallAccepted = async ({ answer }) => {
       if (peerConnectionRef.current) {
         await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(answer));
         setCallState('connected');
       }
-    });
-
-    socket.on('iceCandidate', async ({ candidate }) => {
+    };
+    const onIceCandidate = async ({ candidate }) => {
       if (peerConnectionRef.current && candidate) {
         try { await peerConnectionRef.current.addIceCandidate(new RTCIceCandidate(candidate)); }
         catch (e) {}
       }
-    });
+    };
+    const onCallEnded   = () => cleanupCall();
+    const onCallRejected = () => cleanupCall();
 
-    socket.on('callEnded', () => cleanupCall());
-    socket.on('callRejected', () => cleanupCall());
+    appSocket.on('getUsers',     onGetUsers);
+    appSocket.on('getMessage',   onGetMessage);
+    appSocket.on('incomingCall', onIncomingCall);
+    appSocket.on('callAccepted', onCallAccepted);
+    appSocket.on('iceCandidate', onIceCandidate);
+    appSocket.on('callEnded',    onCallEnded);
+    appSocket.on('callRejected', onCallRejected);
 
     return () => {
-      socket.disconnect();
+      appSocket.off('getUsers',     onGetUsers);
+      appSocket.off('getMessage',   onGetMessage);
+      appSocket.off('incomingCall', onIncomingCall);
+      appSocket.off('callAccepted', onCallAccepted);
+      appSocket.off('iceCandidate', onIceCandidate);
+      appSocket.off('callEnded',    onCallEnded);
+      appSocket.off('callRejected', onCallRejected);
       socketRef.current = null;
     };
   }, [currentUser?._id]);

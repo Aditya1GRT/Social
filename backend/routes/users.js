@@ -112,10 +112,36 @@ router.put('/follow-request/:id', verifyToken, async (req, res) => {
     await users.updateAsync({ _id: senderId }, { $push: { reqSent: targetId } });
     await users.updateAsync({ _id: targetId }, { $push: { reqRecieved: senderId } });
     res.status(200).json({ message: 'Follow request sent' });
+
+    // Fire-and-forget: notify target
+    _notifyFollowRequest(req.app.get('io'), senderId, targetId).catch(() => {});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
+async function _notifyFollowRequest(io, senderId, targetId) {
+  const sender = await users.findOneAsync({ _id: senderId });
+  if (!sender) return;
+  const existing = await notifications.findOneAsync({
+    userId: targetId, fromUserId: senderId, type: 'followRequest', read: false,
+  });
+  if (existing) return;
+  const notif = await notifications.insertAsync({
+    userId:          targetId,
+    fromUserId:      senderId,
+    fromUsername:    sender.username || '',
+    fromName:        sender.name     || '',
+    fromPicture:     sender.profilePicture || '',
+    type:            'followRequest',
+    postId:          '',
+    postDescription: '',
+    comment:         '',
+    read:            false,
+    createdAt:       new Date(),
+  });
+  if (io) io.to(targetId).emit('newNotification', notif);
+}
 
 // PUT unsend follow request
 router.put('/unsend-follow-request/:id', verifyToken, async (req, res) => {
@@ -141,7 +167,10 @@ router.put('/approve-follow-request/:id', verifyToken, async (req, res) => {
       users.updateAsync({ _id: approverId }, { $push: { followers: requesterId, following: requesterId }, $pull: { reqRecieved: requesterId } }),
       users.updateAsync({ _id: requesterId }, { $push: { following: approverId, followers: approverId }, $pull: { reqSent: approverId } }),
     ]);
-    notifications.insertAsync({
+    // Remove the pending followRequest notification for the requester
+    notifications.removeAsync({ userId: approverId, fromUserId: requesterId, type: 'followRequest' }, {}).catch(() => {});
+    // Notify requester that their request was accepted
+    const notif = await notifications.insertAsync({
       userId: requesterId,
       fromUserId: approverId,
       fromUsername: approver?.username || '',
@@ -153,6 +182,8 @@ router.put('/approve-follow-request/:id', verifyToken, async (req, res) => {
       read: false,
       createdAt: new Date(),
     }).catch(() => {});
+    const io = req.app.get('io');
+    if (io && notif) io.to(requesterId).emit('newNotification', notif);
     res.status(200).json({ message: 'Follow request approved' });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -166,6 +197,8 @@ router.put('/reject-follow-request/:id', verifyToken, async (req, res) => {
     const { userId: rejecterId } = req.body;
     await users.updateAsync({ _id: rejecterId }, { $pull: { reqRecieved: requesterId } });
     await users.updateAsync({ _id: requesterId }, { $pull: { reqSent: rejecterId } });
+    // Remove the pending followRequest notification
+    notifications.removeAsync({ userId: rejecterId, fromUserId: requesterId, type: 'followRequest' }, {}).catch(() => {});
     res.status(200).json({ message: 'Follow request rejected' });
   } catch (err) {
     res.status(500).json({ message: err.message });

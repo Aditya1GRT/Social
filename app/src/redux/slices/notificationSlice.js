@@ -14,8 +14,20 @@ const notificationSlice = createSlice({
     notifMarkAllRead: (state) => {
       state.items = state.items.map(n => ({ ...n, read: true }));
     },
+    // Real-time push: replace existing entry (same _id) or prepend new one
+    notifAdd: (state, action) => {
+      const notif = action.payload;
+      const idx = state.items.findIndex(n => n._id === notif._id);
+      if (idx !== -1) {
+        state.items[idx] = notif;
+      } else {
+        state.items = [notif, ...state.items];
+      }
+    },
   },
 });
 
-export const { notifFetchStart, notifFetchSuccess, notifFetchFail, notifMarkAllRead } = notificationSlice.actions;
+export const {
+  notifFetchStart, notifFetchSuccess, notifFetchFail, notifMarkAllRead, notifAdd,
+} = notificationSlice.actions;
 export default notificationSlice.reducer;

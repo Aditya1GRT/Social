@@ -3,7 +3,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled, { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { lightTheme, darkTheme } from './themes';
-import { refresh, changeTheme } from './redux/actions';
+import { refresh, changeTheme, getNotifications } from './redux/actions';
+import { notifAdd } from './redux/slices/notificationSlice';
+import appSocket from './utils/socket';
 
 import TopBar from './components/TopBar';
 import NavBar from './components/NavBar';
@@ -130,6 +132,30 @@ export default function App() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Global socket: connect on login, disconnect on logout, receive real-time notifications
+  useEffect(() => {
+    if (!currentUser?._id) {
+      appSocket.disconnect();
+      return;
+    }
+    if (!appSocket.connected) appSocket.connect();
+
+    const onConnect = () => appSocket.emit('addUser', currentUser._id);
+    const onNotif = (notif) => dispatch(notifAdd(notif));
+
+    appSocket.on('connect', onConnect);
+    appSocket.on('newNotification', onNotif);
+    if (appSocket.connected) appSocket.emit('addUser', currentUser._id);
+
+    // Fetch notification badge count on login
+    getNotifications(dispatch, currentUser._id);
+
+    return () => {
+      appSocket.off('connect', onConnect);
+      appSocket.off('newNotification', onNotif);
+    };
+  }, [currentUser?._id, dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
