@@ -291,6 +291,7 @@ export default function Post({ post }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const videoRef = useRef(null);
+  const emojiTriggerRef = useRef(null);
 
   useEffect(() => {
     const el = videoRef.current;
@@ -446,8 +447,9 @@ export default function Post({ post }) {
                   value={commentText}
                   onChange={e => setCommentText(e.target.value)}
                 />
-                <div style={{ position: 'relative', flexShrink: 0 }}>
+                <div style={{ flexShrink: 0 }}>
                   <button
+                    ref={emojiTriggerRef}
                     type="button"
                     onClick={() => setShowCommentEmoji(v => !v)}
                     style={{
@@ -461,6 +463,7 @@ export default function Post({ post }) {
                   {showCommentEmoji && (
                     <EmojiPicker
                       align="right"
+                      triggerRef={emojiTriggerRef}
                       onSelect={emoji => { setCommentText(t => t + emoji); setShowCommentEmoji(false); }}
                       onClose={() => setShowCommentEmoji(false)}
                     />

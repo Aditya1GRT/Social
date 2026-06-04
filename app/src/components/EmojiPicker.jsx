@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 const EMOJIS = [
@@ -9,18 +10,15 @@ const EMOJIS = [
 ];
 
 const Panel = styled.div`
-  position: absolute;
-  z-index: 300;
-  ${({ $direction }) => $direction === 'down'
-    ? 'top: calc(100% + 6px);'
-    : 'bottom: calc(100% + 6px);'}
-  ${({ $align }) => $align === 'right' ? 'right: 0;' : 'left: 0;'}
-  background: rgba(${({ theme }) => theme.bodyRgba}, 0.95);
+  position: fixed;
+  z-index: 9999;
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.97);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.15);
   border-radius: 14px;
   padding: 10px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.28);
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 3px;
@@ -47,17 +45,48 @@ const EmojiBtn = styled.button`
   &:hover { background: rgba(${({ theme }) => theme.mainRgba}, 0.1); }
 `;
 
-export default function EmojiPicker({ onSelect, onClose, align = 'left', direction = 'up' }) {
-  const ref = useRef();
+export default function EmojiPicker({ onSelect, onClose, triggerRef, align = 'left' }) {
+  const panelRef = useRef();
+  const [pos, setPos] = useState({ top: 0, left: 0 });
 
   useEffect(() => {
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) onClose(); };
+    if (!triggerRef?.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    const panelW = window.innerWidth <= 480 ? 200 : 260;
+    const panelH = 160;
+    const spaceAbove = rect.top;
+    const spaceBelow = window.innerHeight - rect.bottom;
+
+    const top = spaceAbove > panelH || spaceAbove > spaceBelow
+      ? rect.top - panelH - 6
+      : rect.bottom + 6;
+
+    let left = align === 'right'
+      ? rect.right - panelW
+      : rect.left;
+
+    // keep panel inside viewport horizontally
+    if (left + panelW > window.innerWidth - 8) left = window.innerWidth - panelW - 8;
+    if (left < 8) left = 8;
+
+    setPos({ top: Math.max(8, top), left });
+  }, [triggerRef, align]);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (
+        panelRef.current && !panelRef.current.contains(e.target) &&
+        triggerRef?.current && !triggerRef.current.contains(e.target)
+      ) {
+        onClose();
+      }
+    };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
-  }, [onClose]);
+  }, [onClose, triggerRef]);
 
-  return (
-    <Panel ref={ref} $align={align} $direction={direction}>
+  return ReactDOM.createPortal(
+    <Panel ref={panelRef} style={{ top: pos.top, left: pos.left }}>
       {EMOJIS.map(emoji => (
         <EmojiBtn
           key={emoji}
@@ -68,6 +97,7 @@ export default function EmojiPicker({ onSelect, onClose, align = 'left', directi
           {emoji}
         </EmojiBtn>
       ))}
-    </Panel>
+    </Panel>,
+    document.body
   );
 }

@@ -233,6 +233,7 @@ export default function MakePost() {
   const isFetching = useSelector(s => s.post?.isFetching);
   const [text, setText] = useState('');
   const [showEmoji, setShowEmoji] = useState(false);
+  const emojiTriggerRef = useRef(null);
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
   const [mediaType, setMediaType] = useState('');
@@ -320,14 +321,14 @@ export default function MakePost() {
 
         <Footer>
           <MediaActions>
-            <div style={{ position: 'relative' }}>
-              <EmojiToggleBtn type="button" onClick={() => setShowEmoji(v => !v)}>
+            <div>
+              <EmojiToggleBtn ref={emojiTriggerRef} type="button" onClick={() => setShowEmoji(v => !v)}>
                 <FontAwesomeIcon icon={faFaceSmile} />
                 Emoji
               </EmojiToggleBtn>
               {showEmoji && (
                 <EmojiPicker
-                  direction="down"
+                  triggerRef={emojiTriggerRef}
                   onSelect={emoji => { setText(t => t + emoji); setShowEmoji(false); }}
                   onClose={() => setShowEmoji(false)}
                 />
