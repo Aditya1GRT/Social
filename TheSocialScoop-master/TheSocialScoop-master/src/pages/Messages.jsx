@@ -14,9 +14,13 @@ const Messages = ({ themeCurrent }) => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("https://social-scoop-socket-server.onrender.com", {
-      transports: ["websocket"],
-    });
+    // Falls back to localhost in dev; an empty env var means "same origin"
+    // (used by single-service production deployments).
+    const socketUrl =
+      process.env.REACT_APP_SOCKET_URL ?? "http://localhost:5000";
+    socket.current = socketUrl
+      ? io(socketUrl, { transports: ["websocket"] })
+      : io({ transports: ["websocket"] });
 
     socket.current.on("getMessage", (data) =>
       setArrivalMessage({

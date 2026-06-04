@@ -7,13 +7,7 @@ import { publicRequest } from "../requestMethods";
 import { login } from "../redux/API Calls/apiCalls";
 import { useDispatch, useSelector } from "react-redux";
 import Form from "../components/Sign Up/Form";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import app from "../firebase";
+import { uploadFile } from "../utils/upload";
 import { userFailure, userStart } from "../redux/userSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNodes } from "@fortawesome/free-solid-svg-icons";
@@ -98,62 +92,24 @@ const SignUp = ({ themeCurrent, setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     dispatch(userStart());
-    // ||||||||||||||||||||||||||||||||||||||||||||||||||
+    const prefersDarkTheme = themeCurrent === "dark";
+
     if (file !== null) {
       try {
-        themeCurrent === "dark"
-          ? setUserData((p) => ({ ...p, prefersDarkTheme: true }))
-          : setUserData((p) => ({ ...p, prefersDarkTheme: false }));
-        const fileName = new Date().getTime() + file.name;
-
-        const storage = getStorage(app);
-        const storageRef = ref(storage, fileName);
-
-        const uploadTask = uploadBytesResumable(storageRef, file);
-
-        await uploadTask.on(
-          "state_changed",
-          (snapshot) => {
-            const progress =
-              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log("Upload is " + progress + "% done");
-            switch (snapshot.state) {
-              case "paused":
-                console.log("Upload is paused");
-                break;
-              case "running":
-                console.log("Upload is running");
-                break;
-              default:
-                console.log("default");
-            }
-          },
-          (error) => {
-            // Handle unsuccessful uploads
-            console.log(error.message);
-          },
-          () => {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            getDownloadURL(uploadTask.snapshot.ref).then(
-              async (downloadURL) => {
-                console.log("File available at", downloadURL);
-
-                await setUserData((p) => ({
-                  ...p,
-                  profilePicture: downloadURL,
-                }));
-              }
-            );
-          }
-        );
-        // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+        const downloadURL = await uploadFile(file);
+        setUserData((p) => ({
+          ...p,
+          prefersDarkTheme,
+          profilePicture: downloadURL,
+        }));
       } catch (error) {
         console.log(error.message);
+        dispatch(userFailure());
       }
     } else {
-      await setUserData((p) => ({
+      setUserData((p) => ({
         ...p,
+        prefersDarkTheme,
         profilePicture: "https://image.pngaaa.com/189/734189-middle.png",
       }));
     }

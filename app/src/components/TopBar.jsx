@@ -1,0 +1,138 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+import logoLight from '../assets/logoLight.png';
+import logoDark from '../assets/logoDark.png';
+
+const Bar = styled.header`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.18);
+  box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+
+  @media (max-width: 768px) {
+    height: 56px;
+    padding: 0 12px;
+  }
+`;
+
+const LogoLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+`;
+
+const LogoImg = styled.img`
+  height: 40px;
+  width: auto;
+
+  @media (max-width: 768px) {
+    height: 32px;
+  }
+`;
+
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+
+  @media (max-width: 480px) {
+    gap: 8px;
+  }
+`;
+
+const ThemeToggle = styled.button`
+  background: rgba(${({ theme }) => theme.bodyRgba}, 0.3);
+  border: 1px solid rgba(${({ theme }) => theme.mainRgba}, 0.2);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.main};
+  font-size: 15px;
+  transition: all 0.2s;
+
+  &:hover {
+    background: rgba(${({ theme }) => theme.mainRgba}, 0.1);
+    border-color: ${({ theme }) => theme.accent};
+  }
+`;
+
+const Avatar = styled(Link)`
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid ${({ theme }) => theme.accent};
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  &:hover { transform: scale(1.05); }
+`;
+
+const AvatarImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const AvatarPlaceholder = styled.div`
+  width: 100%;
+  height: 100%;
+  background: ${({ theme }) => theme.accent};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.body};
+  font-weight: 700;
+  font-size: 15px;
+`;
+
+export default function TopBar({ isDark, onToggleTheme }) {
+  const currentUser = useSelector(s => s.user?.currentUser);
+
+  return (
+    <Bar>
+      <LogoLink to={currentUser ? '/' : '/login'} reloadDocument>
+        <LogoImg src={isDark ? logoDark : logoLight} alt="The Social Scoop" />
+      </LogoLink>
+
+      <RightSection>
+        <ThemeToggle onClick={onToggleTheme} title="Toggle theme">
+          <FontAwesomeIcon icon={isDark ? faSun : faMoon} />
+        </ThemeToggle>
+
+        {currentUser && (
+          <Avatar to={`/user/${currentUser.username}`}>
+            {currentUser.profilePicture ? (
+              <AvatarImg src={currentUser.profilePicture} alt={currentUser.name} />
+            ) : (
+              <AvatarPlaceholder>
+                {(currentUser.name || currentUser.username || 'U')[0].toUpperCase()}
+              </AvatarPlaceholder>
+            )}
+          </Avatar>
+        )}
+      </RightSection>
+    </Bar>
+  );
+}

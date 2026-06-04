@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>The Social Scoop — Project Poster</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@700;900&display=swap');
+
+@page { size: A1 landscape; margin: 0; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  width: 1189mm;
+  height: 841mm;
+  background: #06071a;
+  font-family: 'Inter', sans-serif;
+  color: #fff;
+  overflow: hidden;
+  font-size: 11pt;
+}
+
+/* ── TOP HEADER ── */
+.header {
+  width: 100%;
+  height: 130mm;
+  background: linear-gradient(135deg, #0d0d2b 0%, #12123a 60%, #0d1f3c 100%);
+  border-bottom: 3px solid #7c3aed;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -20%, rgba(124,58,237,0.25) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.header-left {
+  width: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6mm;
+  padding: 6mm;
+  border-right: 2px solid rgba(124,58,237,0.4);
+}
+
+.logo-circle {
+  width: 52mm;
+  height: 52mm;
+  border-radius: 50%;
+  border: 3px solid #7c3aed;
+  background: linear-gradient(135deg, #1e1b4b, #312e81);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  padding: 4mm;
+}
+.logo-circle .app-logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9pt;
+  font-weight: 900;
+  color: #a78bfa;
+  line-height: 1.2;
+  text-shadow: 0 0 12px rgba(167,139,250,0.7);
+}
+.naac-badge {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border-radius: 6px;
+  padding: 2mm 3mm;
+  font-size: 8pt;
+  font-weight: 800;
+  color: #fff;
+  text-align: center;
+  width: 44mm;
+}
+.naac-badge .grade { font-size: 13pt; font-weight: 900; }
+
+.header-center {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5mm 10mm;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+.university-name {
+  font-size: 30pt;
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(124,58,237,0.5);
+  line-height: 1;
+}
+.department {
+  font-size: 13pt;
+  font-weight: 700;
+  color: #7c3aed;
+  letter-spacing: 2px;
+  margin-top: 2mm;
+  text-transform: uppercase;
+}
+.faculty {
+  font-size: 11pt;
+  font-weight: 600;
+  color: #06b6d4;
+  letter-spacing: 1px;
+  margin-top: 1mm;
+}
+.divider-line {
+  width: 80%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, #7c3aed, #06b6d4, transparent);
+  margin: 3mm auto;
+}
+.app-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 38pt;
+  font-weight: 900;
+  background: linear-gradient(135deg, #a78bfa, #06b6d4, #f43f5e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  line-height: 1;
+}
+.app-tagline {
+  font-size: 14pt;
+  font-weight: 500;
+  color: #cbd5e1;
+  margin-top: 1mm;
+  font-style: italic;
+}
+.app-subtitle {
+  font-size: 10pt;
+  font-weight: 600;
+  color: #7c3aed;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-top: 1mm;
+}
+
+.header-right {
+  width: 120mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5mm 6mm;
+  border-left: 2px solid rgba(124,58,237,0.4);
+  gap: 3mm;
+}
+.guide-block {
+  background: rgba(124,58,237,0.12);
+  border: 1px solid rgba(124,58,237,0.35);
+  border-radius: 5px;
+  padding: 2.5mm 4mm;
+}
+.guide-label {
+  font-size: 7pt;
+  font-weight: 700;
+  color: #7c3aed;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.guide-name {
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: #fff;
+  margin-top: 0.5mm;
+}
+.guide-sub {
+  font-size: 7.5pt;
+  color: #94a3b8;
+}
+.team-block {
+  background: rgba(6,182,212,0.1);
+  border: 1px solid rgba(6,182,212,0.3);
+  border-radius: 5px;
+  padding: 2.5mm 4mm;
+}
+.team-label {
+  font-size: 7pt;
+  font-weight: 700;
+  color: #06b6d4;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 1.5mm;
+}
+.team-member {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  margin-bottom: 1mm;
+  font-size: 8pt;
+}
+.member-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #06b6d4;
+  flex-shrink: 0;
+}
+.member-name { font-weight: 700; color: #fff; }
+.member-roll { color: #94a3b8; font-size: 7pt; }
+
+/* ── MAIN CONTENT ── */
+.main {
+  width: 100%;
+  height: calc(841mm - 130mm - 20mm);
+  display: grid;
+  grid-template-columns: 195mm 1fr 1fr 175mm;
+  gap: 0;
+  padding: 5mm 5mm 3mm;
+  gap: 4mm;
+}
+
+/* ── SECTION CARDS ── */
+.section-card {
+  background: rgba(13,15,40,0.85);
+  border: 1px solid rgba(124,58,237,0.25);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  padding: 3mm 4mm;
+  background: linear-gradient(90deg, rgba(124,58,237,0.5), rgba(6,182,212,0.2));
+  border-bottom: 1px solid rgba(124,58,237,0.3);
+}
+.section-icon {
+  font-size: 14pt;
+  line-height: 1;
+}
+.section-title {
+  font-size: 11pt;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.section-body {
+  padding: 4mm;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
+.bullet-item {
+  display: flex;
+  gap: 2.5mm;
+  align-items: flex-start;
+  font-size: 8.5pt;
+  color: #cbd5e1;
+  line-height: 1.45;
+}
+.bullet-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7c3aed;
+  flex-shrink: 0;
+  margin-top: 2.5px;
+}
+
+/* ── COLUMN 1 ── */
+.col1 {
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+
+.tech-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5mm 3mm;
+  border-radius: 5px;
+  background: rgba(124,58,237,0.08);
+  border: 1px solid rgba(124,58,237,0.15);
+  font-size: 8pt;
+}
+.tech-label { color: #94a3b8; font-weight: 500; }
+.tech-value {
+  color: #06b6d4;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+}
+.tech-badge {
+  background: rgba(6,182,212,0.15);
+  border: 1px solid rgba(6,182,212,0.3);
+  border-radius: 4px;
+  padding: 0.5mm 2mm;
+  font-size: 7pt;
+  font-weight: 700;
+  color: #06b6d4;
+}
+
+/* ── DATA FLOW ── */
+.dataflow-area {
+  padding: 4mm;
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+  flex: 1;
+}
+.df-title {
+  text-align: center;
+  font-size: 9pt;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-bottom: 2mm;
+}
+
+.df-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 2mm;
+  flex: 1;
+}
+
+.df-box {
+  border-radius: 7px;
+  padding: 3mm 4mm;
+  text-align: center;
+  font-size: 8pt;
+  font-weight: 700;
+  border: 1.5px solid;
+}
+.df-box.user { background: rgba(6,182,212,0.15); border-color: #06b6d4; color: #06b6d4; }
+.df-box.gateway { background: rgba(124,58,237,0.2); border-color: #7c3aed; color: #a78bfa; }
+.df-box.service { background: rgba(16,185,129,0.15); border-color: #10b981; color: #34d399; }
+.df-box.storage { background: rgba(244,63,94,0.12); border-color: #f43f5e; color: #fb7185; }
+.df-box.realtime { background: rgba(245,158,11,0.12); border-color: #f59e0b; color: #fbbf24; }
+
+.df-arrow {
+  color: #475569;
+  font-size: 14pt;
+  font-weight: 900;
+  text-align: center;
+}
+
+.df-services {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+}
+
+.df-flow-diagram {
+  display: flex;
+  flex-direction: column;
+  gap: 3mm;
+  align-items: center;
+}
+.df-row {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  width: 100%;
+  justify-content: center;
+}
+.df-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2mm;
+  align-items: center;
+}
+.df-vert-arrow {
+  width: 1.5px;
+  height: 8mm;
+  background: linear-gradient(180deg, #7c3aed, #06b6d4);
+  position: relative;
+}
+.df-horiz-arrow {
+  height: 1.5px;
+  width: 8mm;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  flex-shrink: 0;
+}
+
+/* ── APP OVERVIEW ── */
+.screens-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3mm;
+  padding: 4mm;
+  flex: 1;
+}
+
+.phone-mockup {
+  background: #0f172a;
+  border: 2px solid rgba(124,58,237,0.5);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.phone-screen-label {
+  position: absolute;
+  bottom: -5mm;
+  left: 0; right: 0;
+  text-align: center;
+  font-size: 6.5pt;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.mock-topbar {
+  background: rgba(124,58,237,0.3);
+  padding: 1.5mm 3mm;
+  font-size: 6pt;
+  font-weight: 700;
+  color: #a78bfa;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(124,58,237,0.3);
+}
+.mock-body {
+  padding: 2mm;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5mm;
+}
+
+.mock-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 5px;
+  padding: 1.5mm 2mm;
+}
+.mock-avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 2mm;
+  margin-bottom: 1mm;
+}
+.mock-avatar {
+  width: 8mm;
+  height: 8mm;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  flex-shrink: 0;
+}
+.mock-name { font-size: 6pt; font-weight: 700; color: #fff; }
+.mock-sub { font-size: 5pt; color: #64748b; }
+.mock-img-placeholder {
+  width: 100%;
+  height: 16mm;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  margin: 1mm 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14pt;
+}
+.mock-actions {
+  display: flex;
+  gap: 2mm;
+  margin-top: 1mm;
+}
+.mock-action-btn {
+  font-size: 5.5pt;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  gap: 1mm;
+}
+
+.mock-input {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 1.5mm 3mm;
+  font-size: 6pt;
+  color: #94a3b8;
+}
+.mock-btn {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  border-radius: 20px;
+  padding: 1.5mm 4mm;
+  font-size: 6pt;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+.mock-stat-row {
+  display: flex;
+  justify-content: space-around;
+  margin: 1.5mm 0;
+}
+.mock-stat { text-align: center; }
+.mock-stat-num { font-size: 8pt; font-weight: 800; color: #fff; }
+.mock-stat-label { font-size: 5pt; color: #64748b; }
+
+.mock-notif-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5mm;
+  padding: 1mm;
+  border-radius: 4px;
+  background: rgba(124,58,237,0.1);
+  border-left: 2px solid #7c3aed;
+  margin-bottom: 1mm;
+}
+.mock-notif-dot {
+  width: 5mm;
+  height: 5mm;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  flex-shrink: 0;
+}
+.mock-notif-text { font-size: 5pt; color: #cbd5e1; }
+
+.mock-msg-bubble {
+  border-radius: 10px;
+  padding: 1.5mm 2.5mm;
+  font-size: 6pt;
+  font-weight: 500;
+  margin-bottom: 1mm;
+  max-width: 80%;
+}
+.mock-msg-bubble.recv {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  align-self: flex-start;
+  border-bottom-left-radius: 3px;
+}
+.mock-msg-bubble.sent {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4);
+  color: #fff;
+  align-self: flex-end;
+  margin-left: auto;
+  border-bottom-right-radius: 3px;
+}
+.mock-msg-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.mock-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5mm 2mm;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.mock-setting-label { font-size: 6pt; color: #cbd5e1; }
+.mock-toggle {
+  width: 8mm;
+  height: 4mm;
+  border-radius: 4mm;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  position: relative;
+}
+.mock-toggle::after {
+  content: '';
+  position: absolute;
+  right: 0.5mm;
+  top: 0.5mm;
+  width: 3mm;
+  height: 3mm;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* ── COLUMN 4 ── */
+.col4 { display: flex; flex-direction: column; gap: 4mm; }
+
+.app-feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 3mm;
+  padding: 2mm;
+  border-radius: 6px;
+  background: rgba(124,58,237,0.07);
+  border: 1px solid rgba(124,58,237,0.15);
+}
+.app-feature-icon {
+  width: 8mm;
+  height: 8mm;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12pt;
+  flex-shrink: 0;
+  background: rgba(124,58,237,0.2);
+}
+.app-feature-text { font-size: 8pt; color: #cbd5e1; line-height: 1.4; }
+.app-feature-title { font-weight: 700; color: #fff; font-size: 8.5pt; }
+
+.conclusion-point {
+  padding: 2mm 3mm;
+  border-radius: 5px;
+  background: rgba(6,182,212,0.07);
+  border-left: 3px solid #06b6d4;
+  font-size: 8pt;
+  color: #cbd5e1;
+  line-height: 1.45;
+}
+
+/* ── FOOTER ── */
+.footer {
+  width: 100%;
+  height: 20mm;
+  background: linear-gradient(90deg, #0d0d2b, #12123a, #0d0d2b);
+  border-top: 2px solid #7c3aed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10mm;
+}
+.footer-left {
+  font-size: 14pt;
+  font-weight: 800;
+  color: #fff;
+}
+.footer-left span { color: #06b6d4; }
+.footer-tags {
+  display: flex;
+  gap: 3mm;
+}
+.tag {
+  background: rgba(124,58,237,0.2);
+  border: 1px solid rgba(124,58,237,0.4);
+  border-radius: 20px;
+  padding: 1.5mm 4mm;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #a78bfa;
+}
+.tag.teal {
+  background: rgba(6,182,212,0.15);
+  border-color: rgba(6,182,212,0.4);
+  color: #06b6d4;
+}
+.tag.pink {
+  background: rgba(244,63,94,0.12);
+  border-color: rgba(244,63,94,0.4);
+  color: #fb7185;
+}
+
+/* Middle two columns wrapper */
+.col-middle {
+  display: flex;
+  flex-direction: column;
+  gap: 4mm;
+}
+
+.objectives-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2mm;
+}
+.obj-item {
+  background: rgba(124,58,237,0.1);
+  border: 1px solid rgba(124,58,237,0.2);
+  border-radius: 6px;
+  padding: 2.5mm 3mm;
+  font-size: 7.5pt;
+  color: #cbd5e1;
+  line-height: 1.4;
+  display: flex;
+  gap: 2mm;
+  align-items: flex-start;
+}
+.obj-num {
+  font-size: 10pt;
+  font-weight: 900;
+  color: #7c3aed;
+  line-height: 1;
+  flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════ HEADER ══════════ -->
+<div class="header">
+  <div class="header-left">
+    <div class="naac-badge">
+      <div class="grade">A++</div>
+      <div>NAAC</div>
+    </div>
+    <div class="logo-circle">
+      <div class="app-logo-text">The<br>Social<br>Scoop</div>
+    </div>
+  </div>
+
+  <div class="header-center">
+    <div class="university-name">University of Lucknow</div>
+    <div class="department">Department of Computer Science &amp; Engineering</div>
+    <div class="faculty">Faculty of Engineering &amp; Technology</div>
+    <div class="divider-line"></div>
+    <div class="app-title">The Social Scoop</div>
+    <div class="app-tagline">"Connect. Share. Inspire."</div>
+    <div class="app-subtitle">A Modern Full-Stack Social Media Application</div>
+  </div>
+
+  <div class="header-right">
+    <div class="guide-block">
+      <div class="guide-label">Project Guide</div>
+      <div class="guide-name">Asst. Prof. Rohit Yadav</div>
+      <div class="guide-sub">Department of CSE</div>
+    </div>
+    <div class="guide-block">
+      <div class="guide-label">Coordinator</div>
+      <div class="guide-name">Prof. Dr. Jaswant Kumar</div>
+      <div class="guide-sub">Faculty of Engineering &amp; Technology</div>
+    </div>
+    <div class="team-block">
+      <div class="team-label">Team Members</div>
+      <div class="team-member">
+        <div class="member-dot"></div>
+        <div><span class="member-name">Aditya Kumar Yadav</span><br><span class="member-roll">Roll No.: 2410014325004</span></div>
+      </div>
+      <div class="team-member">
+        <div class="member-dot"></div>
+        <div><span class="member-name">Abhishek Patel</span><br><span class="member-roll">Roll No.: 2410014325003</span></div>
+      </div>
+      <div class="team-member">
+        <div class="member-dot"></div>
+        <div><span class="member-name">Shaikh Afzal</span><br><span class="member-roll">Roll No.: 2410014325005</span></div>
+      </div>
+      <div class="team-member">
+        <div class="member-dot"></div>
+        <div><span class="member-name">Aliraja Ansari</span><br><span class="member-roll">Roll No.: 2410014325010</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MAIN ══════════ -->
+<div class="main">
+
+  <!-- ── COLUMN 1 ── -->
+  <div class="col1">
+
+    <!-- Introduction -->
+    <div class="section-card" style="flex:1.2">
+      <div class="section-header">
+        <div class="section-icon">📋</div>
+        <div class="section-title">Introduction</div>
+      </div>
+      <div class="section-body">
+        <div class="bullet-item"><div class="bullet-dot"></div><span>The Social Scoop is a full-featured social media platform enabling users to connect, share, interact and build communities in real time.</span></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><span>Users can create posts with images &amp; videos, react with likes, comment, follow/unfollow, and chat in real time.</span></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><span>Features voice &amp; video calling via WebRTC, emoji messaging, and media sharing in conversations.</span></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><span>Provides a seamless, responsive experience across all devices with adaptive dark &amp; light themes.</span></div>
+        <div class="bullet-item"><div class="bullet-dot"></div><span>A privacy-first design: follow requests, private follower lists, and secure JWT authentication.</span></div>
+      </div>
+    </div>
+
+    <!-- Objectives -->
+    <div class="section-card" style="flex:1.3">
+      <div class="section-header">
+        <div class="section-icon">🎯</div>
+        <div class="section-title">Objectives</div>
+      </div>
+      <div class="section-body">
+        <div class="objectives-grid">
+          <div class="obj-item"><div class="obj-num">01</div><span>Develop a full-featured, production-ready social media application.</span></div>
+          <div class="obj-item"><div class="obj-num">02</div><span>Enable real-time interaction via Socket.IO messaging and notifications.</span></div>
+          <div class="obj-item"><div class="obj-num">03</div><span>Provide secure, scalable infrastructure with MongoDB Atlas and Cloudinary.</span></div>
+          <div class="obj-item"><div class="obj-num">04</div><span>Implement peer-to-peer voice &amp; video calls using WebRTC technology.</span></div>
+          <div class="obj-item"><div class="obj-num">05</div><span>Ensure privacy with follow-request approval and protected data.</span></div>
+          <div class="obj-item"><div class="obj-num">06</div><span>Deliver a mobile-first responsive UI with modern glassmorphism design.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Stack -->
+    <div class="section-card" style="flex:1.5">
+      <div class="section-header">
+        <div class="section-icon">&lt;/&gt;</div>
+        <div class="section-title">Technology Stack</div>
+      </div>
+      <div class="section-body">
+        <div class="tech-row"><span class="tech-label">Frontend</span><span class="tech-value">React.js + Vite</span></div>
+        <div class="tech-row"><span class="tech-label">Backend</span><span class="tech-value">Node.js + Express</span></div>
+        <div class="tech-row"><span class="tech-label">Database</span><span class="tech-value">MongoDB Atlas</span></div>
+        <div class="tech-row"><span class="tech-label">Real-time</span><span class="tech-value">Socket.IO</span></div>
+        <div class="tech-row"><span class="tech-label">Calls</span><span class="tech-value">WebRTC</span></div>
+        <div class="tech-row"><span class="tech-label">Storage</span><span class="tech-value">Cloudinary</span></div>
+        <div class="tech-row"><span class="tech-label">Auth</span><span class="tech-value">JWT + bcrypt</span></div>
+        <div class="tech-row"><span class="tech-label">State</span><span class="tech-value">Redux Toolkit</span></div>
+        <div class="tech-row"><span class="tech-label">UI</span><span class="tech-value">Styled Components</span></div>
+        <div class="tech-row"><span class="tech-label">Animation</span><span class="tech-value">Framer Motion</span></div>
+        <div class="tech-row"><span class="tech-label">Deployment</span><span class="tech-value">Render.com</span></div>
+        <div class="tech-row"><span class="tech-label">Others</span><span class="tech-value">Axios · Mongoose</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── COLUMN 2: Data Flow ── -->
+  <div class="col-middle">
+    <div class="section-card" style="flex:1">
+      <div class="section-header">
+        <div class="section-icon">🔄</div>
+        <div class="section-title">Data-Flow Diagram</div>
+      </div>
+      <div class="dataflow-area">
+
+        <!-- Row 1: User → App → Gateway -->
+        <div style="display:flex;align-items:center;justify-content:center;gap:4mm;">
+          <div class="df-box user" style="padding:3mm 5mm;font-size:8pt;">👤<br>User</div>
+          <div class="df-arrow">→</div>
+          <div class="df-box user" style="padding:3mm 5mm;font-size:7.5pt;">🌐 Web /<br>📱 Mobile</div>
+          <div class="df-arrow">→</div>
+          <div class="df-box gateway" style="padding:3mm 6mm;font-size:8pt;">🔀 API<br>Gateway</div>
+        </div>
+
+        <!-- Down arrow from gateway -->
+        <div style="display:flex;justify-content:center;">
+          <div style="width:1.5px;height:8mm;background:linear-gradient(180deg,#7c3aed,#06b6d4);"></div>
+        </div>
+
+        <!-- Services row -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3mm;">
+          <div class="df-box service" style="font-size:7pt;padding:2.5mm;">🔐<br><b>Auth</b><br>Service</div>
+          <div class="df-box service" style="font-size:7pt;padding:2.5mm;">📝<br><b>Post</b><br>Service</div>
+          <div class="df-box service" style="font-size:7pt;padding:2.5mm;">💬<br><b>Chat</b><br>Service</div>
+          <div class="df-box service" style="font-size:7pt;padding:2.5mm;">🔔<br><b>Notif</b><br>Service</div>
+        </div>
+
+        <!-- Down arrows -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3mm;">
+          <div style="display:flex;justify-content:center;"><div style="width:1.5px;height:6mm;background:linear-gradient(180deg,#10b981,#f59e0b);"></div></div>
+          <div style="display:flex;justify-content:center;"><div style="width:1.5px;height:6mm;background:linear-gradient(180deg,#10b981,#f59e0b);"></div></div>
+          <div style="display:flex;justify-content:center;"><div style="width:1.5px;height:6mm;background:linear-gradient(180deg,#10b981,#f59e0b);"></div></div>
+          <div style="display:flex;justify-content:center;"><div style="width:1.5px;height:6mm;background:linear-gradient(180deg,#10b981,#f59e0b);"></div></div>
+        </div>
+
+        <!-- Storage/DB row -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3mm;">
+          <div class="df-box storage" style="font-size:6.5pt;padding:2mm;">🍃<br><b>MongoDB</b><br>Atlas</div>
+          <div class="df-box realtime" style="font-size:6.5pt;padding:2mm;">☁️<br><b>Cloudinary</b><br>Media</div>
+          <div class="df-box realtime" style="font-size:6.5pt;padding:2mm;">⚡<br><b>Socket.IO</b><br>Real-time</div>
+          <div class="df-box storage" style="font-size:6.5pt;padding:2mm;">🔑<br><b>JWT</b><br>Sessions</div>
+        </div>
+
+        <!-- Legend -->
+        <div style="display:flex;gap:4mm;justify-content:center;flex-wrap:wrap;margin-top:3mm;">
+          <div style="display:flex;align-items:center;gap:2mm;font-size:7pt;color:#94a3b8;"><div style="width:4mm;height:4mm;border-radius:2px;background:rgba(16,185,129,0.3);border:1px solid #10b981;"></div> Services</div>
+          <div style="display:flex;align-items:center;gap:2mm;font-size:7pt;color:#94a3b8;"><div style="width:4mm;height:4mm;border-radius:2px;background:rgba(244,63,94,0.2);border:1px solid #f43f5e;"></div> Databases</div>
+          <div style="display:flex;align-items:center;gap:2mm;font-size:7pt;color:#94a3b8;"><div style="width:4mm;height:4mm;border-radius:2px;background:rgba(245,158,11,0.2);border:1px solid #f59e0b;"></div> Real-time / Storage</div>
+          <div style="display:flex;align-items:center;gap:2mm;font-size:7pt;color:#94a3b8;"><div style="width:4mm;height:4mm;border-radius:2px;background:rgba(6,182,212,0.2);border:1px solid #06b6d4;"></div> Client / Gateway</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- App Overview -->
+    <div class="section-card" style="flex:1.6">
+      <div class="section-header">
+        <div class="section-icon">📱</div>
+        <div class="section-title">App Overview — UI Preview</div>
+      </div>
+      <div class="screens-grid">
+
+        <!-- Screen 1: Login -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>The Social Scoop</span><span>🌙</span></div>
+            <div class="mock-body" style="align-items:center;justify-content:center;gap:2.5mm;">
+              <div style="width:14mm;height:14mm;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:10pt;">🌐</div>
+              <div style="font-size:7.5pt;font-weight:800;color:#fff;text-align:center;">The Social Scoop</div>
+              <div class="mock-input" style="width:100%;text-align:left;">Username</div>
+              <div class="mock-input" style="width:100%;text-align:left;">Password</div>
+              <div class="mock-btn" style="width:100%;">Log In</div>
+              <div style="font-size:5.5pt;color:#64748b;text-align:center;">Don't have an account? Sign Up</div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Login Page</div>
+        </div>
+
+        <!-- Screen 2: Profile -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>Profile</span><span>✏️</span></div>
+            <div class="mock-body">
+              <div style="display:flex;gap:2mm;align-items:center;">
+                <div class="mock-avatar" style="width:12mm;height:12mm;"></div>
+                <div>
+                  <div class="mock-name" style="font-size:7pt;">Aditya Kumar</div>
+                  <div class="mock-sub">@my_username</div>
+                </div>
+              </div>
+              <div class="mock-stat-row">
+                <div class="mock-stat"><div class="mock-stat-num">5</div><div class="mock-stat-label">Posts</div></div>
+                <div class="mock-stat"><div class="mock-stat-num">14</div><div class="mock-stat-label">Followers</div></div>
+                <div class="mock-stat"><div class="mock-stat-num">8</div><div class="mock-stat-label">Following</div></div>
+              </div>
+              <div class="mock-btn" style="font-size:6pt;padding:1.5mm 3mm;">✏️ Edit Profile</div>
+              <div style="font-size:5.5pt;color:#94a3b8;font-weight:600;margin-top:1mm;">📷 Posts</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:1mm;">
+                <div style="background:rgba(255,255,255,0.07);border-radius:3px;height:10mm;"></div>
+                <div style="background:rgba(255,255,255,0.07);border-radius:3px;height:10mm;"></div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">User Profile</div>
+        </div>
+
+        <!-- Screen 3: Home Feed -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>🏠 Home</span><span>🔔</span></div>
+            <div class="mock-body">
+              <div class="mock-card">
+                <div class="mock-avatar-row">
+                  <div class="mock-avatar"></div>
+                  <div><div class="mock-name">Shaikh Afzal</div><div class="mock-sub">@afzal · 2h ago</div></div>
+                </div>
+                <div class="mock-img-placeholder">🖼️</div>
+                <div class="mock-actions">
+                  <div class="mock-action-btn">❤️ 12</div>
+                  <div class="mock-action-btn">💬 3</div>
+                </div>
+              </div>
+              <div class="mock-card" style="margin-top:1mm;">
+                <div class="mock-avatar-row">
+                  <div class="mock-avatar" style="background:linear-gradient(135deg,#f43f5e,#f59e0b);"></div>
+                  <div><div class="mock-name">Aliraja Ansari</div><div class="mock-sub">@ali · 5h ago</div></div>
+                </div>
+                <div style="font-size:5.5pt;color:#cbd5e1;line-height:1.4;">Great day out with friends! 🌟</div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Home Feed</div>
+        </div>
+
+        <!-- Screen 4: Messages -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>💬 Messages</span><span>➕</span></div>
+            <div class="mock-body">
+              <div style="font-size:5.5pt;color:#94a3b8;margin-bottom:1mm;">Aditya Kumar</div>
+              <div class="mock-msg-area">
+                <div class="mock-msg-bubble recv">Hey! How are you? 👋</div>
+                <div class="mock-msg-bubble sent">I'm good! How about you?</div>
+                <div class="mock-msg-bubble recv">Great! Let's catch up 😊</div>
+              </div>
+              <div style="display:flex;gap:1.5mm;align-items:center;margin-top:auto;">
+                <div style="font-size:9pt;">😊</div>
+                <div class="mock-input" style="flex:1;font-size:5.5pt;padding:1mm 2mm;">Type a message...</div>
+                <div style="width:6mm;height:6mm;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:8pt;">➤</div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Messages Tab</div>
+        </div>
+
+        <!-- Screen 5: Notifications -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>🔔 Notifications</span></div>
+            <div class="mock-body">
+              <div style="display:flex;gap:1.5mm;margin-bottom:2mm;">
+                <div style="background:rgba(124,58,237,0.3);border-radius:20px;padding:0.8mm 2.5mm;font-size:5.5pt;color:#a78bfa;font-weight:700;border:1px solid #7c3aed;">All</div>
+                <div style="background:transparent;border-radius:20px;padding:0.8mm 2.5mm;font-size:5.5pt;color:#64748b;border:1px solid #334155;">❤️ Likes</div>
+                <div style="background:transparent;border-radius:20px;padding:0.8mm 2.5mm;font-size:5.5pt;color:#64748b;border:1px solid #334155;">💬</div>
+              </div>
+              <div class="mock-notif-item"><div class="mock-notif-dot"></div><div class="mock-notif-text"><b>Abhishek</b> liked your post</div></div>
+              <div class="mock-notif-item" style="border-left-color:#06b6d4;background:rgba(6,182,212,0.08);"><div class="mock-notif-dot" style="background:#06b6d4;"></div><div class="mock-notif-text"><b>Phoenix</b> started following you</div></div>
+              <div class="mock-notif-item"><div class="mock-notif-dot"></div><div class="mock-notif-text"><b>Ali</b> commented on your post</div></div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Notifications</div>
+        </div>
+
+        <!-- Screen 6: Settings -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>⚙️ Settings</span></div>
+            <div class="mock-body">
+              <div style="font-size:6pt;font-weight:700;color:#a78bfa;margin-bottom:1mm;">Theme Settings</div>
+              <div class="mock-setting-row">
+                <div class="mock-setting-label">🌙 Dark Mode</div>
+                <div class="mock-toggle"></div>
+              </div>
+              <div class="mock-setting-row">
+                <div class="mock-setting-label">☀️ Light Mode</div>
+                <div class="mock-toggle" style="background:#334155;"></div>
+              </div>
+              <div style="font-size:6pt;font-weight:700;color:#a78bfa;margin:2mm 0 1mm;">Account</div>
+              <div class="mock-setting-row"><div class="mock-setting-label">🔒 Privacy Policy</div></div>
+              <div class="mock-setting-row"><div class="mock-setting-label">📄 Terms &amp; Conditions</div></div>
+              <div style="background:rgba(244,63,94,0.15);border:1px solid rgba(244,63,94,0.3);border-radius:5px;padding:1.5mm;text-align:center;font-size:6pt;font-weight:700;color:#f87171;margin-top:1mm;">🚪 Log Out</div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Settings Tab</div>
+        </div>
+
+        <!-- Screen 7: Search -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>🔍 Search</span></div>
+            <div class="mock-body">
+              <div class="mock-input" style="width:100%;margin-bottom:2mm;">Search users...</div>
+              <div style="font-size:5.5pt;color:#94a3b8;margin-bottom:1mm;">Results</div>
+              <div style="display:flex;align-items:center;gap:2mm;padding:1mm;border-bottom:1px solid rgba(255,255,255,0.05);">
+                <div class="mock-avatar" style="width:8mm;height:8mm;"></div>
+                <div><div class="mock-name" style="font-size:6pt;">Abhishek Patel</div><div class="mock-sub">@abhishek</div></div>
+                <div class="mock-btn" style="margin-left:auto;padding:1mm 2.5mm;font-size:5.5pt;">Follow</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:2mm;padding:1mm;">
+                <div class="mock-avatar" style="width:8mm;height:8mm;background:linear-gradient(135deg,#f43f5e,#f59e0b);"></div>
+                <div><div class="mock-name" style="font-size:6pt;">Aliraja Ansari</div><div class="mock-sub">@ali</div></div>
+                <div style="background:rgba(124,58,237,0.2);border:1px solid #7c3aed;border-radius:20px;padding:1mm 2.5mm;font-size:5.5pt;font-weight:700;color:#a78bfa;margin-left:auto;">Following</div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Search Users</div>
+        </div>
+
+        <!-- Screen 8: Follow Requests -->
+        <div style="display:flex;flex-direction:column;gap:2mm;">
+          <div class="phone-mockup" style="flex:1;min-height:0;">
+            <div class="mock-topbar"><span>👥 Requests</span></div>
+            <div class="mock-body">
+              <div style="font-size:6pt;font-weight:700;color:#a78bfa;margin-bottom:1.5mm;">Pending Requests</div>
+              <div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);border-radius:5px;padding:2mm;margin-bottom:1.5mm;">
+                <div style="display:flex;align-items:center;gap:2mm;margin-bottom:1.5mm;">
+                  <div class="mock-avatar" style="width:8mm;height:8mm;"></div>
+                  <div><div class="mock-name" style="font-size:6pt;">Phoenix</div><div class="mock-sub">@phoenix</div></div>
+                </div>
+                <div style="display:flex;gap:1.5mm;">
+                  <div style="flex:1;background:linear-gradient(135deg,#7c3aed,#06b6d4);border-radius:4px;padding:1mm;text-align:center;font-size:5.5pt;font-weight:700;color:#fff;">✓ Accept</div>
+                  <div style="flex:1;background:rgba(244,63,94,0.2);border:1px solid #f43f5e;border-radius:4px;padding:1mm;text-align:center;font-size:5.5pt;font-weight:700;color:#f87171;">✗ Reject</div>
+                </div>
+              </div>
+              <div style="font-size:6pt;color:#64748b;text-align:center;">1 pending request</div>
+            </div>
+          </div>
+          <div style="text-align:center;font-size:6pt;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;">Follow Requests</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COLUMN 4 ── -->
+  <div class="col4">
+
+    <!-- Applications -->
+    <div class="section-card" style="flex:1.6">
+      <div class="section-header">
+        <div class="section-icon">🚀</div>
+        <div class="section-title">Key Features</div>
+      </div>
+      <div class="section-body">
+        <div class="app-feature">
+          <div class="app-feature-icon">👤</div>
+          <div><div class="app-feature-title">Authentication &amp; Profiles</div><div class="app-feature-text">JWT-secured signup/login with customisable profiles, bio, and profile pictures.</div></div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-icon">📸</div>
+          <div><div class="app-feature-title">Posts with Media</div><div class="app-feature-text">Create, like, and comment on posts with images and videos stored on Cloudinary.</div></div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-icon">💬</div>
+          <div><div class="app-feature-title">Real-time Messaging</div><div class="app-feature-text">Socket.IO chat with emoji picker, photo/video sharing, and typing indicators.</div></div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-icon">📞</div>
+          <div><div class="app-feature-title">Voice &amp; Video Calls</div><div class="app-feature-text">Peer-to-peer WebRTC calls with mute/camera controls and incoming call UI.</div></div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-icon">🔔</div>
+          <div><div class="app-feature-title">Smart Notifications</div><div class="app-feature-text">Real-time notifications for likes, comments, and follows with unread badge.</div></div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-icon">🌙</div>
+          <div><div class="app-feature-title">Dark &amp; Light Themes</div><div class="app-feature-text">Persistent per-user theme preference synced across sessions and devices.</div></div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-icon">🔒</div>
+          <div><div class="app-feature-title">Privacy Controls</div><div class="app-feature-text">Follow request approval system; followers/following lists visible only to the owner.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conclusion -->
+    <div class="section-card" style="flex:1">
+      <div class="section-header">
+        <div class="section-icon">✅</div>
+        <div class="section-title">Conclusion</div>
+      </div>
+      <div class="section-body">
+        <div class="conclusion-point">The Social Scoop demonstrates a complete, production-grade social platform built with a modern MERN stack and real-time capabilities.</div>
+        <div class="conclusion-point">It successfully integrates authentication, media handling, live messaging, and WebRTC calling — delivering a seamless user experience.</div>
+        <div class="conclusion-point">The glassmorphism UI, responsive design, and dark/light theming provide an engaging, accessible interface across all devices.</div>
+        <div class="conclusion-point">With continuous improvement, The Social Scoop can scale into a powerful global connectivity and community-building platform.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ FOOTER ══════════ -->
+<div class="footer">
+  <div class="footer-left">Connect. Share. Inspire. — <span>That's Social Scoop.</span></div>
+  <div class="footer-tags">
+    <div class="tag">#SocialScoop</div>
+    <div class="tag teal">#ConnectShareInspire</div>
+    <div class="tag">#TheSocialScoop</div>
+    <div class="tag teal">#MERN</div>
+    <div class="tag pink">#WebRTC</div>
+    <div class="tag pink">#StayConnected</div>
+  </div>
+</div>
+
+</body>
+</html>

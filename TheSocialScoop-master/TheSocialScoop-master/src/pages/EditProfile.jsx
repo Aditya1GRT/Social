@@ -2,18 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import NavBar from "../components/NavBar";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
-import app from "../firebase";
+import { uploadFile } from "../utils/upload";
 import { publicRequest } from "../requestMethods";
 import { faHighlighter } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../redux/userSlice";
+import { loginSuccess, logOut } from "../redux/userSlice";
 import { motion } from "framer-motion";
 
 const MainContainer = styled(motion.div)`
@@ -266,73 +260,37 @@ const EditProfile = ({ user }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // dispatch(userStart());
-    // ||||||||||||||||||||||||||||||||||||||||||||||||||
-
     try {
-      const fileName = new Date().getTime() + file.name;
-
-      const storage = getStorage(app);
-      const storageRef = ref(storage, fileName);
-
-      const uploadTask = uploadBytesResumable(storageRef, file);
-
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          console.log("Upload is " + progress + "% done");
-          switch (snapshot.state) {
-            case "paused":
-              console.log("Upload is paused");
-              break;
-            case "running":
-              console.log("Upload is running");
-              break;
-            default:
-              console.log("default");
-          }
-        },
-        (error) => {
-          // Handle unsuccessful uploads
-          console.log(error.message);
-        },
-        () => {
-          // Handle successful uploads on complete
-          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            console.log("File available at", downloadURL);
-            setUserData((p) => ({ ...p, profilePicture: downloadURL }));
-            submit(e, downloadURL);
-          });
-        }
-      );
-
-      // ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+      const downloadURL = await uploadFile(file);
+      setUserData((p) => ({ ...p, profilePicture: downloadURL }));
+      submit(e, downloadURL);
     } catch (error) {
       console.log(error.message);
     }
   };
   const submit = async (e, downloadURL = null) => {
     e.preventDefault();
-    downloadURL
-      ? await publicRequest.put(`/users/${currentUser._id}`, {
-          ...userData,
-          profilePicture: downloadURL,
-          _id: user._id,
-        })
-      : await publicRequest.put(`/users/${currentUser._id}`, {
-          ...userData,
-          _id: user._id,
-        });
-    downloadURL
-      ? dispatch(
-          loginSuccess({ ...user, ...userData, profilePicture: downloadURL })
-        )
-      : dispatch(loginSuccess({ ...user, ...userData }));
-
-    nav(`/user/${user.username}`, { replace: true });
+    try {
+      const body = {
+        ...userData,
+        _id: user._id,
+        ...(downloadURL ? { profilePicture: downloadURL } : {}),
+      };
+      const res = await publicRequest.put(`/users/${currentUser._id}`, body);
+      if (!res.data) {
+        // Account no longer exists in DB (e.g. server restarted and wiped data)
+        dispatch(logOut());
+        nav("/login", { replace: true });
+        return;
+      }
+      dispatch(loginSuccess(downloadURL
+        ? { ...user, ...userData, profilePicture: downloadURL }
+        : { ...user, ...userData }
+      ));
+      nav(`/user/${user.username}`, { replace: true });
+    } catch (err) {
+      console.error("Profile update failed:", err.message);
+    }
   };
 
   return (
