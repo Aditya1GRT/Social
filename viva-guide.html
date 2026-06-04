@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Social Scoop — Viva Ready Guide</title>
+<style>
+  /* ── RESET & BASE ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --dark: #0f0f1a;
+    --card: #16162a;
+    --border: #2a2a45;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    --mono: 'Consolas', 'Courier New', monospace;
+  }
+
+  html { font-size: 13px; }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: var(--font);
+    line-height: 1.65;
+    padding: 0;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #07091a 0%, #12052e 50%, #07091a 100%);
+    text-align: center;
+    padding: 60px 40px;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+    top: -100px; left: -100px;
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%);
+    bottom: -80px; right: -80px;
+  }
+  .cover-badge {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 20px;
+    border-radius: 20px;
+    margin-bottom: 28px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 14px;
+    position: relative; z-index: 1;
+  }
+  .cover h1 span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cover-sub {
+    font-size: 18px;
+    color: var(--muted);
+    margin-bottom: 40px;
+    position: relative; z-index: 1;
+  }
+  .cover-divider {
+    width: 80px; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 2px;
+    margin: 0 auto 40px;
+    position: relative; z-index: 1;
+  }
+  .cover-meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    max-width: 600px;
+    width: 100%;
+    position: relative; z-index: 1;
+  }
+  .cover-meta-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 16px 12px;
+  }
+  .cover-meta-item .label {
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .cover-meta-item .value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .cover-team {
+    margin-top: 40px;
+    font-size: 12px;
+    color: var(--muted);
+    position: relative; z-index: 1;
+    max-width: 500px;
+  }
+  .cover-team strong { color: var(--accent2); }
+
+  /* ── CONTENT WRAPPER ── */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 48px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 48px;
+    page-break-inside: avoid;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-size: 12px;
+    font-weight: 800;
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.3px;
+  }
+
+  /* ── QA BLOCK ── */
+  .qa { margin-bottom: 24px; page-break-inside: avoid; }
+  .question {
+    background: rgba(124,58,237,0.1);
+    border-left: 3px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 0 8px 8px 0;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: #d4bcff;
+    margin-bottom: 10px;
+  }
+  .answer { padding-left: 4px; }
+  .answer p { margin-bottom: 8px; color: var(--text); font-size: 13px; }
+
+  /* ── TABLES ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 16px;
+    font-size: 12.5px;
+  }
+  thead tr { background: rgba(124,58,237,0.15); }
+  th {
+    text-align: left;
+    padding: 9px 14px;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent2);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 8px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  td:first-child { font-weight: 600; color: #c4b5fd; }
+
+  /* ── CODE ── */
+  pre {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: #a5f3fc;
+    margin: 12px 0;
+  }
+  code {
+    font-family: var(--mono);
+    background: rgba(124,58,237,0.15);
+    color: #c4b5fd;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 11.5px;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-right: 4px;
+  }
+  .badge-purple { background: rgba(124,58,237,0.25); color: #c4b5fd; }
+  .badge-cyan   { background: rgba(6,182,212,0.2);   color: #67e8f9; }
+  .badge-green  { background: rgba(16,185,129,0.2);  color: #6ee7b7; }
+  .badge-red    { background: rgba(239,68,68,0.2);   color: #fca5a5; }
+  .badge-yellow { background: rgba(245,158,11,0.2);  color: #fde68a; }
+
+  /* ── CARDS ── */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 12px 0; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    page-break-inside: avoid;
+  }
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+  .card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 12px 0;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #94a3b8;
+    line-height: 1.9;
+    white-space: pre;
+    overflow-x: auto;
+  }
+  .flow .caller  { color: #c4b5fd; }
+  .flow .server  { color: #67e8f9; }
+  .flow .callee  { color: #6ee7b7; }
+  .flow .arrow   { color: #f59e0b; }
+  .flow .stream  { color: #10b981; font-weight: bold; }
+
+  /* ── LISTS ── */
+  ul, ol { padding-left: 22px; margin: 8px 0; }
+  li { margin-bottom: 5px; font-size: 13px; color: var(--text); }
+  li strong { color: #c4b5fd; }
+
+  /* ── QUICK FIRE TABLE ── */
+  .qf-table td:first-child { font-family: var(--mono); font-size: 11px; color: #67e8f9; }
+  .qf-table td:last-child  { font-family: var(--mono); font-size: 11px; color: #fde68a; font-weight: 700; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight {
+    background: rgba(6,182,212,0.06);
+    border: 1px solid rgba(6,182,212,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 12.5px;
+    color: #a5f3fc;
+  }
+  .highlight strong { color: #67e8f9; }
+
+  .warn {
+    background: rgba(245,158,11,0.06);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 12px 0;
+    font-size: 12.5px;
+    color: #fde68a;
+  }
+
+  /* ── PAGE BREAKS ── */
+  .page-break { page-break-before: always; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 40px;
+    page-break-after: always;
+  }
+  .toc h2 { font-size: 16px; color: var(--accent2); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { padding: 4px 0; font-size: 13px; color: var(--muted); border-bottom: 1px dotted rgba(255,255,255,0.05); }
+  .toc li:last-child { border-bottom: none; }
+  .toc li strong { color: var(--text); }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: #fff; color: #111; font-size: 11px; }
+    :root {
+      --dark: #fff;
+      --card: #f8f9fa;
+      --border: #dee2e6;
+      --text: #212529;
+      --muted: #6c757d;
+      --accent: #6d28d9;
+      --accent2: #0284c7;
+    }
+    .cover {
+      background: linear-gradient(135deg, #1e1b4b, #1e3a5f);
+      color: #fff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .cover h1 { -webkit-text-fill-color: #fff; color: #fff; }
+    pre { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+    code { background: #ede9fe; color: #5b21b6; }
+    .question { background: #ede9fe; color: #5b21b6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .flow { background: #f8fafc; color: #334155; white-space: pre-wrap; }
+    thead tr { background: #ede9fe; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    th { color: #4338ca; }
+    td:first-child { color: #5b21b6; }
+    .highlight { background: #e0f2fe; color: #0c4a6e; border-color: #7dd3fc; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .warn { background: #fffbeb; color: #78350f; border-color: #fcd34d; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .badge-purple { background: #ede9fe; color: #5b21b6; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .badge-cyan   { background: #cffafe; color: #0e7490; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .badge-green  { background: #d1fae5; color: #065f46; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .badge-red    { background: #fee2e2; color: #991b1b; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-num  { background: linear-gradient(135deg, #6d28d9, #0284c7); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    a { color: #6d28d9; }
+    .qf-table td:first-child { color: #0284c7; }
+    .qf-table td:last-child  { color: #b45309; }
+    @page { margin: 20mm 18mm; size: A4; }
+    .cover { page-break-after: always; min-height: 0; padding: 60px 40px; }
+    .toc { page-break-after: always; }
+    .page-break { page-break-before: always; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════ COVER ════════════════════ -->
+<div class="cover">
+  <div class="cover-badge">Viva Examination Guide</div>
+  <h1>The Social <span>Scoop</span></h1>
+  <p class="cover-sub">Full-Stack Social Media Application — Complete Technical Reference</p>
+  <div class="cover-divider"></div>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <div class="label">Stack</div>
+      <div class="value">React + Node.js</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Database</div>
+      <div class="value">MongoDB Atlas</div>
+    </div>
+    <div class="cover-meta-item">
+      <div class="label">Deployment</div>
+      <div class="value">Render.com</div>
+    </div>
+  </div>
+  <div class="cover-team">
+    <strong>Team:</strong> Aditya Kumar Yadav (04) &nbsp;·&nbsp; Abhishek Patel (03)<br>
+    Aliraja Ansari (10) &nbsp;·&nbsp; Shaikh Afzal (05)<br>
+    <strong>Guide:</strong> Er. Rohit Yadav
+  </div>
+</div>
+
+<!-- ════════════════════ CONTENT ════════════════════ -->
+<div class="content">
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><strong>Project Overview</strong> — What it is, how it differs</li>
+    <li><strong>Technology Stack</strong> — Frontend, Backend, complete list</li>
+    <li><strong>Database</strong> — MongoDB, NeDB, adapter pattern, schemas</li>
+    <li><strong>Storage</strong> — Cloudinary, multer, upload/delete flow</li>
+    <li><strong>Authentication &amp; Security</strong> — JWT, bcrypt, interceptors</li>
+    <li><strong>Real-Time Communication</strong> — Socket.IO, WebRTC call flow</li>
+    <li><strong>State Management</strong> — Redux Toolkit, redux-persist</li>
+    <li><strong>Deployment</strong> — Render Blueprint, build/serve strategy</li>
+    <li><strong>Unique Technical Patterns</strong> — Self-healing DB, cascade delete, etc.</li>
+    <li><strong>What Is New / Innovative</strong></li>
+    <li><strong>Limitations</strong> — Honest trade-offs</li>
+    <li><strong>Future Scope</strong> — 12 planned enhancements</li>
+    <li><strong>Quick-Fire Answer Table</strong> — Exact config values</li>
+  </ol>
+</div>
+
+<!-- ── 1. OVERVIEW ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">Project Overview</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What is The Social Scoop?</div>
+    <div class="answer">
+      <p>A full-stack social media web application supporting user profiles, image/video posts, real-time messaging, peer-to-peer voice and video calls, follow requests (with approval), notifications, and dark/light themes — deployed as a single service on Render.com.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How is it different from existing social apps like Instagram or Twitter?</div>
+    <div class="answer">
+      <table>
+        <thead><tr><th>Feature</th><th>Instagram / Twitter</th><th>The Social Scoop</th></tr></thead>
+        <tbody>
+          <tr><td>Architecture</td><td>Proprietary, closed source</td><td>Open monorepo, Express serves React</td></tr>
+          <tr><td>Voice/Video calls</td><td>Third-party (Zoom, FaceTime)</td><td>Native WebRTC P2P — no relay</td></tr>
+          <tr><td>Deployment</td><td>Multi-region CDN + load balancers</td><td>Single Render.com free-tier service</td></tr>
+          <tr><td>Database</td><td>Proprietary distributed DB</td><td>MongoDB Atlas + NeDB fallback adapter</td></tr>
+          <tr><td>Data integrity</td><td>Eventual consistency teams</td><td>Self-healing DB on every read</td></tr>
+          <tr><td>Follow model</td><td>Directional (Twitter) or auto-mutual</td><td>Approval-based mutual follow</td></tr>
+          <tr><td>Account delete</td><td>Background jobs clean up later</td><td>Immediate 6-step cascade delete</td></tr>
+          <tr><td>Source</td><td>Closed, opaque</td><td>Open, auditable, educational</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── 2. TECH STACK ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">Technology Stack</div>
+  </div>
+
+  <p style="margin-bottom:14px; color: var(--muted);">Frontend technologies:</p>
+  <table>
+    <thead><tr><th>Technology</th><th>Version</th><th>Why Used</th></tr></thead>
+    <tbody>
+      <tr><td>React</td><td>18.2.0</td><td>Component model, virtual DOM, hooks for state and side effects</td></tr>
+      <tr><td>Vite</td><td>5.0.0</td><td>Native ES modules, faster HMR than Create React App</td></tr>
+      <tr><td>styled-components</td><td>6.1.0</td><td>CSS-in-JS with dynamic theming, no class name collisions</td></tr>
+      <tr><td>Framer Motion</td><td>10.16.0</td><td>Declarative animations, AnimatePresence for mount/unmount transitions</td></tr>
+      <tr><td>Redux Toolkit</td><td>2.0.0</td><td>Predictable global state, less boilerplate than vanilla Redux</td></tr>
+      <tr><td>redux-persist</td><td>6.0.0</td><td>Syncs Redux to localStorage — state survives page refresh</td></tr>
+      <tr><td>axios</td><td>1.6.0</td><td>Request/response interceptors for auth headers and token expiry</td></tr>
+      <tr><td>react-router-dom</td><td>6.20.0</td><td>Client-side SPA routing without full page reloads</td></tr>
+      <tr><td>Socket.IO-client</td><td>4.6.0</td><td>Real-time messages + WebRTC signaling with polling fallback</td></tr>
+      <tr><td>FontAwesome</td><td>6.5.0</td><td>Icon library (solid + regular variants)</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin:14px 0; color: var(--muted);">Backend technologies:</p>
+  <table>
+    <thead><tr><th>Technology</th><th>Version</th><th>Why Used</th></tr></thead>
+    <tbody>
+      <tr><td>Node.js</td><td>22</td><td>Non-blocking I/O, same language as frontend (JavaScript)</td></tr>
+      <tr><td>Express</td><td>4.18.2</td><td>Minimal, fast, rich middleware ecosystem</td></tr>
+      <tr><td>Mongoose</td><td>9.6.3</td><td>Schema enforcement and query API for MongoDB</td></tr>
+      <tr><td>NeDB</td><td>4.0.4</td><td>Embedded database for local dev — zero config, same API</td></tr>
+      <tr><td>Socket.IO</td><td>4.5.0</td><td>WebSocket server with automatic polling fallback</td></tr>
+      <tr><td>jsonwebtoken</td><td>9.0.3</td><td>Stateless JWT authentication tokens</td></tr>
+      <tr><td>bcryptjs</td><td>2.4.3</td><td>Adaptive password hashing resistant to brute-force attacks</td></tr>
+      <tr><td>multer</td><td>2.1.1</td><td>Multipart file upload parsing with memory storage</td></tr>
+      <tr><td>Cloudinary SDK</td><td>2.10.0</td><td>Cloud media storage with CDN delivery and auto-format optimization</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 3. DATABASE ── -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">Database</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What database do you use and why MongoDB?</div>
+    <div class="answer">
+      <p><strong>Primary: MongoDB Atlas (cloud, M0 free tier)</strong></p>
+      <ul>
+        <li>Document-oriented — fits social media's varied content (posts with/without media)</li>
+        <li>Arrays as first-class citizens — perfect for <code>followers[]</code>, <code>likes[]</code>, <code>comments[]</code></li>
+        <li><code>$push</code>, <code>$pull</code>, <code>$in</code> operators map naturally to social graph operations</li>
+        <li>Horizontal scaling path from M0 free → M2 → M10 without code changes</li>
+        <li>Atlas handles backups, replication, and connection pooling</li>
+      </ul>
+      <p style="margin-top:10px;"><strong>Local Dev Fallback: NeDB (@seald-io/nedb 4.0.4)</strong></p>
+      <ul>
+        <li>Embedded, zero setup — data stored as <code>.db</code> files in <code>/backend/data/</code></li>
+        <li>Same MongoDB-compatible query API</li>
+        <li>Developers run the full stack with just <code>npm install &amp;&amp; node server.js</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Explain the adapter pattern in db.js.</div>
+    <div class="answer">
+      <p><code>backend/db.js</code> exports a <code>MongooseAdapter</code> class that wraps Mongoose models behind the same async API as NeDB. Every route file imports <code>{ users, posts, notifications }</code> and calls <code>.findAsync()</code>, <code>.findOneAsync()</code>, <code>.updateAsync()</code> — identical calls work on both databases. The adapter handles:</p>
+      <ul>
+        <li><strong>_norm(doc):</strong> Converts Mongoose ObjectId → plain string</li>
+        <li><strong>_q(query):</strong> Normalizes query syntax differences between MongoDB and NeDB</li>
+        <li><strong>Connection buffering:</strong> 8s timeout, 5s auto-retry loop</li>
+        <li>Supports: <code>$or</code>, <code>$in</code>, <code>$push</code>, <code>$pull</code>, <code>$set</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What are your Mongoose models / schemas?</div>
+    <div class="answer">
+      <table>
+        <thead><tr><th>Model</th><th>Key Fields</th></tr></thead>
+        <tbody>
+          <tr><td>User</td><td>username (unique), email (unique), password (hashed), name, profilePicture, description, prefersDarkTheme, followers[], following[], reqSent[], reqRecieved[], createdAt</td></tr>
+          <tr><td>Post</td><td>userId, description, postMedia (URL/'null'), mediaType, likes[], comments[] (objects with userId/text/username), username, name, profilePicture, createdAt</td></tr>
+          <tr><td>Conversation</td><td>members[] (exactly 2 user IDs), createdAt</td></tr>
+          <tr><td>Message</td><td>conversationId, senderId, message, messageMedia, mediaType, createdAt</td></tr>
+          <tr><td>Notification</td><td>userId, fromUserId, fromUsername, fromName, fromPicture, type (like/comment/follow), postId, postDescription, comment, read (boolean), createdAt</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── 4. STORAGE ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title">Storage</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How do you handle media uploads?</div>
+    <div class="answer">
+      <p>Three-layer design:</p>
+      <ul>
+        <li><strong>Layer 1 — multer (memory storage):</strong> File arrives as <code>req.file.buffer</code> — never touches disk. 25 MB limit enforced at the middleware level.</li>
+        <li><strong>Layer 2 — Storage service (<code>backend/services/storage.js</code>):</strong> Checks <code>CLOUDINARY_URL</code> env var:
+          <ul>
+            <li>If set → streams buffer to Cloudinary via <code>uploader.upload_stream({ resource_type: 'auto', folder: 'social-scoop' })</code> → returns <code>result.secure_url</code></li>
+            <li>If not set → writes to <code>/backend/uploads/</code> with timestamp prefix → returns <code>http://host/uploads/filename</code></li>
+          </ul>
+        </li>
+        <li><strong>Layer 3 — URL in DB:</strong> Returned URL stored in <code>post.postMedia</code>, <code>message.messageMedia</code>, or <code>user.profilePicture</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Why Cloudinary?</div>
+    <div class="answer">
+      <ul>
+        <li>CDN delivery — files served from edge nodes globally</li>
+        <li>Automatic format optimization (WebP for images, reduces bandwidth)</li>
+        <li><code>resource_type: 'auto'</code> handles both images and video in one upload call</li>
+        <li>Generous free tier: 25 GB storage + 25 GB bandwidth/month</li>
+        <li>Clean delete API via <code>uploader.destroy(publicId, { resource_type })</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How does file deletion work?</div>
+    <div class="answer">
+      <p>The <code>deleteFile(url)</code> function in <code>storage.js</code>:</p>
+      <ol>
+        <li>Extracts <code>public_id</code> from Cloudinary URL via regex: <code>/\/upload\/(?:v\d+\/)?(.+)\.[^.]+$/</code></li>
+        <li>Extracts <code>resource_type</code> (image/video/raw) from URL</li>
+        <li>Calls <code>cloudinary.uploader.destroy(publicId, { resource_type })</code></li>
+      </ol>
+      <p>Called in: post deletion, user account cascade delete (all post media + profile picture). Both are fire-and-forget — media cleanup does not block the HTTP response.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 5. AUTH & SECURITY ── -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div class="section-title">Authentication &amp; Security</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How does authentication work end-to-end?</div>
+    <div class="answer">
+      <p><strong>Registration / Login:</strong></p>
+      <ol>
+        <li>Password → <code>bcrypt.genSalt(10)</code> → <code>bcrypt.hash(password, salt)</code> → stored in DB</li>
+        <li>On login: <code>bcrypt.compare(input, stored_hash)</code> — constant-time, safe against timing attacks</li>
+        <li>JWT signed: <code>jwt.sign({ id, username }, JWT_SECRET, { expiresIn: '30d' })</code> → returned to client</li>
+      </ol>
+      <p style="margin-top:10px;"><strong>Token Storage &amp; Transport:</strong></p>
+      <ul>
+        <li>Stored in Redux state → persisted to <code>localStorage['persist:root']</code> by redux-persist</li>
+        <li>Axios request interceptor reads it and adds: <code>token: Bearer &lt;jwt&gt;</code> to every request</li>
+      </ul>
+      <p style="margin-top:10px;"><strong>Server-side verification middleware:</strong></p>
+      <pre><code>const header = req.headers.token || req.headers.authorization;
+// Accepts "Bearer &lt;jwt&gt;", "Barer &lt;jwt&gt;" (typo tolerance), or bare token
+jwt.verify(raw, JWT_SECRET, (err, decoded) => {
+  if (err) return res.status(403).json({ message: 'Token invalid' });
+  req.user = decoded; // { id, username }
+});</code></pre>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Why JWT over sessions?</div>
+    <div class="answer">
+      <p>JWT is <strong>stateless</strong> — no session store needed on the server. Ideal for single-server deployment where multiple instances sharing session state is not yet set up. Trade-off: tokens cannot be revoked before expiry without a blocklist — mitigated by client-side clear on 401/403 response.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Why bcrypt over SHA-256 or MD5?</div>
+    <div class="answer">
+      <p>bcrypt is <strong>adaptive and slow by design</strong>. At 10 rounds: ~100ms per hash — imperceptible to users, but makes GPU brute-force attacks (billions of hashes/second with SHA-256) extremely expensive. MD5 and SHA-256 are cryptographic hashes, not password hashing functions — they have no built-in work factor or salting.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How do you handle token expiry gracefully?</div>
+    <div class="answer">
+      <p>Axios response interceptor:</p>
+      <pre><code>api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err?.response?.status === 401 || err?.response?.status === 403) {
+      localStorage.removeItem('persist:root');
+      window.location.href = '/login';
+    }
+    return Promise.reject(err);
+  }
+);</code></pre>
+      <p>Result: expired tokens trigger an automatic logout and redirect — no silent failure or broken UI.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 6. REAL-TIME ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">6</div>
+    <div class="section-title">Real-Time Communication</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How does real-time messaging work?</div>
+    <div class="answer">
+      <ol>
+        <li>On app load, client emits <code>addUser</code> with <code>userId</code> → server stores <code>{ userId, socketId }</code> in an in-memory array</li>
+        <li>Server broadcasts updated <code>activeUsers</code> list to all clients (powers online presence indicators)</li>
+        <li>When user sends a message: saved to DB → client emits <code>sendMessage</code> → server relays as <code>getMessage</code> to recipient's socket ID</li>
+        <li>Recipient's UI updates instantly via socket event listener — no polling</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How do voice/video calls work? Explain WebRTC.</div>
+    <div class="answer">
+      <p>WebRTC is a browser API for peer-to-peer media streams. Socket.IO is used <strong>only for signaling</strong> (exchanging connection metadata). Actual audio/video travels <strong>directly between browsers</strong>.</p>
+      <div class="flow"><span class="caller">CALLER                     </span>   <span class="server">SERVER (Signal Relay)   </span>   <span class="callee">CALLEE</span>
+<span class="caller">  |                          </span>   <span class="server">|                      </span>   <span class="callee">|</span>
+<span class="caller">  |-- getUserMedia() ------></span>   <span class="server">|                      </span>   <span class="callee">|</span>
+<span class="caller">  |-- createPeerConnection()</span>   <span class="server">|                      </span>   <span class="callee">|</span>
+<span class="caller">  |-- createOffer() -------></span>   <span class="server">|                      </span>   <span class="callee">|</span>
+<span class="caller">  |-- setLocalDescription -></span>   <span class="server">|                      </span>   <span class="callee">|</span>
+<span class="arrow">  |-- emit 'callUser'{offer}></span>  <span class="server">|-- emit 'incomingCall' -></span>   <span class="callee">|</span>
+<span class="callee">  |                          </span>   <span class="server">|                      </span>   <span class="callee">|-- getUserMedia()</span>
+<span class="callee">  |                          </span>   <span class="server">|                      </span>   <span class="callee">|-- createPeerConnection()</span>
+<span class="callee">  |                          </span>   <span class="server">|                      </span>   <span class="callee">|-- setRemoteDescription(offer)</span>
+<span class="callee">  |                          </span>   <span class="server">|                      </span>   <span class="callee">|-- createAnswer()</span>
+<span class="callee">  |                          </span>   <span class="server">|                      </span>   <span class="callee">|-- setLocalDescription(answer)</span>
+<span class="arrow">  |                          </span>   <span class="server">|<- emit 'answerCall' ---|</span>
+<span class="arrow">  |<- emit 'callAccepted' --|</span>   <span class="server">|                      </span>   <span class="callee">|</span>
+<span class="caller">  |-- setRemoteDescription(answer)</span>   <span class="server">|              </span>   <span class="callee">|</span>
+<span class="arrow">  |&lt;----- ICE candidates exchanged -----|------&gt;</span>   <span class="callee">|</span>
+<span class="stream">  |========= P2P AUDIO/VIDEO STREAM DIRECT TO PEER =========|</span></div>
+      <p><strong>ICE Servers used:</strong> Google STUN servers (<code>stun:stun.l.google.com:19302</code>, <code>stun1.l.google.com:19302</code>). STUN helps peers discover their public IP/port through NAT. TURN (relay) is not configured — a known limitation.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What Socket.IO events are used?</div>
+    <div class="answer">
+      <table>
+        <thead><tr><th>Event</th><th>Direction</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>addUser</td><td>Client → Server</td><td>Register user presence with socket ID</td></tr>
+          <tr><td>getUsers</td><td>Server → All</td><td>Broadcast active users list</td></tr>
+          <tr><td>sendMessage</td><td>Client → Server</td><td>Transmit new message</td></tr>
+          <tr><td>getMessage</td><td>Server → Recipient</td><td>Deliver message in real-time</td></tr>
+          <tr><td>callUser</td><td>Client → Server</td><td>Send call offer + metadata</td></tr>
+          <tr><td>incomingCall</td><td>Server → Callee</td><td>Relay incoming call</td></tr>
+          <tr><td>answerCall</td><td>Client → Server</td><td>Send SDP answer</td></tr>
+          <tr><td>callAccepted</td><td>Server → Caller</td><td>Relay answer to caller</td></tr>
+          <tr><td>iceCandidate</td><td>Bidirectional</td><td>Exchange ICE candidates</td></tr>
+          <tr><td>endCall / callEnded</td><td>Bidirectional</td><td>Terminate call</td></tr>
+          <tr><td>rejectCall / callRejected</td><td>Bidirectional</td><td>Decline incoming call</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── 7. STATE MANAGEMENT ── -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">7</div>
+    <div class="section-title">State Management</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Why Redux Toolkit and not Context API?</div>
+    <div class="answer">
+      <p>Redux Toolkit gives predictable, centralized state with DevTools time-travel debugging. <code>createSlice</code> eliminates action/reducer boilerplate. Context API re-renders the entire subtree on any change — fine for theme, problematic for high-frequency updates like notifications or post feeds. <code>redux-persist</code> syncs to localStorage so state survives page refresh without re-fetching.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What is persisted vs not persisted, and why?</div>
+    <div class="answer">
+      <table>
+        <thead><tr><th>Slice</th><th>Persisted?</th><th>Reason</th></tr></thead>
+        <tbody>
+          <tr><td>user</td><td><span class="badge badge-green">YES</span></td><td>Keep login session across refreshes — contains accessToken</td></tr>
+          <tr><td>conversation</td><td><span class="badge badge-green">YES</span></td><td>Cache conversation list to avoid reload on navigation</td></tr>
+          <tr><td>post</td><td><span class="badge badge-red">NO</span></td><td>Always fetch fresh feed — stale posts misleading</td></tr>
+          <tr><td>profile</td><td><span class="badge badge-red">NO</span></td><td>Always fetch fresh profile — follower counts must be live</td></tr>
+          <tr><td>notifications</td><td><span class="badge badge-red">NO</span></td><td>Always fetch latest — unread status must be accurate</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Name the Redux slices and their state shape.</div>
+    <div class="answer">
+      <ul>
+        <li><strong>userSlice:</strong> <code>{ currentUser: null, isFetching: false, error: false }</code></li>
+        <li><strong>postSlice:</strong> <code>{ posts: [], isFetching: false, error: false }</code></li>
+        <li><strong>conversationSlice:</strong> <code>{ conversations: [], isFetching: false, error: false }</code></li>
+        <li><strong>profileSlice:</strong> <code>{ user: null, posts: [], isFetching: false, error: false }</code></li>
+        <li><strong>notificationSlice:</strong> <code>{ items: [], isFetching: false, error: false }</code></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ── 8. DEPLOYMENT ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">8</div>
+    <div class="section-title">Deployment</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How is the app deployed?</div>
+    <div class="answer">
+      <p>Single Render.com web service using a Blueprint spec in <code>render.yaml</code>:</p>
+      <pre><code>buildCommand: cd backend && npm install && cd ../app && npm install && npm run build
+startCommand: node backend/server.js
+healthCheckPath: /api/health</code></pre>
+      <p>Express serves three things from one URL:</p>
+      <ul>
+        <li><code>/api/*</code> → Express route handlers</li>
+        <li><code>/uploads/*</code> → Static local file fallback</li>
+        <li><code>/*</code> catch-all → <code>/app/dist/index.html</code> (React SPA)</li>
+      </ul>
+      <p>No CORS needed in production — API and frontend are the same origin.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How does client-side routing work alongside Express?</div>
+    <div class="answer">
+      <p>API routes are registered <strong>before</strong> the catch-all in Express. So <code>/api/posts/...</code> hits the Express handler; any other path (like <code>/user/john</code> or <code>/messages</code>) falls through to the catch-all which serves <code>index.html</code>. React Router then reads the URL in the browser and renders the correct component — no full page reload.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What environment variables are required?</div>
+    <div class="answer">
+      <table>
+        <thead><tr><th>Variable</th><th>Value / Source</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>JWT_SECRET</td><td>Auto-generated by Render</td><td>Signs and verifies JWT tokens</td></tr>
+          <tr><td>JWT_EXPIRES_IN</td><td>30d</td><td>Token expiry duration</td></tr>
+          <tr><td>MONGODB_URI</td><td>Atlas connection string</td><td>Production database</td></tr>
+          <tr><td>CLOUDINARY_URL</td><td>Cloudinary dashboard</td><td>Media storage and CDN</td></tr>
+          <tr><td>NODE_VERSION</td><td>22</td><td>Render Node.js runtime</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── 9. UNIQUE PATTERNS ── -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">9</div>
+    <div class="section-title">Unique Technical Patterns</div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Explain the self-healing database pattern.</div>
+    <div class="answer">
+      <p>When a user is deleted directly from MongoDB Atlas (bypassing the app), their ID remains in other users' <code>followers[]</code> and <code>following[]</code> arrays. The <code>GET /user/:username</code> route now:</p>
+      <ol>
+        <li>Collects all IDs from all 5 social arrays (<code>followers</code>, <code>following</code>, <code>followRequests</code>, <code>reqSent</code>, <code>reqRecieved</code>)</li>
+        <li>Batch-checks existence with one <code>Promise.all</code></li>
+        <li>Filters out dead IDs → if any removed, fires a background <code>updateAsync</code> to fix the DB</li>
+        <li>Returns cleaned data in the same response</li>
+      </ol>
+      <p>Result: after one profile visit, the DB is permanently corrected — no cron job or migration script needed.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What is stripOrphans() and why is it needed?</div>
+    <div class="answer">
+      <p>When a user is deleted, their like/comment entries can remain on other users' posts (orphaned references). <code>stripOrphans()</code> in <code>posts.js</code>:</p>
+      <ol>
+        <li>Collects all unique <code>userId</code> values from likes and comments across an entire post list</li>
+        <li>Does one existence check per unique ID (not N×M per post per interaction)</li>
+        <li>Filters out dead references and auto-saves if inconsistencies found</li>
+      </ol>
+      <p>Called on both <code>GET /profile/:userId</code> and <code>GET /:userId</code> (feed). Self-heals the DB on first load after a deletion.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: Explain cascade delete — all 6 steps.</div>
+    <div class="answer">
+      <p>When <code>DELETE /api/users/:id</code> is called:</p>
+      <ol>
+        <li><strong>Delete posts + media:</strong> Find all user's posts → delete each post's Cloudinary file → remove post document</li>
+        <li><strong>Clean interaction history:</strong> Find all other posts → filter this user's likes and comments → update in-place</li>
+        <li><strong>Clean social graph:</strong> Find all other users → filter this ID from followers/following/followRequests → update</li>
+        <li><strong>Delete notifications:</strong> Remove all notifications where userId or fromUserId matches</li>
+        <li><strong>Delete profile picture:</strong> Call <code>deleteFile(user.profilePicture)</code> to remove Cloudinary asset</li>
+        <li><strong>Delete user record:</strong> <code>users.removeAsync({ _id: id })</code></li>
+      </ol>
+      <p>Result: a deleted account leaves <strong>zero trace</strong> across all 5 collections.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: How do videos auto-pause when scrolled out of view?</div>
+    <div class="answer">
+      <p>Uses the native browser <strong>IntersectionObserver API</strong> — fires a callback when element visibility changes, with no scroll event listeners:</p>
+      <pre><code>const observer = new IntersectionObserver(
+  ([entry]) => { if (!entry.isIntersecting) el.pause(); },
+  { threshold: 0.25 }  // fire when <25% visible
+);
+observer.observe(videoRef.current);</code></pre>
+      <p>The <code>0.25</code> threshold means "pause when less than 25% of the video is in the viewport." No performance overhead compared to scroll listeners.</p>
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="question">Q: What is optimistic UI and where is it used?</div>
+    <div class="answer">
+      <p>The UI updates <strong>immediately</strong> before the API call completes, then reverts on failure. Used for likes and comments:</p>
+      <pre><code>// Immediate update
+setLikes(nowLiked ? [...likes, userId] : likes.filter(id => id !== userId));
+// Background API call — revert if it fails
+reactPost(dispatch, post, userId).catch(() => {
+  setLikes(liked ? [...likes, userId] : likes.filter(id => id !== userId));
+});</code></pre>
+      <p>Result: zero-latency interactions with automatic error recovery. No loading spinner on simple actions.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 10. WHAT IS NEW ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">10</div>
+    <div class="section-title">What Is New / Innovative</div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-title">Dual-DB Adapter</div>
+      <p>Single codebase runs MongoDB in production and NeDB locally — no code changes. Most tutorials pick one. This enables zero-config local dev and production-grade DB simultaneously.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Self-Healing DB on Read</div>
+      <p>Data integrity maintained lazily on every request — not via scheduled jobs or migrations. Scales to zero maintenance overhead.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Native WebRTC Calls</div>
+      <p>Voice and video calls built into the social feed — no Twilio, Agora, or Zoom SDK. Pure browser WebRTC APIs with Socket.IO signaling.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Cascading Media Delete</div>
+      <p>Most apps leave orphaned media in storage. This app deletes Cloudinary assets on account/post deletion — clean storage, no cost leakage.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">JWT Expiry UX</div>
+      <p>Instead of silently breaking when tokens expire, a 401/403 response clears session and redirects to login. Users always know why they were signed out.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">IntersectionObserver Videos</div>
+      <p>Videos auto-pause when scrolled out of viewport using a native browser API — no scroll listeners, no performance hit on feeds with many videos.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 11. LIMITATIONS ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">11</div>
+    <div class="section-title">Known Limitations (Honest Trade-offs)</div>
+  </div>
+  <div class="warn">
+    Examiners respect self-awareness. Knowing your limitations demonstrates engineering maturity.
+  </div>
+  <table>
+    <thead><tr><th>Limitation</th><th>Root Cause / Trade-off</th></tr></thead>
+    <tbody>
+      <tr><td>No TURN server</td><td>WebRTC calls may fail on strict corporate NAT/firewalls — STUN works for ~85% of networks but not all</td></tr>
+      <tr><td>JWT cannot be revoked</td><td>Stateless design — no token blocklist; a stolen token is valid until expiry (30d)</td></tr>
+      <tr><td>activeUsers in memory</td><td>Online presence list lost on server restart; not shared across multiple instances — needs Redis for scale</td></tr>
+      <tr><td>bcrypt on main thread</td><td>Blocks Node.js event loop for ~100ms per hash on login — acceptable at small scale, needs worker threads at high load</td></tr>
+      <tr><td>Comment ID is Date.now()</td><td>Timestamp-based IDs can collide under high concurrency — should use UUID or DB-generated IDs</td></tr>
+      <tr><td>No rate limiting</td><td>Missing <code>express-rate-limit</code> — API endpoints can be abused</td></tr>
+      <tr><td>NeDB data lost on restart</td><td>Local dev only — acceptable trade-off, not a production concern</td></tr>
+      <tr><td>No E2E encryption</td><td>Messages are readable by server admin (MongoDB Atlas) — needs Signal Protocol for true privacy</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 12. FUTURE SCOPE ── -->
+<div class="section page-break">
+  <div class="section-header">
+    <div class="section-num">12</div>
+    <div class="section-title">Future Scope</div>
+  </div>
+
+  <table>
+    <thead><tr><th>#</th><th>Feature</th><th>Technical Approach</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Stories (24h ephemeral)</strong></td><td>TTL index on MongoDB documents, auto-expire after 24h</td></tr>
+      <tr><td>2</td><td><strong>Group Chats</strong></td><td>Extend Conversation model to support >2 members[], update socket broadcast logic</td></tr>
+      <tr><td>3</td><td><strong>End-to-End Encryption</strong></td><td>Signal Protocol or libsodium; keys generated client-side, server only stores ciphertext</td></tr>
+      <tr><td>4</td><td><strong>Push Notifications</strong></td><td>Web Push API + service worker + VAPID keys for offline/background alerts</td></tr>
+      <tr><td>5</td><td><strong>Native Mobile App</strong></td><td>React Native — reuse Redux logic, actions, and most API layer unchanged</td></tr>
+      <tr><td>6</td><td><strong>TURN Server</strong></td><td>Coturn self-hosted or Twilio TURN for reliable calls behind strict NAT</td></tr>
+      <tr><td>7</td><td><strong>AI Content Moderation</strong></td><td>Claude API to flag harmful posts before publish; async moderation queue</td></tr>
+      <tr><td>8</td><td><strong>Short-Form Video (Reels)</strong></td><td>Vertical video feed with HLS streaming via Cloudinary video pipeline</td></tr>
+      <tr><td>9</td><td><strong>Creator Analytics</strong></td><td>Post reach, engagement rate, follower growth charts using aggregation pipelines</td></tr>
+      <tr><td>10</td><td><strong>Redis for Socket State</strong></td><td>Replace in-memory activeUsers → Redis pub/sub for multi-instance Socket.IO scaling</td></tr>
+      <tr><td>11</td><td><strong>Rate Limiting</strong></td><td><code>express-rate-limit</code> per IP/user to prevent API abuse and spam</td></tr>
+      <tr><td>12</td><td><strong>Internationalisation (i18n)</strong></td><td>react-i18next with locale files; detect browser language preference</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 13. QUICK-FIRE TABLE ── -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-num">13</div>
+    <div class="section-title">Quick-Fire Answer Table</div>
+  </div>
+  <div class="highlight">
+    Memorise these exact values — examiners often ask for specific configuration numbers.
+  </div>
+  <table class="qf-table">
+    <thead><tr><th>Question</th><th>Exact Answer</th></tr></thead>
+    <tbody>
+      <tr><td>JWT algorithm</td><td>HS256 (symmetric HMAC-SHA256)</td></tr>
+      <tr><td>JWT token expiry</td><td>30 days (Render) / 7 days (dev default)</td></tr>
+      <tr><td>JWT payload fields</td><td>{ id, username }</td></tr>
+      <tr><td>bcrypt salt rounds</td><td>10</td></tr>
+      <tr><td>bcrypt library</td><td>bcryptjs (pure JavaScript)</td></tr>
+      <tr><td>Max upload file size</td><td>25 MB (multer limit)</td></tr>
+      <tr><td>Upload axios timeout</td><td>120,000 ms (2 minutes)</td></tr>
+      <tr><td>Standard axios timeout</td><td>15,000 ms (15 seconds)</td></tr>
+      <tr><td>STUN servers</td><td>stun.l.google.com:19302 &amp; stun1.l.google.com:19302</td></tr>
+      <tr><td>Video pause threshold</td><td>25% out of viewport (IntersectionObserver)</td></tr>
+      <tr><td>Socket transports</td><td>websocket → polling fallback</td></tr>
+      <tr><td>MongoDB buffer timeout</td><td>8,000 ms</td></tr>
+      <tr><td>MongoDB retry interval</td><td>5 seconds</td></tr>
+      <tr><td>Search debounce delay</td><td>350 ms</td></tr>
+      <tr><td>Persisted Redux slices</td><td>user, conversation</td></tr>
+      <tr><td>Non-persisted slices</td><td>post, profile, notifications</td></tr>
+      <tr><td>Health check endpoint</td><td>GET /api/health</td></tr>
+      <tr><td>Node.js version (Render)</td><td>22</td></tr>
+      <tr><td>Cloudinary upload folder</td><td>social-scoop</td></tr>
+      <tr><td>Cloudinary resource_type</td><td>auto (handles image and video)</td></tr>
+      <tr><td>Comment ID generation</td><td>Date.now().toString()</td></tr>
+      <tr><td>Frontend build tool</td><td>Vite 5.0.0</td></tr>
+      <tr><td>Database models count</td><td>5 (User, Post, Conversation, Message, Notification)</td></tr>
+      <tr><td>Cascade delete steps</td><td>6 steps</td></tr>
+      <tr><td>Token storage location</td><td>localStorage via redux-persist key "persist:root"</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center; padding: 40px 0 20px; color: var(--muted); font-size: 11px; border-top: 1px solid var(--border);">
+  The Social Scoop &nbsp;·&nbsp; Full-Stack Social Media Application &nbsp;·&nbsp; Viva Guide
+  <br>Aditya Kumar Yadav &nbsp;·&nbsp; Abhishek Patel &nbsp;·&nbsp; Aliraja Ansari &nbsp;·&nbsp; Shaikh Afzal
+  <br>Guide: Er. Rohit Yadav
+</div>
+
+</div><!-- /content -->
+</body>
+</html>
